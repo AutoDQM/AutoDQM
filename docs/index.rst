@@ -13,14 +13,26 @@ automatically generated when you submit a query from the AutoDQM GUI.
 Full documentation for AutoDQM can be found on our
 `wiki <http://github.com/jkguiang/AutoDQM/wiki>`__.
 
+.. include:: ../README.rst
+   :end-before: Installation and usage
+
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 3
    :caption: Contents:
 
-   1. `Features <#features>`__
-   2. `Setting Up AutoDQM for Development <#setting-up-autodqm-for-development>`__
-   3. `Using AutoDQM Offline <#using-autodqm-offline>`__
-   4. `Environment Variables <#environment-variables>`__
+   `Features`
+   `Setting Up AutoDQM for Development`
+   `Using AutoDQM Offline`
+   `Environment Variables`
+
+.. toctree::
+   :maxdepth: 1
+   :caption: Code reference
+   :glob:
+
+   api/*
+
+
 
 Indices and tables
 ==================
