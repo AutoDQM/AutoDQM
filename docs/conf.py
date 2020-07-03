@@ -31,17 +31,17 @@ release = '127.0.0.1'
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 extensions = ['recommonmark',
-    'sphinxcontrib.apidoc',
-    'sphinxcontrib.programoutput',
-    'sphinx.ext.autodoc',
-    'sphinx.ext.intersphinx',
-    'sphinx.ext.todo',
-    'sphinx.ext.coverage',
-    'sphinx.ext.mathjax',
-    'sphinx.ext.linkcode',
-    'sphinx.ext.napoleon',
+    #'sphinxcontrib.apidoc',
+    #'sphinxcontrib.programoutput',
+    #'sphinx.ext.autodoc',
+    #'sphinx.ext.intersphinx',
+    #'sphinx.ext.todo',
+    #'sphinx.ext.coverage',
+    #'sphinx.ext.mathjax',
+    #'sphinx.ext.linkcode',
+    #'sphinx.ext.napoleon',
     # 'sphinx.ext.githubpages',
-    'm2r'
+    #'m2r'
 ]
 
 # Add any paths that contain templates here, relative to this directory.
