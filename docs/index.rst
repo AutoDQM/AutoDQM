@@ -8,13 +8,7 @@
 
 .. toctree::
    :maxdepth: 3
-   :caption: Contents:
-
-   setup
-   philosophy
-   processing_config
-   examples
-   glossary
+   :caption: Contents
 
 .. toctree::
    :maxdepth: 1
