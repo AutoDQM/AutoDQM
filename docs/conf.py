@@ -30,8 +30,7 @@ release = '127.0.0.1'
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
-extensions = ['recommonmark',
-   'm2r',
+extensions = ['m2r',
    'sphinxcontrib-apidoc',
    'sphinxcontrib-programoutput',
    'sphinx-rtd-theme'
@@ -40,6 +39,10 @@ extensions = ['recommonmark',
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
 
+# Suffixes of source filenames
+source_suffix = ['.rst','.md']
+
+# Master toctree document
 master_doc = 'index'
 
 # List of patterns, relative to source directory, that match files and
