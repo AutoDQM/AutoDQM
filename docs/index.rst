@@ -16,24 +16,6 @@ Full documentation for AutoDQM can be found on our
 .. include:: ../README.rst
    :end-before: Installation and usage
 
-.. toctree::
-   :maxdepth: 3
-   :caption: Contents:
-
-   `Features`
-   `Setting Up AutoDQM for Development`
-   `Using AutoDQM Offline`
-   `Environment Variables`
-
-.. toctree::
-   :maxdepth: 1
-   :caption: Code reference
-   :glob:
-
-   api/*
-
-
-
 Indices and tables
 ==================
 
