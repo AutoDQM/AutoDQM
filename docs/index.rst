@@ -17,7 +17,10 @@ Full documentation for AutoDQM can be found on our
    :maxdepth: 2
    :caption: Contents:
 
-
+   1. `Features <#features>`__
+   2. `Setting Up AutoDQM for Development <#setting-up-autodqm-for-development>`__
+   3. `Using AutoDQM Offline <#using-autodqm-offline>`__
+   4. `Environment Variables <#environment-variables>`__
 
 Indices and tables
 ==================
