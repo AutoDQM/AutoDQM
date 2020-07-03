@@ -3,18 +3,25 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-AutoDQM
-=======
+.. include:: ./../README.rst
+   :end-before: Setting Up AutoDQM for Development
 
-AutoDQM parses DQM histograms and identifies outliers by various
-statistical tests for further analysis by the user. Its output can be
-easily parsed by eye on an AutoPlotter-based html page which is
-automatically generated when you submit a query from the AutoDQM GUI.
-Full documentation for AutoDQM can be found on our
-`wiki <http://github.com/jkguiang/AutoDQM/wiki>`__.
+.. toctree::
+   :maxdepth: 3
+   :caption: Contents:
 
-.. include:: ../README.rst
-   :end-before: Installation and usage
+   setup
+   philosophy
+   processing_config
+   examples
+   glossary
+
+.. toctree::
+   :maxdepth: 1
+   :caption: Code reference
+   :glob:
+
+   api/*
 
 Indices and tables
 ==================
