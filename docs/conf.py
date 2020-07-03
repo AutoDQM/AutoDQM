@@ -31,17 +31,6 @@ release = '127.0.0.1'
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 extensions = ['recommonmark',
-    #'sphinxcontrib.apidoc',
-    #'sphinxcontrib.programoutput',
-    #'sphinx.ext.autodoc',
-    #'sphinx.ext.intersphinx',
-    #'sphinx.ext.todo',
-    #'sphinx.ext.coverage',
-    #'sphinx.ext.mathjax',
-    #'sphinx.ext.linkcode',
-    #'sphinx.ext.napoleon',
-    # 'sphinx.ext.githubpages',
-    #'m2r'
 ]
 
 # Add any paths that contain templates here, relative to this directory.
@@ -58,6 +47,7 @@ exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #
+master_doc = 'index'
 html_theme = 'alabaster'
 
 # Add any paths that contain custom static files (such as style sheets) here,
