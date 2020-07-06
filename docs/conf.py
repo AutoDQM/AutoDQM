@@ -68,3 +68,10 @@ html_theme_path = [sphinx_rtd_theme.get_html_theme_path()]
 html_static_path = ['_static']
 
 htmlhelp_basename = 'auto-dqm-doc'
+
+# Configure the sphinxcontrib.apidoc extension
+apidoc_module_dir = '../fast_carpenter'
+apidoc_toc_file = False
+apidoc_module_first = True
+apidoc_separate_modules = True
+pidoc_extra_args = ["-e"]

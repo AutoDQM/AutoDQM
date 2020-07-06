@@ -6,6 +6,13 @@
 .. include:: ./../README.rst
    :end-before: Setting Up AutoDQM for Development
 
+.. toctree::
+   :maxdepth: 1
+   :caption: Code reference
+   :glob:
+
+   api/*
+
 Indices and tables
 ==================
 
