@@ -70,7 +70,7 @@ html_static_path = ['_static']
 htmlhelp_basename = 'auto-dqm-doc'
 
 # Configure the sphinxcontrib.apidoc extension
-apidoc_module_dir = 'autodqm'
+apidoc_module_dir = '../autodqm'
 apidoc_toc_file = False
 apidoc_module_first = True
 apidoc_separate_modules = True
