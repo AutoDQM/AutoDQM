@@ -1,0 +1,18 @@
+{
+  "main_gdir": "DQMData/Run {0}/DT/Run summary/",
+  "run_reg": "dt",
+  "hists": [{
+      "norm_type": "row",
+      "path": "02-Segments/SegmentGlbSummary"
+},{
+      "norm_type": "row",
+      "path": "02-Segments/00-MeanRes/MeanDistr"
+},{
+      "norm_type": "row",
+      "path": "02-Segments/01-SigmaRes/SigmaDistr"
+},{
+
+      "norm_type": "row",
+      "path": "02-Segments/*"
+}
+]}

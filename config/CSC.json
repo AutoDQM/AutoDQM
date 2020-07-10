@@ -22,9 +22,13 @@
     },
     {
       "always_show": true,
+      "comparators": ["pca", "ks_test"],
+      "jar_dir": "CSC",
       "path": "recHits/hRHnrechits"
     },
     {
+      "comparators": ["pca", "ks_test"],
+      "jar_dir": "CSC",
       "path": "Digis/hWireTBin_*"
     },
     {
@@ -40,22 +44,38 @@
     },
     {
       "always_show": true,
+      "comparators": ["pca", "ks_test"],
+      "jar_dir": "CSC",
       "path": "Segments/hSnSegments"
     },
     {
+      "comparators": ["pca", "ks_test"],
+      "jar_dir": "CSC",
       "always_show": true,
       "path": "Segments/hSnhits"
     },
     {
+      "comparators": ["pca", "ks_test"],
+      "jar_dir": "CSC",
       "path": "Segments/hSTimeCombined*"
+    },
+    {
+      "path": "Segments/hSTimeDiff*"
     },
     {
       "path": "Segments/hSTimeVsZ"
     },
     {
+      "path": "Segments/hSChiSq*"
+    },
+    {
+      "comparators": ["pca", "ks_test"],
+      "jar_dir": "CSC",
       "path": "Segments/hSGlobalPhi"
     },
     {
+      "comparators": ["pca", "ks_test"],
+      "jar_dir": "CSC",
       "path": "Segments/hSGlobalTheta"
     }
   ]

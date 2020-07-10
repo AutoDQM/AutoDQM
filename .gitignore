@@ -1,3 +1,9 @@
+# RSA
+*.key
+*.pem
+
+# Development tool
+rerun
 
 # Editor artifacts
 *.swp
