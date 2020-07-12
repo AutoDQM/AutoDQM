@@ -12,11 +12,11 @@
 #
 import os
 import sys
-#sys.path.insert(0, os.path.abspath('..'))
-import inspect
-cwd = os.getcwd()
-project_root = os.path.dirname(cwd)
-sys.path.insert(0, project_root)
+sys.path.insert(0, os.path.abspath('..'))
+#import inspect
+#cwd = os.getcwd()
+#project_root = os.path.dirname(cwd)
+#sys.path.insert(0, project_root)
 
 import autodqm
 import autoref
