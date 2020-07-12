@@ -37,6 +37,7 @@ release = '127.0.0.1'
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 extensions = ['m2r',
+   'sphinxcontrib-blockdiag'
    'sphinxcontrib-apidoc',
    'sphinxcontrib-programoutput',
    'sphinx-rtd-theme'
