@@ -47,8 +47,9 @@ extensions = ['sphinxcontrib-blockdiag'
 templates_path = ['_templates']
 
 # Suffixes of source filenames
-source_suffix = ['.rst','.md']
+from recommonmark.parser import CommonMarkParser
 source_parsers = {".md": CommonMarkParser}
+source_suffix = ['.rst','.md']
 
 # Master toctree document
 master_doc = 'index'
