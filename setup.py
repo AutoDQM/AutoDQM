@@ -40,6 +40,5 @@ setup(
     keywords=['ROOT', 'pandas', 'analysis', 'particle physics', 'HEP', 'F.A.S.T'],
     name='AutoDQM',
     url='https://github.com/GluonicPenguin/AutoDQM',
-    version=get_version(),
     zip_safe=True,
 )
