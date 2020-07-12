@@ -18,8 +18,8 @@ sys.path.insert(0, os.path.abspath('../..'))
 #project_root = os.path.dirname(cwd)
 #sys.path.insert(0, project_root)
 
-import autodqm
-import autoref
+from AutoDQM import autodqm
+from AutoDQM import autoref
 
 # -- Project information -----------------------------------------------------
 
