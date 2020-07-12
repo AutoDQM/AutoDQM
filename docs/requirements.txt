@@ -3,3 +3,4 @@ sphinxcontrib-blockdiag
 sphinxcontrib-apidoc
 sphinxcontrib-programoutput
 sphinx-rtd-theme
+recommonmark
