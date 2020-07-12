@@ -1,4 +1,3 @@
-m2r
 sphinxcontrib-blockdiag
 sphinxcontrib-apidoc
 sphinxcontrib-programoutput
