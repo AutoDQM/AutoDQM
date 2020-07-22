@@ -5,12 +5,18 @@
 
 .. include:: ./../wiki/Home.rst
 
-#.. include:: ./../README.rst
-#   :end-before: Setting Up AutoDQM for Development
+. toctree::
+   :maxdepth: 3
+   :caption: Contents
+
+   ./../README
+   ./../wiki/Using-AutoDQM
+   ./../wiki/Configuration
+   ./../wiki/Development
 
 .. toctree::
    :maxdepth: 1
-   :caption: Code reference
+   :caption: Code Reference
    :glob:
 
    api/*
