@@ -1,7 +1,6 @@
 
 AutoDQM is an open source project. As such, we are constantly ensuring that AutoDQM is configurable for all subsystems that are interested in using it. With Release v2.1.0, it is now possible to add algorithms to AutoDQM's processing step, making it easy for anyone interested in improving the tool to contribute.
 
-
 #. `The Configuration JSON <https://github.com/jkguiang/AutoDQM/wiki/Configuration#the-configuration-json>`_
 #. `Adding Your Subsystem <https://github.com/jkguiang/AutoDQM/wiki/Configuration#adding-your-subsystem>`_
 #. `Adding an Algorithm <https://github.com/jkguiang/AutoDQM/wiki/Configuration#adding-an-algorithm>`_
@@ -9,7 +8,7 @@ AutoDQM is an open source project. As such, we are constantly ensuring that Auto
 The Configuration JSON
 ----------------------
 
-If AutoDQM is not already configured for your subsystem, you can easily push configurations for it. AutoDQM has a conveniently named ``configs.json`` whose current state can be found `here <https://github.com/jkguiang/AutoDQM/blob/release-v2.0.0/configs.json>`_\ , where each entry in the JSON contains the appropriate instructions for AutoDQM's processing algorithms. Let's break it down:
+If AutoDQM is not already configured for your subsystem, you can easily push configurations for it. AutoDQM has a conveniently named ```configs.json`` <https://github.com/jkguiang/AutoDQM/blob/release-v2.0.0/configs.json>`_\ , where each entry in the JSON contains the appropriate instructions for AutoDQM's processing algorithms. Let's break it down:
 
 Example entry:
 ~~~~~~~~~~~~~~
@@ -46,9 +45,9 @@ Example entry:
 ``"hists"``\ : This is a list of python dictionaries which each contain the path to specific histograms for AutoDQM to process as well as several tuning parameters.
 
 
-* ``"path"``\ : This specifies the path to the histogram. If there are many histograms of the same type, you may use an asterisk to tell AutoDQM to find all histograms of a matching path (see line 27 above). **\ *This is the ONLY required parameter for every histogram*\ **
+* ``"path"``\ : This specifies the path to the histogram. If there are many histograms of the same type, you may use an asterisk to tell AutoDQM to find all histograms of a matching path (see line 27 above). ``**\ *This is the ONLY required parameter for every histogram*\ **``
 * ``"ks_cut"``\ : This is the cut for the Kolmogorov-Smirnov Test that is run on 1D histograms.
-* `"norm_type"`: Currently AutoDQM only normalizes histograms by two schemes: row-by-row or as a whole. If you would like AutoDQM to normalize this histogram row-by-row, you would include this option, pointing to ``"row"``. Otherwise, you do not need to include this parameter.
+* ``"norm_type"``: Currently AutoDQM only normalizes histograms by two schemes: row-by-row or as a whole. If you would like AutoDQM to normalize this histogram row-by-row, you would include this option, pointing to ``"row"``. Otherwise, you do not need to include this parameter.
 * ``"always_draw"``\ : Include this parameter pointing to the boolean value ``true`` to tell AutoDQM to *always* draw this histogram.
 
 Adding Your Subsystem
@@ -82,7 +81,7 @@ Algorithm Arguments and the Histpair object
                 new_cut=500, min_entries=100000, new_option='new_opt',
                 **kwargs):
 
-Every algorithm that AutoDQM uses must handle a ``histpair`` object (defined `here <https://github.com/jkguiang/AutoDQM/blob/release-v2.1.0/autodqm/histpair.py>`_\ ). Put simply, each ``histpair`` object contains all of the information passed from the user's input (i.e. the name of the data and reference runs, the series and samples of those runs, etc.). Any other key word arguments should be specified or otherwise passed through ``**kwargs``.
+Every algorithm that AutoDQM uses must handle a ```histpair`` <https://github.com/jkguiang/AutoDQM/blob/release-v2.1.0/autodqm/histpair.py>`_\ object. Put simply, each ``histpair`` object contains all of the information passed from the user's input (i.e. the name of the data and reference runs, the series and samples of those runs, etc.). Any other key word arguments should be specified or otherwise passed through ``**kwargs``.
 
 Plugin Results Object
 ~~~~~~~~~~~~~~~~~~~~~
@@ -103,6 +102,6 @@ Plugin Results Object
            info=info,
            artifacts=artifacts
 
-In order for AutoDQM to understand your algorithm's output (i.e. drawn histograms, text files, etc.), you must pass them in a ``PluginResults`` object (defined `here <https://github.com/jkguiang/AutoDQM/blob/release-v2.1.0/autodqm/plugin_results.py>`_\ ).
+In order for AutoDQM to understand your algorithm's output (i.e. drawn histograms, text files, etc.), you must pass them in a ```PluginResults`` <https://github.com/jkguiang/AutoDQM/blob/release-v2.1.0/autodqm/plugin_results.py>`_\ object.
 
 When your algorithm has been properly formatted, you can make a pull request to AutoDQM's `development <https://github.com/jkguiang/AutoDQM/tree/develop-lxplus>`_ branch, making sure to place it in the `plugins <https://github.com/jkguiang/AutoDQM/tree/develop-lxplus/plugins>`_ directory.

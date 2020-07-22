@@ -3,7 +3,6 @@
 
 AutoDQM is a statistical tool for Data Quality Management (DQM) at the Large Hadron Particle Collider.
 
-
 #. `Motivation <https://github.com/jkguiang/AutoDQM/wiki#motivation>`_
 #. `The Statistical Arsenal <https://github.com/jkguiang/AutoDQM/wiki#the-statistical-arsenal>`_
 #. `Example Output <https://github.com/jkguiang/AutoDQM/wiki#example-output>`_

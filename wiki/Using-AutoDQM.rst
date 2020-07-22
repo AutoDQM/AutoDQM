@@ -6,8 +6,7 @@ The AutoDQM GUI is currently hosted on a VM at CERN, which can be accessed in a 
 
 
 #. Setup your browser's SOCKS Proxy settings (Instructions: `Firefox <https://github.com/jkguiang/AutoDQM/wiki/SOCKS-Proxy:-Firefox>`_ (recommended), `Chrome <https://github.com/jkguiang/AutoDQM/wiki/SOCKS-Proxy:-Chrome>`_\ )
-#. 
-   ``ssh`` into CERN from your terminal
+#. ``ssh`` into CERN from your terminal
 
    ``>> ssh <username>@lxplus.cern.ch -ND 1080``
 

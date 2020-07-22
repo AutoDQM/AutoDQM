@@ -6,13 +6,14 @@
 .. include:: ./../wiki/Home.rst
 
 . toctree::
-   :maxdepth: 3
+   :maxdepth: 1
    :caption: Contents
 
-   ./../README
-   ./../wiki/Using-AutoDQM
-   ./../wiki/Configuration
-   ./../wiki/Development
+   test
+   readme
+   usage
+   config
+   dev
 
 .. toctree::
    :maxdepth: 1
@@ -21,9 +22,3 @@
 
    api/*
 
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
