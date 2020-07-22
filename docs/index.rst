@@ -6,8 +6,9 @@
 .. include:: ./../wiki/Home.rst
 
 .. toctree::
-   :maxdepth: 1
+   :maxdepth: 3
    :caption: Contents
+
 
    test
    readme
