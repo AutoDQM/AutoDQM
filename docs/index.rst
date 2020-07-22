@@ -5,7 +5,7 @@
 
 .. include:: ./../wiki/Home.rst
 
-. toctree::
+.. toctree::
    :maxdepth: 1
    :caption: Contents
 
