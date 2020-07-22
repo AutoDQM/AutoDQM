@@ -3,12 +3,12 @@
 
 AutoDQM is a statistical tool for Data Quality Management (DQM) at the Large Hadron Particle Collider.
 
-#. `Motivation` :ref:`_motivation_label`
-#. `The Statistical Arsenal` :ref:`_stats_arsenal`
-#. `Example Output`  :ref:`_example_output`
+#. :ref:`Motivation`
+#. :ref:`The Statistical Arsenal`
+#. :ref:`Example Output`
 
 
-.. _motivation_label:
+.. _Motivation:
 Motivation
 ----------
 
@@ -17,7 +17,7 @@ Motivation
 
 Before AutoDQM, DQM shifters were tasked with looking at hundreds of DQM histograms, looking for hard-to-spot issues in data collection. AutoDQM runs long established statistical tests using ROOT on these graphs and outputs outliers on a simple, but effective, GUI that expedites the shifters' task.
 
-.. _stats_arsenal:
+.. _The Statistical Arsenal:
 The Statistical Arsenal
 -----------------------
 
@@ -45,7 +45,7 @@ Kolmogorov-Smirnov Test
 
 The Kolmogorov-Smirnov test compares the distance between points on a sample distribution and some reference distribution and qualifies how close or far they are. It is too complex to discuss here, but `Wikipedia <https://en.wikipedia.org/wiki/Kolmogorov%E2%80%93Smirnov_test>`_ has a good article on it. 
 
-.. _example_output:
+.. _Example Output:
 Example Output
 ---------------
 
