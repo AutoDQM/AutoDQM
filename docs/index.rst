@@ -5,8 +5,8 @@
 
 .. include:: ./AutoDQM.wiki/Home.md
 
-.. include:: ./../README.rst
-   :end-before: Setting Up AutoDQM for Development
+#.. include:: ./../README.rst
+#   :end-before: Setting Up AutoDQM for Development
 
 .. toctree::
    :maxdepth: 1
