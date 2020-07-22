@@ -1,4 +1,3 @@
-
 .. image:: ./images/home/autodqm_logo.png
    :width: 600
 
@@ -12,8 +11,8 @@ AutoDQM is a statistical tool for Data Quality Management (DQM) at the Large Had
 Motivation
 ----------
 
-.. image:: ./images/home/D_plus_R_equals.png
-   :width: 600
+#.. image:: ./images/home/D_plus_R_equals.png
+#   :width: 600
 
 Before AutoDQM, DQM shifters were tasked with looking at hundreds of DQM histograms, looking for hard-to-spot issues in data collection. AutoDQM runs long established statistical tests using ROOT on these graphs and outputs outliers on a simple, but effective, GUI that expedites the shifters' task.
 
