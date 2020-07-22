@@ -3,7 +3,7 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-.. include:: ./../wiki/Home.md
+.. include:: ./../wiki/Home.rst
 
 #.. include:: ./../README.rst
 #   :end-before: Setting Up AutoDQM for Development
