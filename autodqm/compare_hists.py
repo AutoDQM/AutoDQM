@@ -15,6 +15,10 @@ def process(config_dir, subsystem,
             ref_series, ref_sample, ref_run, ref_path,
             output_dir='./out/', plugin_dir='./plugins/'):
 
+    """
+    Processes histograms
+    """
+
     # Ensure no graphs are drawn to screen and no root messages are sent to
     # terminal
     ROOT.gROOT.SetBatch(ROOT.kTRUE)
@@ -86,6 +90,10 @@ def compile_histpairs(config_dir, subsystem,
                       data_series, data_sample, data_run, data_path,
                       ref_series, ref_sample, ref_run, ref_path):
 
+    """
+    Compiles histogram pairs
+    """
+
     config = cfg.get_subsystem(config_dir, subsystem)
     # Histogram details
     conf_list = config["hists"]
@@ -154,7 +162,9 @@ def compile_histpairs(config_dir, subsystem,
 
 
 def load_comparators(plugin_dir):
-    """Load comparators from each python module in ADQM_PLUGINS."""
+    """
+    Load comparators from each python module in ADQM_PLUGINS.
+    """
 
     sys.path.insert(0, plugin_dir)
 
@@ -177,7 +187,9 @@ def load_comparators(plugin_dir):
 
 
 def identifier(hp, comparator_name):
-    """Return a `hashed` identifier for the histpair"""
+    """
+    Return a `hashed` identifier for the histpair
+    """
     data_id = "DATA-{}-{}-{}".format(hp.data_series,
                                      hp.data_sample, hp.data_run)
     ref_id = "REF-{}-{}-{}".format(hp.ref_series, hp.ref_sample, hp.ref_run)

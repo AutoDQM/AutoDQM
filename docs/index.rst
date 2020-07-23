@@ -11,7 +11,7 @@
    dev
 
 .. toctree::
-   :maxdepth: 1
+   :maxdepth: 2
    :caption: Code reference
    :glob:
 

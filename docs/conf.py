@@ -18,9 +18,6 @@ sys.path.insert(0, os.path.abspath('..'))
 #project_root = os.path.dirname(cwd)
 #sys.path.insert(0, project_root)
 
-#from .. import autodqm
-#from .. import autoref
-
 # -- Project information -----------------------------------------------------
 
 project = 'AutoDQM'
@@ -81,4 +78,4 @@ apidoc_module_dir = '../autodqm'
 apidoc_toc_file = False
 apidoc_module_first = True
 apidoc_separate_modules = True
-pidoc_extra_args = ["-e"]
+apidoc_extra_args = ["-e"]
