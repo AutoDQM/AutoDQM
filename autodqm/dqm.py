@@ -25,7 +25,9 @@ DQMRow = namedtuple('DQMRow', ('name', 'full_name', 'url', 'size', 'date'))
 
 
 class DQMSession(FuturesSession):
-    """Encapsulates an interface to DQM Offline."""
+    """
+    Encapsulates an interface to DQM Offline.
+    """
 
     def __init__(self, cert, db, cache=None, workers=16):
         super(DQMSession, self).__init__(max_workers=workers)
@@ -42,9 +44,11 @@ class DQMSession(FuturesSession):
             _get_cern_ca(self.verify)
 
     def fetch_run(self, series, sample, run):
-        """Fetch and cache a run data file.
+        """
+        Fetch and cache a run data file.
 
-        Returns the path to the downloaded file."""
+        Returns the path to the downloaded file.
+        """
         dl = self.stream_run(series, sample, run)
 
         # Get the path from the first yield
@@ -56,10 +60,12 @@ class DQMSession(FuturesSession):
         return path
 
     def stream_run(self, series, sample, run, chunk_size=4096):
-        """Stream and cache a run data file.
+        """
+        Stream and cache a run data file.
 
         Returns a generator that yields StreamProg tuples corresponding to the
-        download progress."""
+        download progress.
+        """
         run_path = self._run_path(series, sample, run)
         run_dir = os.path.dirname(run_path)
 
@@ -77,19 +83,23 @@ class DQMSession(FuturesSession):
         yield StreamProg(size, size, run_path)
 
     def fetch_series_list(self):
-        """Return DQMRows corresponding to the series available on DQM Offline."""
+        """
+        Return DQMRows corresponding to the series available on DQM Offline.
+        """
         return _resolve(self._fetch_dqm_rows(DQM_URL)).data
 
     def fetch_sample_list(self, series):
-        """Return DQMRows corresponding to the samples available under the given
-        series."""
+        """
+        Return DQMRows corresponding to the samples available under the given series.
+        """
         series_rows = self.fetch_series_list()
         url = next((r.url for r in series_rows if r.name == series))
         return _resolve(self._fetch_dqm_rows(url)).data
 
     def fetch_run_list(self, series, sample):
-        """Return DQMRows corresponding to the runs available under the given
-        series and sample."""
+        """
+        Return DQMRows corresponding to the runs available under the given series and sample.
+        """
         sample_rows = self.fetch_sample_list(series)
         sample_url = next((r.url for r in sample_rows if r.name == sample))
 
@@ -116,8 +126,9 @@ class DQMSession(FuturesSession):
         return run_rows
 
     def _get_cache(self, parent_row):
-        """Return the DQM page corresponding to parent_row as DQMRows if they are
-        cached. Otherwise None."""
+        """
+        Return the DQM page corresponding to parent_row as DQMRows if they are cached. Otherwise None.
+        """
         cache_file = self._cache_path(parent_row)
         if os.path.exists(cache_file):
             with open(cache_file) as f:
@@ -127,20 +138,26 @@ class DQMSession(FuturesSession):
             return None
 
     def _write_cache(self, parent_row, dqm_rows):
-        """Write a list of DQMRows to the cache under their parent_row."""
+        """
+        Write a list of DQMRows to the cache under their parent_row.
+        """
         cache_file = self._cache_path(parent_row)
         _try_makedirs(os.path.dirname(cache_file))
         with open(cache_file, 'w') as f:
             json.dump(dqm_rows, f)
 
     def _cache_path(self, parent_row):
-        """Return the path to a cached DQM page specified by its parent DQMRow."""
+        """
+        Return the path to a cached DQM page specified by its parent DQMRow.
+        """
         return os.path.join(self.cache, str(abs(hash(parent_row))))
 
     def _fetch_dqm_rows(self, url, timeout=TIMEOUT):
-        """Return a future of DQMRows of a DQM page at url.
+        """
+        Return a future of DQMRows of a DQM page at url.
 
-        Access the array of DQMRows at _resolve(self._fetch_dqm_rows(...)).data"""
+        Access the array of DQMRows at _resolve(self._fetch_dqm_rows(...)).data
+        """
 
         # Callback to process dqm responses
         def cb(sess, resp):
@@ -149,9 +166,11 @@ class DQMSession(FuturesSession):
         return self.get(url, timeout=timeout, background_callback=cb)
 
     def _stream_file(self, url, dest, chunk_size=4096):
-        """Stream a file into a destination path.
+        """
+        Stream a file into a destination path.
 
-        Returns a generator of StreamProg tuples to indicate download progress."""
+        Returns a generator of StreamProg tuples to indicate download progress.
+        """
         res = _resolve(self.get(url, stream=True))
         if not res:
             raise error("Failed to download file: {}".format(url))
@@ -180,8 +199,9 @@ class DQMSession(FuturesSession):
 
 
 def _parse_dqm_page(content):
-    """Return the contents of a DQM series, sample, or macrorun page as a list
-    of DQMRows."""
+    """
+    Return the contents of a DQM series, sample, or macrorun page as a list of DQMRows.
+    """
     dqm_rows = []
     tree = lxml.html.fromstring(content)
     tree.make_links_absolute(BASE_URL)
@@ -202,7 +222,8 @@ def _parse_dqm_page(content):
 
 
 def _parse_run_full_name(full_name):
-    """Return the simplified form of a full DQM run name.
+    """
+    Return the simplified form of a full DQM run name.
 
     example:
     DQM_V0001_R000316293__ZeroBias__Run2018A-PromptReco-v2__DQMIO.root
@@ -223,7 +244,9 @@ def _get_cern_ca(path):
 
 
 def _try_makedirs(*args, **kwargs):
-    """Make a directory if it doesn't exist"""
+    """
+    Make a directory if it doesn't exist
+    """
     try:
         return os.makedirs(*args, **kwargs)
     except OSError as e:
@@ -232,7 +255,9 @@ def _try_makedirs(*args, **kwargs):
 
 
 def _resolve(future):
-    """Wrapper to resolve a request future while handling exceptions"""
+    """
+    Wrapper to resolve a request future while handling exceptions
+    """
     try:
         return future.result()
     except requests.ConnectionError as e:
