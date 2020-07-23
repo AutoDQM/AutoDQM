@@ -4,7 +4,6 @@
    :maxdepth: 3
    :caption: Contents:
 
-   test
    readme
    usage
    config
