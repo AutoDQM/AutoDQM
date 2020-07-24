@@ -1,0 +1,259 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>autodqm.compare_hists module &mdash; AutoDQM 127.0.0.1 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="autodqm.dqm module" href="autodqm.dqm.html" />
+    <link rel="prev" title="autodqm.cfg module" href="autodqm.cfg.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home" alt="Documentation Home"> AutoDQM
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../readme.html">AutoDQM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../usage.html">Online</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../usage.html#offline">Offline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../config.html">The Configuration JSON</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../config.html#id2">Adding Your Subsystem</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../config.html#id3">Adding an Algorithm</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dev.html">Environment Variables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dev.html#join-the-team">Join the team!</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Code reference</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="autodqm.html">autodqm package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="autodqm.cfg.html">autodqm.cfg module</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">autodqm.compare_hists module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="autodqm.dqm.html">autodqm.dqm module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="autodqm.histpair.html">autodqm.histpair module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="autodqm.plugin_results.html">autodqm.plugin_results module</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">AutoDQM</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="autodqm.html">autodqm package</a> &raquo;</li>
+        
+      <li>autodqm.compare_hists module</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/api/autodqm.compare_hists.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-autodqm.compare_hists">
+<span id="autodqm-compare-hists-module"></span><h1>autodqm.compare_hists module<a class="headerlink" href="#module-autodqm.compare_hists" title="Permalink to this headline">¶</a></h1>
+<dl class="py function">
+<dt id="autodqm.compare_hists.compile_histpairs">
+<code class="sig-prename descclassname">autodqm.compare_hists.</code><code class="sig-name descname">compile_histpairs</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">config_dir</span></em>, <em class="sig-param"><span class="n">subsystem</span></em>, <em class="sig-param"><span class="n">data_series</span></em>, <em class="sig-param"><span class="n">data_sample</span></em>, <em class="sig-param"><span class="n">data_run</span></em>, <em class="sig-param"><span class="n">data_path</span></em>, <em class="sig-param"><span class="n">ref_series</span></em>, <em class="sig-param"><span class="n">ref_sample</span></em>, <em class="sig-param"><span class="n">ref_run</span></em>, <em class="sig-param"><span class="n">ref_path</span></em><span class="sig-paren">)</span><a class="headerlink" href="#autodqm.compare_hists.compile_histpairs" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py exception">
+<dt id="autodqm.compare_hists.error">
+<em class="property">exception </em><code class="sig-prename descclassname">autodqm.compare_hists.</code><code class="sig-name descname">error</code><a class="headerlink" href="#autodqm.compare_hists.error" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="autodqm.compare_hists.identifier">
+<code class="sig-prename descclassname">autodqm.compare_hists.</code><code class="sig-name descname">identifier</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">hp</span></em>, <em class="sig-param"><span class="n">comparator_name</span></em><span class="sig-paren">)</span><a class="headerlink" href="#autodqm.compare_hists.identifier" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a <cite>hashed</cite> identifier for the histpair</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="autodqm.compare_hists.load_comparators">
+<code class="sig-prename descclassname">autodqm.compare_hists.</code><code class="sig-name descname">load_comparators</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">plugin_dir</span></em><span class="sig-paren">)</span><a class="headerlink" href="#autodqm.compare_hists.load_comparators" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load comparators from each python module in ADQM_PLUGINS.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="autodqm.compare_hists.process">
+<code class="sig-prename descclassname">autodqm.compare_hists.</code><code class="sig-name descname">process</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">config_dir</span></em>, <em class="sig-param"><span class="n">subsystem</span></em>, <em class="sig-param"><span class="n">data_series</span></em>, <em class="sig-param"><span class="n">data_sample</span></em>, <em class="sig-param"><span class="n">data_run</span></em>, <em class="sig-param"><span class="n">data_path</span></em>, <em class="sig-param"><span class="n">ref_series</span></em>, <em class="sig-param"><span class="n">ref_sample</span></em>, <em class="sig-param"><span class="n">ref_run</span></em>, <em class="sig-param"><span class="n">ref_path</span></em>, <em class="sig-param"><span class="n">output_dir</span><span class="o">=</span><span class="default_value">'./out/'</span></em>, <em class="sig-param"><span class="n">plugin_dir</span><span class="o">=</span><span class="default_value">'./plugins/'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#autodqm.compare_hists.process" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="autodqm.dqm.html" class="btn btn-neutral float-right" title="autodqm.dqm module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="autodqm.cfg.html" class="btn btn-neutral float-left" title="autodqm.cfg module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020, CMS Collaboration
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

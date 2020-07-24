@@ -1,0 +1,327 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>The Configuration JSON &mdash; AutoDQM 127.0.0.1 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Environment Variables" href="dev.html" />
+    <link rel="prev" title="Online" href="usage.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home" alt="Documentation Home"> AutoDQM
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="readme.html">AutoDQM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Online</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html#offline">Offline</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">The Configuration JSON</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#example-entry">Example entry:</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="#id2">Adding Your Subsystem</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#id3">Adding an Algorithm</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#the-comparator-object">The Comparator Object</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#algorithm-arguments-and-the-histpair-object">Algorithm Arguments and the Histpair object</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#plugin-results-object">Plugin Results Object</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="dev.html">Environment Variables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dev.html#join-the-team">Join the team!</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Code reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="api/autodqm.html">autodqm package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/autodqm.cfg.html">autodqm.cfg module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/autodqm.compare_hists.html">autodqm.compare_hists module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/autodqm.dqm.html">autodqm.dqm module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/autodqm.histpair.html">autodqm.histpair module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/autodqm.plugin_results.html">autodqm.plugin_results module</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">AutoDQM</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>The Configuration JSON</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/config.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <p>AutoDQM is an open source project. As such, we are constantly ensuring that AutoDQM is configurable for all subsystems that are interested in using it. With Release v2.1.0, it is now possible to add algorithms to AutoDQM’s processing step, making it easy for anyone interested in improving the tool to contribute.</p>
+<ol class="arabic simple">
+<li><p><a class="reference external" href="https://github.com/jkguiang/AutoDQM/wiki/Configuration#the-configuration-json">The Configuration JSON</a></p></li>
+<li><p><a class="reference external" href="https://github.com/jkguiang/AutoDQM/wiki/Configuration#adding-your-subsystem">Adding Your Subsystem</a></p></li>
+<li><p><a class="reference external" href="https://github.com/jkguiang/AutoDQM/wiki/Configuration#adding-an-algorithm">Adding an Algorithm</a></p></li>
+</ol>
+<div class="section" id="id1">
+<h1>The Configuration JSON<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h1>
+<p>If AutoDQM is not already configured for your subsystem, you can easily push configurations for it. AutoDQM has a conveniently named <code class="docutils literal notranslate"><span class="pre">`configs.json</span></code> &lt;<a class="reference external" href="https://github.com/jkguiang/AutoDQM/blob/release-v2.0.0/configs.json">https://github.com/jkguiang/AutoDQM/blob/release-v2.0.0/configs.json</a>&gt;`_, where each entry in the JSON contains the appropriate instructions for AutoDQM’s processing algorithms. Let’s break it down:</p>
+<div class="section" id="example-entry">
+<h2>Example entry:<a class="headerlink" href="#example-entry" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="mi">1</span> <span class="s2">&quot;CSC&quot;</span><span class="p">:</span> <span class="p">{</span>
+<span class="mi">2</span>     <span class="s2">&quot;main_gdir&quot;</span><span class="p">:</span><span class="s2">&quot;DQMData/Run </span><span class="si">{0}</span><span class="s2">/CSC/Run summary/CSCOfflineMonitor/&quot;</span><span class="p">,</span>
+<span class="mi">3</span>     <span class="s2">&quot;hists&quot;</span><span class="p">:[</span>
+<span class="mi">4</span>       <span class="p">{</span>
+<span class="mi">5</span>         <span class="s2">&quot;ks_cut&quot;</span><span class="p">:</span><span class="mf">0.0</span><span class="p">,</span>
+<span class="mi">6</span>         <span class="s2">&quot;norm_type&quot;</span><span class="p">:</span> <span class="s2">&quot;row&quot;</span><span class="p">,</span>
+<span class="mi">7</span>         <span class="s2">&quot;path&quot;</span><span class="p">:</span><span class="s2">&quot;Occupancy/hORecHits&quot;</span>
+<span class="mi">8</span>       <span class="p">}</span>
+
+<span class="o">...</span>
+
+<span class="mi">25</span>      <span class="p">{</span>
+<span class="mi">26</span>        <span class="s2">&quot;ks_cut&quot;</span><span class="p">:</span><span class="mf">0.0</span><span class="p">,</span>
+<span class="mi">27</span>        <span class="s2">&quot;path&quot;</span><span class="p">:</span><span class="s2">&quot;recHits/hRHGlobal*&quot;</span>
+<span class="mi">28</span>      <span class="p">},</span>
+
+<span class="o">...</span>
+
+<span class="mi">40</span>      <span class="p">{</span>
+<span class="mi">41</span>        <span class="s2">&quot;always_draw&quot;</span><span class="p">:</span><span class="n">true</span><span class="p">,</span>
+<span class="mi">42</span>        <span class="s2">&quot;path&quot;</span><span class="p">:</span><span class="s2">&quot;Digis/hWirenGroupsTotal&quot;</span>
+<span class="mi">43</span>      <span class="p">},</span>
+</pre></div>
+</div>
+<p><cite>“CSC”</cite>: Each entry in the JSON is indexed by the acronym of the subsystem: in this case, “CSC”. Each subsystem is, itself, another python dictionary.</p>
+<p><code class="docutils literal notranslate"><span class="pre">&quot;main_gdir&quot;</span></code>: The path to the DQM histograms for any subsystem included in the DQM <code class="docutils literal notranslate"><span class="pre">.root</span></code> files. Generally, each run has a different run number in its directory path, so we put a pythonic <code class="docutils literal notranslate"><span class="pre">&quot;{0}&quot;</span></code> in its place so that the path string may be used dynamically in the processing script.</p>
+<p><code class="docutils literal notranslate"><span class="pre">&quot;hists&quot;</span></code>: This is a list of python dictionaries which each contain the path to specific histograms for AutoDQM to process as well as several tuning parameters.</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;path&quot;</span></code>: This specifies the path to the histogram. If there are many histograms of the same type, you may use an asterisk to tell AutoDQM to find all histograms of a matching path (see line 27 above). <code class="docutils literal notranslate"><span class="pre">**\</span> <span class="pre">*This</span> <span class="pre">is</span> <span class="pre">the</span> <span class="pre">ONLY</span> <span class="pre">required</span> <span class="pre">parameter</span> <span class="pre">for</span> <span class="pre">every</span> <span class="pre">histogram*\</span> <span class="pre">**</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;ks_cut&quot;</span></code>: This is the cut for the Kolmogorov-Smirnov Test that is run on 1D histograms.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;norm_type&quot;</span></code>: Currently AutoDQM only normalizes histograms by two schemes: row-by-row or as a whole. If you would like AutoDQM to normalize this histogram row-by-row, you would include this option, pointing to <code class="docutils literal notranslate"><span class="pre">&quot;row&quot;</span></code>. Otherwise, you do not need to include this parameter.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;always_draw&quot;</span></code>: Include this parameter pointing to the boolean value <code class="docutils literal notranslate"><span class="pre">true</span></code> to tell AutoDQM to <em>always</em> draw this histogram.</p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="id2">
+<h1>Adding Your Subsystem<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h1>
+<p>To add your subsystem, simply clone the latest release, make the necessary additions to <code class="docutils literal notranslate"><span class="pre">configs.json</span></code>, then make a pull request.</p>
+</div>
+<div class="section" id="id3">
+<h1>Adding an Algorithm<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h1>
+<p>To add an algorithm to AutoDQM’s processing step, first contact us at <a class="reference external" href="mailto:autodqm&#37;&#52;&#48;gmail&#46;com">autodqm<span>&#64;</span>gmail<span>&#46;</span>com</a> so that we may collaborate on designing an appropriate addition. Assuming that the decision has been made to add your algorithm, you must first ensure that it is properly formatted:</p>
+<div class="section" id="the-comparator-object">
+<h2>The Comparator Object<a class="headerlink" href="#the-comparator-object" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">comparators</span><span class="p">():</span>
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="s1">&#39;new_algo&#39;</span><span class="p">:</span> <span class="n">new_algo</span>
+    <span class="p">}</span>
+</pre></div>
+</div>
+<p>This object associates a string to the algorithm function you’ve written. This allows AutoDQM to find and use your algorithm.</p>
+</div>
+<div class="section" id="algorithm-arguments-and-the-histpair-object">
+<h2>Algorithm Arguments and the Histpair object<a class="headerlink" href="#algorithm-arguments-and-the-histpair-object" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">new_algo</span><span class="p">(</span><span class="n">histpair</span><span class="p">,</span>
+             <span class="n">new_cut</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span> <span class="n">min_entries</span><span class="o">=</span><span class="mi">100000</span><span class="p">,</span> <span class="n">new_option</span><span class="o">=</span><span class="s1">&#39;new_opt&#39;</span><span class="p">,</span>
+             <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+</pre></div>
+</div>
+<p>Every algorithm that AutoDQM uses must handle a <code class="docutils literal notranslate"><span class="pre">`histpair</span></code> &lt;<a class="reference external" href="https://github.com/jkguiang/AutoDQM/blob/release-v2.1.0/autodqm/histpair.py">https://github.com/jkguiang/AutoDQM/blob/release-v2.1.0/autodqm/histpair.py</a>&gt;`_object. Put simply, each <code class="docutils literal notranslate"><span class="pre">histpair</span></code> object contains all of the information passed from the user’s input (i.e. the name of the data and reference runs, the series and samples of those runs, etc.). Any other key word arguments should be specified or otherwise passed through <code class="docutils literal notranslate"><span class="pre">**kwargs</span></code>.</p>
+</div>
+<div class="section" id="plugin-results-object">
+<h2>Plugin Results Object<a class="headerlink" href="#plugin-results-object" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">autodqm.plugin_results</span> <span class="kn">import</span> <span class="n">PluginResults</span>
+
+<span class="k">def</span> <span class="nf">new_algo</span><span class="p">(</span> <span class="o">...</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span> <span class="p">):</span>
+
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        New algorithm contents</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">return</span> <span class="n">PluginResults</span><span class="p">(</span>
+        <span class="n">c</span><span class="p">,</span>
+        <span class="n">show</span><span class="o">=</span><span class="n">is_outlier</span><span class="p">,</span>
+        <span class="n">info</span><span class="o">=</span><span class="n">info</span><span class="p">,</span>
+        <span class="n">artifacts</span><span class="o">=</span><span class="n">artifacts</span>
+</pre></div>
+</div>
+<p>In order for AutoDQM to understand your algorithm’s output (i.e. drawn histograms, text files, etc.), you must pass them in a <code class="docutils literal notranslate"><span class="pre">`PluginResults</span></code> &lt;<a class="reference external" href="https://github.com/jkguiang/AutoDQM/blob/release-v2.1.0/autodqm/plugin_results.py">https://github.com/jkguiang/AutoDQM/blob/release-v2.1.0/autodqm/plugin_results.py</a>&gt;`_object.</p>
+<p>When your algorithm has been properly formatted, you can make a pull request to AutoDQM’s <a class="reference external" href="https://github.com/jkguiang/AutoDQM/tree/develop-lxplus">development</a> branch, making sure to place it in the <a class="reference external" href="https://github.com/jkguiang/AutoDQM/tree/develop-lxplus/plugins">plugins</a> directory.</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="dev.html" class="btn btn-neutral float-right" title="Environment Variables" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="usage.html" class="btn btn-neutral float-left" title="Online" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020, CMS Collaboration
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
