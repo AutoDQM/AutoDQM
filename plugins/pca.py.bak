@@ -3,7 +3,7 @@
 
 import os
 import glob
-import pickle as pickle
+import cPickle as pickle
 import numpy as np
 from sklearn.decomposition import PCA
 import ROOT
