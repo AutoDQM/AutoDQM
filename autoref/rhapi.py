@@ -1,4 +1,4 @@
-import urllib.request, urllib.error, urllib.parse
+import urllib3 as urllib
 import re
 import json
 import sys
@@ -479,12 +479,11 @@ class CLIClient:
             
             print("ERROR: %s\nDetails: %s, consider --all option" % (type(e).__name__, e))
 
-        except urllib.error.HTTPError as e:
+        except urllib.exception.HTTPError as e:
 	    reason = e.reason if hasattr(e, 'reason') else '%d %s' % (e.code, e.msg)
 	    print("ERROR: %s\nDetails: %s" % (reason, e.read()))
             
         except Exception as e:
-            
             print("ERROR: %s\nDetails: %s" % (type(e).__name__, e))
 
 if __name__ == '__main__':

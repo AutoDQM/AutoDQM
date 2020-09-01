@@ -1,5 +1,6 @@
 #!/usr/bin/bash
 docker stack rm autodqm
 docker-compose build
+sleep 7
 docker stack deploy --compose-file=./docker-compose.yml autodqm
 docker run -d -p 80:80 autodqm

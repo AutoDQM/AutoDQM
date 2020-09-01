@@ -2,11 +2,11 @@
 certifi==2018.4.16
 chardet==3.0.4
 idna==2.7
-lxml==4.2.3
-requests-futures==0.9.7
+lxml==4.5.2
+requests-futures==1.0.0
 requests==2.19.1
 tqdm==4.23.4
-urllib3==1.23; python_version >= '2.6'
-scikit-learn==0.18.1
+urllib3==1.25; python_version >= '3.3'
+scikit-learn==0.20.4
 numpy==1.12.1
 scipy==0.19.0
