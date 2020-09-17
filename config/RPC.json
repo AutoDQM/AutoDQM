@@ -1,0 +1,10 @@
+{
+    "main_gdir": "DQMData/Run {0}/RPC/Run summary/",
+    "run_reg": "rpc",
+    "hists": [{
+        "path": "AllHits/SummaryHistograms/ClusterSize*"
+  },{
+        "path": "AllHits/SummaryHistograms/Bx*"
+  }
+    ]}
+  
