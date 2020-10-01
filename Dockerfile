@@ -42,6 +42,7 @@ COPY autoref /var/www/cgi-bin/autoref
 COPY plugins /var/www/cgi-bin/plugins
 COPY pickle_jar /var/www/cgi-bin/pickle_jar
 COPY config /var/www/public/config
+COPY run-offline.py /var/www/cgi-bin/run-offline.py
 
 CMD ["/usr/sbin/httpd","-D","FOREGROUND"]
 
