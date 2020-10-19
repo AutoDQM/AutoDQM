@@ -1,4 +1,5 @@
-import urllib3 as urllib
+import requests
+import urllib.parse
 import re
 import json
 import sys
@@ -103,30 +104,20 @@ class RhApi:
 
         self.dprint(callurl, "with payload", sdata, "and headers", headers)
 
-        req = urllib.request.Request(url = callurl, data = data)
-        if headers != None:
-            for h in list(headers.keys()):
-                req.add_header(h, headers[h])
+        resp = None
+        if(data == None):
+            resp = requests.get(callurl, headers=headers)
+        else:
+            resp = requests.post(callurl, headers=headers, data=data)
 
-        resp = urllib.request.urlopen(req)
+        if self.debug:
+                self.dprint("Response", resp.status, " ".join(resp.text).split("\r\n"))
 
-        has_getcode = "getcode" in dir(resp)
-        if self.debug: 
-            if has_getcode:
-                self.dprint("Response", resp.getcode(), " ".join(str(resp.info()).split("\r\n")))
-            else:
-                self.dprint("Response", " ".join(str(resp.info()).split("\r\n")))
-
-        if not has_getcode or resp.getcode() == 200:
-            rdata = resp.read()
-            if re.search("json", resp.info().gettype()):
-                try:
-                    return json.loads(rdata)
-                except TypeError as e:
-                    self.dprint(e)
-                    return rdata
-            else:
-                return rdata
+        if resp.status_code == 200:
+            try:
+                return resp.json()
+            except:
+                return resp.text
 
     def info(self, verbose = False):
         """
@@ -476,12 +467,12 @@ class CLIClient:
             self.parser.error('Command %s not understood' % arg)
 
         except RhApiRowLimitError as e:
-            
+
             print("ERROR: %s\nDetails: %s, consider --all option" % (type(e).__name__, e))
 
         except urllib.exception.HTTPError as e:
-	    reason = e.reason if hasattr(e, 'reason') else '%d %s' % (e.code, e.msg)
-	    print("ERROR: %s\nDetails: %s" % (reason, e.read()))
+            reason = e.reason if hasattr(e, 'reason') else '%d %s' % (e.code, e.msg)
+            print("ERROR: %s\nDetails: %s" % (reason, e.read()))
             
         except Exception as e:
             print("ERROR: %s\nDetails: %s" % (type(e).__name__, e))
