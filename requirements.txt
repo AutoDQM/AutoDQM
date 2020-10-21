@@ -1,12 +1,12 @@
 -i https://pypi.org/simple
-certifi==2018.4.16
+certifi==2020.06.20
 chardet==3.0.4
-idna==2.7
+idna==2.10
 lxml==4.5.2
 requests-futures==1.0.0
-requests==2.19.1
-tqdm==4.23.4
-urllib3==1.25; python_version >= '3.3'
+requests==2.24.0
+tqdm==4.47.0
+urllib3==1.25.10; python_version >= '3.3'
 scikit-learn==0.20.4
 numpy==1.12.1
 scipy==0.19.0

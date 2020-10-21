@@ -111,7 +111,7 @@ class RhApi:
             resp = requests.post(callurl, headers=headers, data=data)
 
         if self.debug:
-                self.dprint("Response", resp.status, " ".join(resp.text).split("\r\n"))
+            self.dprint("Response", resp.status, " ".join(resp.text).split("\r\n"))
 
         if resp.status_code == 200:
             try:
