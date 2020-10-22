@@ -1,4 +1,5 @@
-import urllib2
+import requests
+import urllib.parse
 import re
 import json
 import sys
@@ -72,10 +73,10 @@ class RhApi:
         Print debug information
         """
         if self.debug: 
-            print "RhApi:",
+            print("RhApi:", end=' ')
             for arg in args:
-                print arg, 
-            print
+                print(arg, end=' ') 
+            print()
 
     def get(self, parts, data = None, headers = None, params = None, verbose = False, cols = False):
         """
@@ -90,8 +91,8 @@ class RhApi:
         # Constructing request path
         #
 
-        callurl = self.url + "/".join(urllib2.quote(str(p)) for p in parts)
-        callurl = callurl + "?" + "&".join(p + "=" + urllib2.quote(str(params[p])) for p in params.keys())
+        callurl = self.url + "/".join(urllib.parse.quote(str(p)) for p in parts)
+        callurl = callurl + "?" + "&".join(p + "=" + urllib.parse.quote(str(params[p])) for p in list(params.keys()))
 
         sdata = None
         if data != None:
@@ -103,30 +104,20 @@ class RhApi:
 
         self.dprint(callurl, "with payload", sdata, "and headers", headers)
 
-        req = urllib2.Request(url = callurl, data = data)
-        if headers != None:
-            for h in headers.keys():
-                req.add_header(h, headers[h])
+        resp = None
+        if(data == None):
+            resp = requests.get(callurl, headers=headers)
+        else:
+            resp = requests.post(callurl, headers=headers, data=data)
 
-        resp = urllib2.urlopen(req)
+        if self.debug:
+            self.dprint("Response", resp.status, " ".join(resp.text).split("\r\n"))
 
-        has_getcode = "getcode" in dir(resp)
-        if self.debug: 
-            if has_getcode:
-                self.dprint("Response", resp.getcode(), " ".join(str(resp.info()).split("\r\n")))
-            else:
-                self.dprint("Response", " ".join(str(resp.info()).split("\r\n")))
-
-        if not has_getcode or resp.getcode() == 200:
-            rdata = resp.read()
-            if re.search("json", resp.info().gettype()):
-                try:
-                    return json.loads(rdata)
-                except TypeError, e:
-                    self.dprint(e)
-                    return rdata
-            else:
-                return rdata
+        if resp.status_code == 200:
+            try:
+                return resp.json()
+            except:
+                return resp.text
 
     def info(self, verbose = False):
         """
@@ -138,7 +129,7 @@ class RhApi:
         """
         Get list of folders
         """
-        return self.get(["tables"], verbose = verbose).keys()
+        return list(self.get(["tables"], verbose = verbose).keys())
 
     def tables(self, folder, verbose = False):
         """
@@ -146,7 +137,7 @@ class RhApi:
         """
         raw = self.get(["tables"], verbose = verbose)
         d = []
-        for t in raw[folder].keys(): 
+        for t in list(raw[folder].keys()): 
             d.append(t)
         return d
 
@@ -394,12 +385,12 @@ class CLIClient:
                             
                 if options.count:
                     
-                    print api.count(api.qid(arg), params = params, verbose = options.verbose)
+                    print(api.count(api.qid(arg), params = params, verbose = options.verbose))
                     
                 elif options.metadata:
                     
                     qid = api.qid(arg)
-                    print self.pprint(api.query(qid, verbose = options.verbose))
+                    print(self.pprint(api.query(qid, verbose = options.verbose)))
                         
                 else:
                     
@@ -414,60 +405,60 @@ class CLIClient:
                         
                         if options.format == 'csv':
                             try:
-                                print api.csv(arg, params = params, pagesize = options.size, page = options.page, verbose = options.verbose)
-                            except RhApiRowLimitError, e:
+                                print(api.csv(arg, params = params, pagesize = options.size, page = options.page, verbose = options.verbose))
+                            except RhApiRowLimitError as e:
                                 if options.all:
                                     page = 0
                                     while (page * e.rowsLimit) < e.count:
                                         page = page + 1
                                         res = api.csv(arg, params = params, pagesize = e.rowsLimit, page = page, verbose = options.verbose)
                                         if page == 1:
-                                            print res,
+                                            print(res, end=' ')
                                         else:
-                                            print '\n'.join(res.split('\n')[1:]),
+                                            print('\n'.join(res.split('\n')[1:]), end=' ')
                                 else:
                                     raise e
 
                         if options.format == 'xml':
                             try:
-                                print api.xml(arg, params = params, pagesize = options.size, page = options.page, verbose = options.verbose)
-                            except RhApiRowLimitError, e:
+                                print(api.xml(arg, params = params, pagesize = options.size, page = options.page, verbose = options.verbose))
+                            except RhApiRowLimitError as e:
                                 if options.all:
                                     page = 0
-                                    print '<?xml version="1.0" encoding="UTF-8" standalone="no"?><data>', 
+                                    print('<?xml version="1.0" encoding="UTF-8" standalone="no"?><data>', end=' ') 
                                     while (page * e.rowsLimit) < e.count:
                                         page = page + 1
                                         res = api.xml(arg, params = params, pagesize = e.rowsLimit, page = page, verbose = options.verbose)
                                         root = minidom.parseString(res).documentElement
                                         for row in root.getElementsByTagName('row'):
-                                            print row.toxml(),
-                                    print '</data>'
+                                            print(row.toxml(), end=' ')
+                                    print('</data>')
                                 else:
                                     raise e
 
                         if options.format in ['json','json2']:
                             try:
                                 if options.format == 'json':
-                                    print api.json(arg, params = params, pagesize = options.size, page = options.page, verbose = options.verbose, cols = options.cols)
+                                    print(api.json(arg, params = params, pagesize = options.size, page = options.page, verbose = options.verbose, cols = options.cols))
                                     #print_json = api.json(arg, params=params, pagesize=options.size, page=options.page, verbose=options.verbose, cols=options.cols)
                                     #print (json.dumps(print_json, sort_keys=True, indent=4, separators=(',', ': ')))
                                 else:
-                                    print api.json2(arg, params = params, pagesize = options.size, page = options.page, verbose = options.verbose, cols = options.cols)
+                                    print(api.json2(arg, params = params, pagesize = options.size, page = options.page, verbose = options.verbose, cols = options.cols))
                                     #print_json = api.json(arg, params=params, pagesize=options.size, page=options.page, verbose=options.verbose, cols=options.cols)
                                     #print (json.dumps(print_json, sort_keys=True, indent=4, separators=(',', ': ')))
-                            except RhApiRowLimitError, e:
+                            except RhApiRowLimitError as e:
                                 if options.all:
                                     page = 0
-                                    print '{"data": [', 
+                                    print('{"data": [', end=' ') 
                                     while (page * e.rowsLimit) < e.count:
                                         page = page + 1
                                         res = api.json(arg, params = params, pagesize = e.rowsLimit, page = page, verbose = options.verbose)
                                         comma = ','
                                         if page == 1: comma = ''
                                         for d in res['data']:
-                                            print comma, d,
+                                            print(comma, d, end=' ')
                                             comma = ','
-                                    print "]}"
+                                    print("]}")
                                 else:
                                     raise e
                         
@@ -475,17 +466,16 @@ class CLIClient:
 
             self.parser.error('Command %s not understood' % arg)
 
-        except RhApiRowLimitError, e:
-            
-            print "ERROR: %s\nDetails: %s, consider --all option" % (type(e).__name__, e)
+        except RhApiRowLimitError as e:
 
-        except urllib2.HTTPError, e:
-	    reason = e.reason if hasattr(e, 'reason') else '%d %s' % (e.code, e.msg)
-	    print "ERROR: %s\nDetails: %s" % (reason, e.read())
+            print("ERROR: %s\nDetails: %s, consider --all option" % (type(e).__name__, e))
+
+        except urllib.exception.HTTPError as e:
+            reason = e.reason if hasattr(e, 'reason') else '%d %s' % (e.code, e.msg)
+            print("ERROR: %s\nDetails: %s" % (reason, e.read()))
             
-        except Exception, e:
-            
-            print "ERROR: %s\nDetails: %s" % (type(e).__name__, e)
+        except Exception as e:
+            print("ERROR: %s\nDetails: %s" % (type(e).__name__, e))
 
 if __name__ == '__main__':
 

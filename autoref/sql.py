@@ -1,9 +1,9 @@
 # Imports
 # Run Registry API
-from rhapi import DEFAULT_URL, RhApi
+from .rhapi import DEFAULT_URL, RhApi
 
 # Script for getting reference run qualities
-import ref
+from . import ref
 
 def fetch_refs(config, data_run, ref_runs):
     # Handle non-configured subsystems
@@ -55,7 +55,7 @@ def retrieve(max_run=320008, min_run=316766, folder="runreg_csc", table="dataset
     data = {}
     if type(ref_runs) == dict:
         dqm = ref_runs
-        ref_runs = ref_runs.keys()
+        ref_runs = list(ref_runs.keys())
     skipped = 0
     it = 0
     while True:

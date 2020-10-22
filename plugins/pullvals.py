@@ -1,6 +1,5 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-
 import ROOT
 from autodqm.plugin_results import PluginResults
 
@@ -59,12 +58,12 @@ def pullvals(histpair,
             # Bin 2 data
             bin2 = ref_hist.GetBinContent(x, y)
 
-            # Proper Poisson error
+            # TEMPERARY - Getting Symmetric Error - Need to update with >Proper Poisson error 
             if ref_hist.InheritsFrom('TProfile2D'):
                 bin1err = data_hist.GetBinError(x, y)
                 bin2err = ref_hist.GetBinError(x, y)
             else:
-                bin1err, bin2err = get_poisson_errors(bin1, bin2)
+                bin1err, bin2err = bin1**(.5), bin2**(.5)
 
             # Count bins for chi2 calculation
             nBins += 1
@@ -138,35 +137,6 @@ def pull(bin1, binerr1, bin2, binerr2):
     '''
     return (bin1 - bin2) / ((binerr1**2 + binerr2**2)**0.5)
 
-
-def get_poisson_errors(bin1, bin2):
-    '''Calculate the poisson error between two bins.
-        bin1 = data
-        bin2 = reference
-    '''
-    alpha = 1 - 0.6827
-
-    if bin1 == 0:
-        m_error1 = 0
-        p_error1 = ROOT.Math.gamma_quantile_c(alpha / 2, bin1 + 1, 1)
-    else:
-        m_error1 = ROOT.Math.gamma_quantile(alpha / 2, bin1, 1)
-        p_error1 = ROOT.Math.gamma_quantile_c(alpha / 2, bin1 + 1, 1)
-    if bin2 == 0:
-        m_error2 = 0
-        p_error2 = ROOT.Math.gamma_quantile_c(alpha / 2, bin2 + 1, 1)
-    else:
-        m_error2 = ROOT.Math.gamma_quantile(alpha / 2, bin2, 1)
-        p_error2 = ROOT.Math.gamma_quantile_c(alpha / 2, bin2 + 1, 1)
-
-    if bin1 > bin2:
-        bin1err = bin1 - m_error1
-        bin2err = p_error2 - bin2
-    else:
-        bin2err = bin2 - m_error2
-        bin1err = p_error1 - bin1
-
-    return bin1err, bin2err
 
 def normalize_rows(data_hist, ref_hist):
 

@@ -84,6 +84,16 @@ sudo systemctl disable yum-autoupdate.service
 
 The `./run-offline.py` script can retrieve run data files and process them without needing a web server. Run `./run-offline.py --help` for all the options.
 
+To run `./run-offline.py`:
+```sh
+python3 run-offline.py [SUBSYSTEM] [SERIES] [SAMPLE] [DATA_RUN] [REF_RUN] --sslcert [your-public-cert] --sslkey [your-private-key]
+```
+
+As an example command, the following compares runs 325175 and 319993 for Run2018 DoubleMuon data from the EMTF subsystem:
+```sh
+python3 run-offline.py EMTF Run2018 DoubleMuon 325175 319993 --sslcert your-public-cert --sslkey your-private-key
+```
+
 1. Supply certificate files to the environment variables below. Alternatively, the default uses the files produced when running voms-proxy-init, so that may work instead.
 2. Use `./run-offline.py` to process data with AutoDQM
 
