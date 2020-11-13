@@ -1,0 +1,19 @@
+{
+  "main_gdir": "DQMData/Run {0}/L1T/Run summary/L1TStage2CaloLayer2/",
+  "hists": [{
+      "path": "Central-Jets/*"
+    }, {
+      "path": "Forward-Jets/*"
+    }, {
+      "path": "Isolated-EG/*"
+    }, {
+      "path": "Isolated-Tau/*"
+    }, {
+      "path": "NonIsolated-EG/*"
+    }, {
+      "path": "NonIsolated-Tau/*"
+    }, {
+      "path": "Energy-Sums/*"
+    }
+  ]
+}
