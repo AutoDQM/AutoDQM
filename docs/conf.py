@@ -17,6 +17,7 @@ sys.path.insert(0, os.path.abspath('..'))
 #cwd = os.getcwd()
 #project_root = os.path.dirname(cwd)
 #sys.path.insert(0, project_root)
+import autodqm
 
 # -- Project information -----------------------------------------------------
 
@@ -36,6 +37,7 @@ release = '127.0.0.1'
 extensions = ['sphinxcontrib.blockdiag',
    'sphinxcontrib.apidoc',
    'sphinxcontrib.programoutput',
+   'sphinx.ext.autodoc'
    'recommonmark'
 ]
 
