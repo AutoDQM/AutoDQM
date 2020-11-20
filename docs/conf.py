@@ -37,7 +37,7 @@ release = '127.0.0.1'
 extensions = ['sphinxcontrib.blockdiag',
    'sphinxcontrib.apidoc',
    'sphinxcontrib.programoutput',
-   'sphinx.ext.autodoc'
+   'sphinx.ext.autodoc',
    'recommonmark'
 ]
 
