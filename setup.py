@@ -16,10 +16,6 @@ def get_version():
         exec(version_file.read(), _globals)
     return _globals["__version__"]
 
-#requirements = ['-i https://pypi.org/simple','certifi=2018.4.16', 'chardet==3.0.4', 'idna==2.7', 'lxml==4.2.3',
-#                'requests-futures==0.9.7', 'requests==2.19.1', 'tqdm==4.23.4',
-#                'urllib3==1.2.3', 'python_version>=2.6']
-
 setup(
     author="Rob White",
     author_email='robert.stephen.white@cern.ch',

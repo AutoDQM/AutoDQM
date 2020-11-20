@@ -10,3 +10,5 @@ offline/
 db/
 tmp/
 
+# RTD Ignore Build
+docs/_build/
