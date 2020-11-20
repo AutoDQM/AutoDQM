@@ -9,6 +9,9 @@ import subprocess
 from autodqm import cfg
 from autodqm.histpair import HistPair
 
+def ROOT():
+    import ROOT
+    return ROOT
 
 def process(config_dir, subsystem,
             data_series, data_sample, data_run, data_path,
@@ -16,15 +19,14 @@ def process(config_dir, subsystem,
             output_dir='./out/', plugin_dir='./plugins/'):
 
     """
-    Processes histograms import ROOT commented out
+    Processes histograms import ROOT within it's own fn
     """
 
     # Ensure no graphs are drawn to screen and no root messages are sent to
     # terminal
-    #import ROOT
-    ROOT.gROOT.SetBatch(ROOT.kTRUE)
+    ROOT().gROOT.SetBatch(ROOT().kTRUE)
     # Report only errors to stderr
-    ROOT.gErrorIgnoreLevel = ROOT.kWarning + 1
+    ROOT().gErrorIgnoreLevel = ROOT().kWarning + 1
 
     histpairs = compile_histpairs(config_dir, subsystem,
                                   data_series, data_sample, data_run, data_path,
@@ -101,9 +103,8 @@ def compile_histpairs(config_dir, subsystem,
     main_gdir = config["main_gdir"]
 
     # ROOT files
-    #import ROOT
-    data_file = ROOT.TFile.Open(data_path)
-    ref_file = ROOT.TFile.Open(ref_path)
+    data_file = ROOT().TFile.Open(data_path)
+    ref_file = ROOT().TFile.Open(ref_path)
 
     histPairs = []
 
