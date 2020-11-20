@@ -2,7 +2,12 @@
 # -*- coding: utf-8 -*-
 
 import os
-
+#import sys
+import json
+#import subprocess
+#import ROOT
+from autodqm import cfg
+from autodqm.histpair import HistPair
 
 def process(config_dir, subsystem,
             data_series, data_sample, data_run, data_path,
