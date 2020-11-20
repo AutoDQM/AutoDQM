@@ -37,7 +37,6 @@ extensions = ['sphinxcontrib.blockdiag',
    'sphinxcontrib.apidoc',
    'sphinxcontrib.programoutput',
    'sphinx.ext.autodoc',
-   #'sphinx.ext.napoleon',
    'recommonmark'
 ]
 
