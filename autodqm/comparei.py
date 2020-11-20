@@ -5,7 +5,6 @@ import os
 import sys
 import json
 import subprocess
-import ROOT
 from autodqm import cfg
 from autodqm.histpair import HistPair
 
