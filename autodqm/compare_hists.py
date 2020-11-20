@@ -16,12 +16,12 @@ def process(config_dir, subsystem,
             output_dir='./out/', plugin_dir='./plugins/'):
 
     """
-    Processes histograms import ROOT within
+    Processes histograms import ROOT commented out
     """
 
     # Ensure no graphs are drawn to screen and no root messages are sent to
     # terminal
-    import ROOT
+    #import ROOT
     ROOT.gROOT.SetBatch(ROOT.kTRUE)
     # Report only errors to stderr
     ROOT.gErrorIgnoreLevel = ROOT.kWarning + 1
@@ -101,7 +101,7 @@ def compile_histpairs(config_dir, subsystem,
     main_gdir = config["main_gdir"]
 
     # ROOT files
-    import ROOT
+    #import ROOT
     data_file = ROOT.TFile.Open(data_path)
     ref_file = ROOT.TFile.Open(ref_path)
 
