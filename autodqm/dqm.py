@@ -4,11 +4,11 @@
 import base64
 import errno
 import json
-import lxml.html
+#import lxml.html
 import os
-import requests
-from collections import namedtuple
-from requests_futures.sessions import FuturesSession
+#import requests
+#from collections import namedtuple
+#from requests_futures.sessions import FuturesSession
 
 TIMEOUT = 5
 
@@ -26,7 +26,7 @@ DQMRow = namedtuple('DQMRow', ('name', 'full_name', 'url', 'size', 'date'))
 
 class DQMSession(FuturesSession):
     """
-    Encapsulates an interface to DQM Offline.
+    Encapsulates an interface to DQM Offline. hashing things out
     """
 
     def __init__(self, cert, db, cache=None, workers=16):
