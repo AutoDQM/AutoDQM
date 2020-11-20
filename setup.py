@@ -30,7 +30,7 @@ setup(
         'Programming Language :: Python :: 3.7',
     ],
     description="Statistical analysis toolkit for DQM of histograms",
-    #install_requires=requirements,
+    install_requires=requirements,
     long_description=readme,  # + '\n\n' + history,
     include_package_data=True,
     keywords=['ROOT', 'pandas', 'analysis', 'particle physics', 'HEP', 'F.A.S.T'],
