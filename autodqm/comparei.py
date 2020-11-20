@@ -4,7 +4,7 @@
 import os
 import sys
 import json
-#import subprocess
+import subprocess
 #import ROOT
 from autodqm import cfg
 from autodqm.histpair import HistPair
@@ -15,7 +15,7 @@ def process(config_dir, subsystem,
             output_dir='./out/', plugin_dir='./plugins/'):
 
     """
-    Processes histograms is a BIIIG change
+    Processes histograms
     """
 
     # Ensure no graphs are drawn to screen and no root messages are sent to
