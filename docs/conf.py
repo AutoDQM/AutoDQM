@@ -17,7 +17,6 @@ sys.path.insert(0, os.path.abspath('..'))
 #cwd = os.getcwd()
 #project_root = os.path.dirname(cwd)
 #sys.path.insert(0, project_root)
-import autodqm
 
 # -- Project information -----------------------------------------------------
 
@@ -85,4 +84,4 @@ apidoc_extra_args = ["-e"]
 
 def setup(app):
     # Override default css
-    app.add_stylesheet('custom.css')
+    app.add_css_file('custom.css')

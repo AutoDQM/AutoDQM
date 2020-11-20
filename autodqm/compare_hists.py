@@ -5,7 +5,7 @@ import os
 import sys
 import json
 import subprocess
-import ROOT
+#import ROOT # placed in the functions themselves that use it, to fix the autodocs issue
 from autodqm import cfg
 from autodqm.histpair import HistPair
 
@@ -16,11 +16,12 @@ def process(config_dir, subsystem,
             output_dir='./out/', plugin_dir='./plugins/'):
 
     """
-    Processes histograms delete this later
+    Processes histograms
     """
 
     # Ensure no graphs are drawn to screen and no root messages are sent to
     # terminal
+    import ROOT
     ROOT.gROOT.SetBatch(ROOT.kTRUE)
     # Report only errors to stderr
     ROOT.gErrorIgnoreLevel = ROOT.kWarning + 1
@@ -100,6 +101,7 @@ def compile_histpairs(config_dir, subsystem,
     main_gdir = config["main_gdir"]
 
     # ROOT files
+    import ROOT
     data_file = ROOT.TFile.Open(data_path)
     ref_file = ROOT.TFile.Open(ref_path)
 
