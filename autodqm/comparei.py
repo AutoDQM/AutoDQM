@@ -15,7 +15,7 @@ def process(config_dir, subsystem,
             output_dir='./out/', plugin_dir='./plugins/'):
 
     """
-    Processes histograms
+    Processes histograms is a BIIIG change
     """
 
     # Ensure no graphs are drawn to screen and no root messages are sent to
