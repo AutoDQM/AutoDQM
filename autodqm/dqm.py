@@ -26,7 +26,7 @@ DQMRow = namedtuple('DQMRow', ('name', 'full_name', 'url', 'size', 'date'))
 
 class DQMSession(FuturesSession):
     """
-    Encapsulates an interface to DQM Offline. hashing more things out
+    Encapsulates an interface to DQM Offline.
     """
 
     def __init__(self, cert, db, cache=None, workers=16):
