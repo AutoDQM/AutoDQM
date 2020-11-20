@@ -5,10 +5,10 @@ import os
 import sys
 import json
 import subprocess
-#import ROOT # placed in the functions themselves that use it, to fix the autodocs issue
 from autodqm import cfg
 from autodqm.histpair import HistPair
 
+# This is a segregated function, because importing ROOT above causes an issue with RTD/Sphinx that means the functions don't display online
 def ROOT():
     import ROOT
     return ROOT
@@ -19,7 +19,7 @@ def process(config_dir, subsystem,
             output_dir='./out/', plugin_dir='./plugins/'):
 
     """
-    Processes histograms import ROOT within it's own fn
+    Processes histograms
     """
 
     # Ensure no graphs are drawn to screen and no root messages are sent to
