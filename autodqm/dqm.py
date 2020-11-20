@@ -27,6 +27,9 @@ DQMRow = namedtuple('DQMRow', ('name', 'full_name', 'url', 'size', 'date'))
 class DQMSession(FuturesSession):
     """
     Encapsulates an interface to DQM Offline. - might not be import issue
+
+
+    This is a lot of changes, hopefully the building realises this and works now!
     """
 
     def __init__(self, cert, db, cache=None, workers=16):
