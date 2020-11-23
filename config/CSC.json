@@ -50,7 +50,13 @@
       "path": "Segments/hSTimeCombined*"
     },
     {
+      "path": "Segments/hSTimeDiff*"
+    },
+    {
       "path": "Segments/hSTimeVsZ"
+    },
+    {
+      "path": "Segments/hSChiSq*"
     },
     {
       "path": "Segments/hSGlobalPhi"

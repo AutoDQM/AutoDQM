@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
 import autodqm.cfg
@@ -160,7 +160,7 @@ if __name__ == "__main__":
     cgi_req = cgi.FieldStorage()
 
     req = {}
-    for k in cgi_req.keys():
+    for k in list(cgi_req.keys()):
         req[str(k)] = str(cgi_req[k].value)
 
     res = handle_request(req)
@@ -168,4 +168,4 @@ if __name__ == "__main__":
     print("Content-type: application/json")
     print("Access-Control-Allow-Origin: *")
     print("")
-    print(json.dumps(res))
+    print((json.dumps(res)))

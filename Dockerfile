@@ -6,11 +6,19 @@ RUN yum update -y && yum install -y \
       httpd \
       npm \
       php \
-      python2-pip \
-      root-python
+      python3-pip  
+
+
+RUN echo "alias python=python3" >>~/.bashrc
+
+RUN yum update -y && yum install -y \
+      epel-release \
+      root \
+      python3-root
+
 
 COPY requirements.txt /code/requirements.txt
-RUN pip install -r /code/requirements.txt
+RUN pip3 install -r /code/requirements.txt
 
 RUN mkdir /db /run/secrets
 RUN chown -R apache:apache /db /var/www /run/secrets
