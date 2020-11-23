@@ -204,6 +204,8 @@ class DQMSession(FuturesSession):
 def _parse_dqm_page(content):
     """
     Return the contents of a DQM series, sample, or macrorun page as a list of DQMRows.
+
+    This is a change, that should make a difference on the website
     """
     dqm_rows = []
     tree = lxml.html.fromstring(content)
