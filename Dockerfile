@@ -48,7 +48,6 @@ COPY autodqm /var/www/cgi-bin/autodqm
 COPY autoref /var/www/cgi-bin/autoref
 COPY plugins /var/www/cgi-bin/plugins
 COPY config /var/www/public/config
-COPY run-offline.py /var/www/cgi-bin/run-offline.py
 
 CMD ["/usr/sbin/httpd","-D","FOREGROUND"]
 
