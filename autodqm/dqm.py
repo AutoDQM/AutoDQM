@@ -4,11 +4,9 @@
 import base64
 import errno
 import json
-import lxml.html
 import os
 import requests
 from collections import namedtuple
-from requests_futures.sessions import FuturesSession
 
 TIMEOUT = 5
 
@@ -23,8 +21,23 @@ CA_PATH = 'CERN_Root_CA.crt'
 StreamProg = namedtuple('StreamProg', ('cur', 'total', 'path'))
 DQMRow = namedtuple('DQMRow', ('name', 'full_name', 'url', 'size', 'date'))
 
+# lxml and FuturesSession imported here to prevent RTD/Sphinx clash
+# Issue not resolved due to use of class here
+def lxml():
+    """
+    lxml.html imported via this function, and is called in the code
+    """
+    import lxml.html
+    return lxml.html
 
-class DQMSession(FuturesSession):
+def FuturesSession():
+    """
+    FuturesSession imported from requests_futures.sessions within this function, and is called in the code
+    """
+    from requests_futures.sessions import FuturesSession
+    return FuturesSession
+
+class DQMSession(FuturesSession()):
     """
     Encapsulates an interface to DQM Offline.
     """
@@ -203,7 +216,7 @@ def _parse_dqm_page(content):
     Return the contents of a DQM series, sample, or macrorun page as a list of DQMRows.
     """
     dqm_rows = []
-    tree = lxml.html.fromstring(content)
+    tree = lxml().fromstring(content)
     tree.make_links_absolute(BASE_URL)
 
     for tr in tree.xpath('//tr'):
