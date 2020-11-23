@@ -70,7 +70,27 @@ def _get_cern_ca(path):
         f.write(base64.b64encode(r_ca.content))
         f.write(b'\n-----END CERTIFICATE-----\n')
 
+def _try_makedirs(*args, **kwargs):
+    """
+    Make a directory if it doesn't exist
+    """
+    try:
+        return os.makedirs(*args, **kwargs)
+    except OSError as e:
+        if e.errno != errno.EEXIST:
+            raise
 
+
+def _resolve(future):
+    """
+    Wrapper to resolve a request future while handling exceptions
+    """
+    try:
+        return future.result()
+    except requests.ConnectionError as e:
+        raise error(e)
+    except requests.Timeout as e:
+        raise error(e)
 
 class error(Exception):
     pass
