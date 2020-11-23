@@ -23,19 +23,19 @@ CA_PATH = 'CERN_Root_CA.crt'
 StreamProg = namedtuple('StreamProg', ('cur', 'total', 'path'))
 DQMRow = namedtuple('DQMRow', ('name', 'full_name', 'url', 'size', 'date'))
 
+def lxml():
+    """
+    lxml.html imported from within this function, and is called in the code
+    """
+    import lxml.html
+    return lxml.html    
 
 def _parse_dqm_page(content):
     """
     Return the contents of a DQM series, sample, or macrorun page as a list of DQMRows.
-
-    Removing lxml and requests_futures
-
-    Added in named_typle defs, everything working otherwise now
-
-    Still missing class def
     """
     dqm_rows = []
-    tree = lxml.html.fromstring(content)
+    tree = lxml().fromstring(content)
     tree.make_links_absolute(BASE_URL)
 
     for tr in tree.xpath('//tr'):
