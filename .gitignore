@@ -18,3 +18,4 @@ tmp/
 
 # RTD Ignore Build
 docs/_build/
+docs/api/
