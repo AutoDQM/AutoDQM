@@ -26,7 +26,9 @@ DQMRow = namedtuple('DQMRow', ('name', 'full_name', 'url', 'size', 'date'))
 
 #class DQMSession(FuturesSession):
     """
-    Encapsulates an interface to DQM Offline. Nested functions within class might be the issue here?!?!
+    Encapsulates an interface to DQM Offline.
+
+    Nonsense
     """
 
     def __init__(self, cert, db, cache=None, workers=16):
