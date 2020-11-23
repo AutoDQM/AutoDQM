@@ -28,22 +28,6 @@ def _parse_dqm_page(content):
     """
     Return the contents of a DQM series, sample, or macrorun page as a list of DQMRows.
 
-    Added back in what I believe to be safe functions
-
-    Removed the imports completely
-
-    Removed the namedtuple defs
-
-    Added json, base64, errno, os
-
-    Added lxml, requests, FuturesSessions
-
-    Removing requests
-
-    Removing lxml, adding requests
-
-    Removing lxml only now
-
     Removing lxml and collections
     """
     dqm_rows = []
