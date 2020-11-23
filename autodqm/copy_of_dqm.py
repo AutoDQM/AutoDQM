@@ -3,30 +3,32 @@
 
 #import base64
 #import errno
-#import json
+import json
 #import lxml.html
-#import os
+import os
 #import requests
 #from collections import namedtuple
 #from requests_futures.sessions import FuturesSession
 
-#TIMEOUT = 5
+TIMEOUT = 5
 
-#BASE_URL = 'https://cmsweb.cern.ch'
-#DQM_URL = 'https://cmsweb.cern.ch/dqm/offline/data/browse/ROOT/OfflineData/'
-#CA_URL = 'https://cafiles.cern.ch/cafiles/certificates/CERN%20Root%20Certification%20Authority%202.crt'
+BASE_URL = 'https://cmsweb.cern.ch'
+DQM_URL = 'https://cmsweb.cern.ch/dqm/offline/data/browse/ROOT/OfflineData/'
+CA_URL = 'https://cafiles.cern.ch/cafiles/certificates/CERN%20Root%20Certification%20Authority%202.crt'
 
 # The following are appended to the db dir
-#CACHE_DIR = 'cache/'
-#CA_PATH = 'CERN_Root_CA.crt'
+CACHE_DIR = 'cache/'
+CA_PATH = 'CERN_Root_CA.crt'
 
-#StreamProg = namedtuple('StreamProg', ('cur', 'total', 'path'))
-#DQMRow = namedtuple('DQMRow', ('name', 'full_name', 'url', 'size', 'date'))
+StreamProg = namedtuple('StreamProg', ('cur', 'total', 'path'))
+DQMRow = namedtuple('DQMRow', ('name', 'full_name', 'url', 'size', 'date'))
 
 
 def _parse_dqm_page(content):
     """
     Return the contents of a DQM series, sample, or macrorun page as a list of DQMRows.
+
+    Added back in what I believe to be safe functions
     """
     dqm_rows = []
     tree = lxml.html.fromstring(content)
