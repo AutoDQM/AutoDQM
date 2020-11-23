@@ -1,32 +1,32 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-#import base64
-#import errno
-#import json
-#import lxml.html
-#import os
-#import requests
-#from collections import namedtuple
-#from requests_futures.sessions import FuturesSession
+import base64
+import errno
+import json
+import lxml.html
+import os
+import requests
+from collections import namedtuple
+from requests_futures.sessions import FuturesSession
 
-#TIMEOUT = 5
+TIMEOUT = 5
 
-#BASE_URL = 'https://cmsweb.cern.ch'
-#DQM_URL = 'https://cmsweb.cern.ch/dqm/offline/data/browse/ROOT/OfflineData/'
-#CA_URL = 'https://cafiles.cern.ch/cafiles/certificates/CERN%20Root%20Certification%20Authority%202.crt'
+BASE_URL = 'https://cmsweb.cern.ch'
+DQM_URL = 'https://cmsweb.cern.ch/dqm/offline/data/browse/ROOT/OfflineData/'
+CA_URL = 'https://cafiles.cern.ch/cafiles/certificates/CERN%20Root%20Certification%20Authority%202.crt'
 
 # The following are appended to the db dir
-#CACHE_DIR = 'cache/'
-#CA_PATH = 'CERN_Root_CA.crt'
+CACHE_DIR = 'cache/'
+CA_PATH = 'CERN_Root_CA.crt'
 
-#StreamProg = namedtuple('StreamProg', ('cur', 'total', 'path'))
-#DQMRow = namedtuple('DQMRow', ('name', 'full_name', 'url', 'size', 'date'))
+StreamProg = namedtuple('StreamProg', ('cur', 'total', 'path'))
+DQMRow = namedtuple('DQMRow', ('name', 'full_name', 'url', 'size', 'date'))
 
 
-class DQMSession(FuturesSession):
+#class DQMSession(FuturesSession):
     """
-    Encapsulates an interface to DQM Offline.
+    Encapsulates an interface to DQM Offline. Nested functions within class might be the issue here?!?!
     """
 
     def __init__(self, cert, db, cache=None, workers=16):
