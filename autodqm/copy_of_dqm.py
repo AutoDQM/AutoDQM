@@ -23,31 +23,6 @@ CA_PATH = 'CERN_Root_CA.crt'
 StreamProg = namedtuple('StreamProg', ('cur', 'total', 'path'))
 DQMRow = namedtuple('DQMRow', ('name', 'full_name', 'url', 'size', 'date'))
 
-def _parse_dqm_page(content):
-    """
-    Return the contents of a DQM series, sample, or macrorun page as a list of DQMRows.
-
-    This is a change, that should make a difference on the website
-    """
-    dqm_rows = []
-    tree = lxml.html.fromstring(content)
-    tree.make_links_absolute(BASE_URL)
-
-    for tr in tree.xpath('//tr'):
-        td_strs = tr.xpath('td//text()')
-        td_urls = tr.xpath('td/a/@href')
-
-        full_name = td_strs[0]
-        url = td_urls[0]
-        size = int(td_strs[1]) if td_strs[1] != '-' else None
-        date = td_strs[2]
-        name = _parse_run_full_name(full_name) if size else full_name[:-1]
-
-        dqm_rows.append(DQMRow(name, full_name, url, size, date))
-
-    return dqm_rows
-
-
 def _parse_run_full_name(full_name):
     """
     Return the simplified form of a full DQM run name.
