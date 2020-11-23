@@ -23,12 +23,10 @@ CA_PATH = 'CERN_Root_CA.crt'
 StreamProg = namedtuple('StreamProg', ('cur', 'total', 'path'))
 DQMRow = namedtuple('DQMRow', ('name', 'full_name', 'url', 'size', 'date'))
 
-"""
+
 class DQMSession(FuturesSession):
     """
-    #Encapsulates an interface to DQM Offline.
-
-    #Nonsense
+    Encapsulates an interface to DQM Offline.
     """
 
     def __init__(self, cert, db, cache=None, workers=16):
@@ -199,13 +197,10 @@ class DQMSession(FuturesSession):
         """Return the path to the specified run data file in the cached db."""
         return "{}/{}.root".format(os.path.join(self.db, series, sample), run)
 
-"""
 
 def _parse_dqm_page(content):
     """
     Return the contents of a DQM series, sample, or macrorun page as a list of DQMRows.
-
-    This is a change, that should make a difference on the website
     """
     dqm_rows = []
     tree = lxml.html.fromstring(content)
