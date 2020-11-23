@@ -10,6 +10,9 @@ from autodqm.histpair import HistPair
 
 # This is a segregated function, because importing ROOT above causes an issue with RTD/Sphinx that means the functions don't display online
 def ROOT():
+    """
+    ROOT imported from within this function, and is called in the code
+    """
     import ROOT
     return ROOT
 
