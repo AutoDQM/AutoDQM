@@ -1,27 +1,27 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import base64
-import errno
-import json
-import lxml.html
-import os
-import requests
-from collections import namedtuple
-from requests_futures.sessions import FuturesSession
+#import base64
+#import errno
+#import json
+#import lxml.html
+#import os
+#import requests
+#from collections import namedtuple
+#from requests_futures.sessions import FuturesSession
 
-TIMEOUT = 5
+#TIMEOUT = 5
 
-BASE_URL = 'https://cmsweb.cern.ch'
-DQM_URL = 'https://cmsweb.cern.ch/dqm/offline/data/browse/ROOT/OfflineData/'
-CA_URL = 'https://cafiles.cern.ch/cafiles/certificates/CERN%20Root%20Certification%20Authority%202.crt'
+#BASE_URL = 'https://cmsweb.cern.ch'
+#DQM_URL = 'https://cmsweb.cern.ch/dqm/offline/data/browse/ROOT/OfflineData/'
+#CA_URL = 'https://cafiles.cern.ch/cafiles/certificates/CERN%20Root%20Certification%20Authority%202.crt'
 
 # The following are appended to the db dir
-CACHE_DIR = 'cache/'
-CA_PATH = 'CERN_Root_CA.crt'
+#CACHE_DIR = 'cache/'
+#CA_PATH = 'CERN_Root_CA.crt'
 
-StreamProg = namedtuple('StreamProg', ('cur', 'total', 'path'))
-DQMRow = namedtuple('DQMRow', ('name', 'full_name', 'url', 'size', 'date'))
+#StreamProg = namedtuple('StreamProg', ('cur', 'total', 'path'))
+#DQMRow = namedtuple('DQMRow', ('name', 'full_name', 'url', 'size', 'date'))
 
 def _parse_run_full_name(full_name):
     """
@@ -45,17 +45,6 @@ def _get_cern_ca(path):
         f.write(b'-----BEGIN CERTIFICATE-----\n')
         f.write(base64.b64encode(r_ca.content))
         f.write(b'\n-----END CERTIFICATE-----\n')
-
-
-def _try_makedirs(*args, **kwargs):
-    """
-    Make a directory if it doesn't exist
-    """
-    try:
-        return os.makedirs(*args, **kwargs)
-    except OSError as e:
-        if e.errno != errno.EEXIST:
-            raise
 
 
 def _resolve(future):
