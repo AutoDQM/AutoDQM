@@ -23,12 +23,12 @@ CA_PATH = 'CERN_Root_CA.crt'
 StreamProg = namedtuple('StreamProg', ('cur', 'total', 'path'))
 DQMRow = namedtuple('DQMRow', ('name', 'full_name', 'url', 'size', 'date'))
 
-
-#class DQMSession(FuturesSession):
+"""
+class DQMSession(FuturesSession):
     """
-    Encapsulates an interface to DQM Offline.
+    #Encapsulates an interface to DQM Offline.
 
-    Nonsense
+    #Nonsense
     """
 
     def __init__(self, cert, db, cache=None, workers=16):
@@ -199,6 +199,7 @@ DQMRow = namedtuple('DQMRow', ('name', 'full_name', 'url', 'size', 'date'))
         """Return the path to the specified run data file in the cached db."""
         return "{}/{}.root".format(os.path.join(self.db, series, sample), run)
 
+"""
 
 def _parse_dqm_page(content):
     """
@@ -236,7 +237,9 @@ def _parse_run_full_name(full_name):
 
 
 def _get_cern_ca(path):
-    """Download the CERN ROOT CA to the specified path."""
+    """
+    Download the CERN ROOT CA to the specified path.
+    """
     _try_makedirs(os.path.dirname(path))
     r_ca = requests.get(CA_URL)
     with open(path, 'wb') as f:
