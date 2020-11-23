@@ -7,7 +7,7 @@ import json
 #import lxml.html
 import os
 import requests
-from collections import namedtuple
+#from collections import namedtuple
 from requests_futures.sessions import FuturesSession
 
 TIMEOUT = 5
@@ -43,6 +43,8 @@ def _parse_dqm_page(content):
     Removing lxml, adding requests
 
     Removing lxml only now
+
+    Removing lxml and collections
     """
     dqm_rows = []
     tree = lxml.html.fromstring(content)
