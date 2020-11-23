@@ -20,8 +20,8 @@ CA_URL = 'https://cafiles.cern.ch/cafiles/certificates/CERN%20Root%20Certificati
 CACHE_DIR = 'cache/'
 CA_PATH = 'CERN_Root_CA.crt'
 
-#StreamProg = namedtuple('StreamProg', ('cur', 'total', 'path'))
-#DQMRow = namedtuple('DQMRow', ('name', 'full_name', 'url', 'size', 'date'))
+StreamProg = namedtuple('StreamProg', ('cur', 'total', 'path'))
+DQMRow = namedtuple('DQMRow', ('name', 'full_name', 'url', 'size', 'date'))
 
 
 def _parse_dqm_page(content):
@@ -30,7 +30,9 @@ def _parse_dqm_page(content):
 
     Removing lxml and requests_futures
 
-    Added collections in for now
+    Added in named_typle defs, everything working otherwise now
+
+    Still missing class def
     """
     dqm_rows = []
     tree = lxml.html.fromstring(content)
