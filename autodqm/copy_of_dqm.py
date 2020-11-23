@@ -3,9 +3,9 @@
 
 #import base64
 #import errno
-import json
+#import json
 #import lxml.html
-import os
+#import os
 #import requests
 #from collections import namedtuple
 #from requests_futures.sessions import FuturesSession
@@ -29,6 +29,8 @@ def _parse_dqm_page(content):
     Return the contents of a DQM series, sample, or macrorun page as a list of DQMRows.
 
     Added back in what I believe to be safe functions
+
+    Removed the imports completely
     """
     dqm_rows = []
     tree = lxml.html.fromstring(content)
