@@ -1,11 +1,11 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-#import base64
-#import errno
-#import json
+import base64
+import errno
+import json
 #import lxml.html
-#import os
+import os
 #import requests
 #from collections import namedtuple
 #from requests_futures.sessions import FuturesSession
@@ -33,6 +33,8 @@ def _parse_dqm_page(content):
     Removed the imports completely
 
     Removed the namedtuple defs
+
+    Added json, base64, errno, os
     """
     dqm_rows = []
     tree = lxml.html.fromstring(content)
