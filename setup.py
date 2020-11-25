@@ -16,6 +16,8 @@ def get_version():
         exec(version_file.read(), _globals)
     return _globals["__version__"]
 
+requirements = ['lxml==4.5.2','requests-futures==1.0.0']
+
 setup(
     author="Rob White",
     author_email='robert.stephen.white@cern.ch',
@@ -29,10 +31,11 @@ setup(
         'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: 3.7',
     ],
+    install_requires=requirements,
     description="Statistical analysis toolkit for DQM of histograms",
     long_description=readme,  # + '\n\n' + history,
     include_package_data=True,
-    keywords=['ROOT', 'pandas', 'analysis', 'particle physics', 'HEP', 'F.A.S.T'],
+    keywords=['ROOT', 'DQM', 'analysis', 'particle physics', 'HEP'],
     name='AutoDQM',
     url='https://github.com/GluonicPenguin/AutoDQM',
     zip_safe=True,
