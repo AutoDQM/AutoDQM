@@ -144,7 +144,7 @@ def draw_same(data_hist, reco_data, reco_bins, data_run, is_outlier):
     # Draw legend
     legend = ROOT.TLegend(0.9,0.9,0.75,0.75)
     legend.AddEntry(data_hist, "Data")
-    legend.AddEntry(reco_hist, "Reco")
+    legend.AddEntry(reco_hist, "PCA Reco")
     legend.SetBorderSize(0)
     legend.SetFillStyle(0)
     legend.Draw("same")
