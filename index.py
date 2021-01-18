@@ -9,6 +9,11 @@ import traceback
 from autodqm import compare_hists
 from autodqm.dqm import DQMSession
 from autoref import sql
+import sys
+sys.path.append('/var/www/cgi-bin/')
+from modules.histCollection import HistCollection
+from modules.histCollection import HistCleaner
+from modules.dqmpca import DQMPCA
 
 VARS = {}
 
