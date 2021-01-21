@@ -1,8 +1,6 @@
 {
     "main_gdir": "DQMData/Run {0}/RPC/Run summary/",
     "hists": [{
-	"comparators": ["pca", "ks_test"],
-	"jar_dir": "RPC",
       "path": "AllHits/SummaryHistograms/ClusterSize_*"
   },{
       "norm_type": "row",
@@ -17,9 +15,6 @@
   },{
       "path": "AllHits/SummaryHistograms/Occupancy_for_Endcap"
   },{
-      "always_show": true,
-      "comparators": ["pca", "ks_test"],
-      "jar_dir": "RPC",
       "path": "AllHits/SummaryHistograms/Bx*"
   }
     ]}
