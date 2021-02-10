@@ -1,27 +1,20 @@
 {
   "main_gdir": "DQMData/Run {0}/L1T/Run summary/L1TStage2CaloLayer2/",
   "hists": [{
-      "norm_type": "total",
+      "norm_type": "column",
       "path": "Central-Jets/*"
     }, {
-      "norm_type": "total",
+      "norm_type": "col",
       "path": "Forward-Jets/*"
     }, {
-      "norm_type": "total",
       "path": "Isolated-EG/*"
     }, {
-      "norm_type": "total",
       "path": "Isolated-Tau/*"
     }, {
-      "norm_type": "total",
       "path": "NonIsolated-EG/*"
     }, {
-      "norm_type": "total",
       "path": "NonIsolated-Tau/*"
     }, {
-      "always_true": true,
-      "norm_type": "row",
-      "comparators": ["ks_test"],
       "path": "Energy-Sums/*"
     }
   ]

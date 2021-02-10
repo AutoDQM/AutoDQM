@@ -42,10 +42,10 @@ def pullvals(histpair,
     # Normalize data_hist
     if norm_type == "row":
         normalize_rows(data_hist, ref_hist)
+    elif norm_type == "column":
+        normalize_cols(data_hist, ref_hist)
     elif norm_type == "total":
         normalize_total(data_hist, ref_hist)
-        #normalize_rows(data_hist, ref_hist)
-        #normalize_cols(data_hist, ref_hist)
     else:    
         if data_hist.GetEntries() > 0:
             data_hist.Scale(ref_hist.GetSumOfWeights() / data_hist.GetSumOfWeights())
