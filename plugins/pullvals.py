@@ -42,7 +42,9 @@ def pullvals(histpair,
     # Normalize data_hist
     if norm_type == "row":
         normalize_rows(data_hist, ref_hist)
-    else:
+    elif norm_type == "col":
+        normalize_cols(data_hist, ref_hist)
+    else:    
         if data_hist.GetEntries() > 0:
             data_hist.Scale(ref_hist.GetSumOfWeights() / data_hist.GetSumOfWeights())
 
@@ -58,7 +60,7 @@ def pullvals(histpair,
             # Bin 2 data
             bin2 = ref_hist.GetBinContent(x, y)
 
-            # TEMPERARY - Getting Symmetric Error - Need to update with >Proper Poisson error 
+            # TEMPORARY - Getting Symmetric Error - Need to update with >Proper Poisson error 
             if ref_hist.InheritsFrom('TProfile2D'):
                 bin1err = data_hist.GetBinError(x, y)
                 bin2err = ref_hist.GetBinError(x, y)
@@ -137,7 +139,6 @@ def pull(bin1, binerr1, bin2, binerr2):
     '''
     return (bin1 - bin2) / ((binerr1**2 + binerr2**2)**0.5)
 
-
 def normalize_rows(data_hist, ref_hist):
 
     for y in range(1, ref_hist.GetNbinsY() + 1):
@@ -170,6 +171,48 @@ def normalize_rows(data_hist, ref_hist):
 
         # Normalization
         for x in range(1, data_hist.GetNbinsX() + 1):
+            # Bin data
+            fbin = data_hist.GetBinContent(x, y)
+            fbin_err = data_hist.GetBinError(x, y)
+
+            # Normalize bin
+            data_hist.SetBinContent(x, y, (fbin * sf))
+            data_hist.SetBinError(x, y, (fbin_err * sf))
+
+    return
+
+def normalize_cols(data_hist, ref_hist):
+
+    for x in range(1, ref_hist.GetNbinsX() + 1):
+
+        # Stores sum of row elements
+        rcol = 0
+        fcol = 0
+
+        # Sum over row elements
+        for y in range(1, ref_hist.GetNbinsY() + 1):
+
+            # Bin data
+            rbin = ref_hist.GetBinContent(x, y)
+            fbin = data_hist.GetBinContent(x, y)
+
+            rcol += rbin
+            fcol += fbin
+
+        # Scaling factors
+        # Prevent divide-by-zero error
+        if fcol == 0:
+            fcol = 1
+        if fcol > 0:
+            sf = float(rcol) / fcol
+        else:
+            sf = 1
+        # Prevent scaling everything to zero
+        if sf == 0:
+            sf = 1
+
+        # Normalization
+        for y in range(1, data_hist.GetNbinsY() + 1):
             # Bin data
             fbin = data_hist.GetBinContent(x, y)
             fbin_err = data_hist.GetBinError(x, y)
