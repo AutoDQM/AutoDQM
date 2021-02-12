@@ -42,10 +42,8 @@ def pullvals(histpair,
     # Normalize data_hist
     if norm_type == "row":
         normalize_rows(data_hist, ref_hist)
-    elif norm_type == "column":
+    elif (norm_type == "column") or (norm_type == "col"):
         normalize_cols(data_hist, ref_hist)
-    elif norm_type == "total":
-        normalize_total(data_hist, ref_hist)
     else:    
         if data_hist.GetEntries() > 0:
             data_hist.Scale(ref_hist.GetSumOfWeights() / data_hist.GetSumOfWeights())
@@ -140,12 +138,6 @@ def pull(bin1, binerr1, bin2, binerr2):
         data = |bin1 - bin2|, expected = 0
     '''
     return (bin1 - bin2) / ((binerr1**2 + binerr2**2)**0.5)
-
-def normalize_total(data_hist, ref_hist):
-
-    ref_hist = ref_hist.Scale(data_hist.GetEntries()/ref_hist.Integral())
-
-    return
 
 def normalize_rows(data_hist, ref_hist):
 
