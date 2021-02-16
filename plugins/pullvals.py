@@ -135,8 +135,8 @@ def pullvals(histpair,
 
     c  = go.Figure(data=go.Heatmap(z=pull_hist, zmin=-pull_cap, zmax=pull_cap, colorscale=colors, x=xLabels, y=yLabels))
     c['layout'].update(plot_bgcolor='white')
-    c.update_xaxes(showline=True, linewidth=2, linecolor='black', mirror=True, showgrid=False)
-    c.update_yaxes(showline=True, linewidth=2, linecolor='black', mirror=True, showgrid=False)
+    c.update_xaxes(showline=True, linewidth=2, linecolor='black', mirror=True, showgrid=False, type='category')
+    c.update_yaxes(showline=True, linewidth=2, linecolor='black', mirror=True, showgrid=False, type='category')
     c.update_layout(
         title=plotTitle , title_x=0.5,
         xaxis_title= xAxisTitle,
