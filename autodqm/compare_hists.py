@@ -5,10 +5,10 @@ import os
 import sys
 import json
 import subprocess
-import ROOT
+import uproot
 from autodqm import cfg
 from autodqm.histpair import HistPair
-
+import plotly
 
 def process(config_dir, subsystem,
             data_series, data_sample, data_run, data_path,
@@ -17,9 +17,9 @@ def process(config_dir, subsystem,
 
     # Ensure no graphs are drawn to screen and no root messages are sent to
     # terminal
-    ROOT.gROOT.SetBatch(ROOT.kTRUE)
+    # ROOT.gROOT.SetBatch(ROOT.kTRUE)
     # Report only errors to stderr
-    ROOT.gErrorIgnoreLevel = ROOT.kWarning + 1
+    # ROOT.gErrorIgnoreLevel = ROOT.kWarning + 1
 
     histpairs = compile_histpairs(config_dir, subsystem,
                                   data_series, data_sample, data_run, data_path,
@@ -52,8 +52,7 @@ def process(config_dir, subsystem,
                     continue
 
                 # Make pdf
-                results.canvas.Update()
-                results.canvas.SaveAs(pdf_path)
+                results.canvas.write_image(pdf_path)
 
                 # Make png
                 subprocess.Popen(
@@ -81,7 +80,6 @@ def process(config_dir, subsystem,
 
     return hist_outputs
 
-
 def compile_histpairs(config_dir, subsystem,
                       data_series, data_sample, data_run, data_path,
                       ref_series, ref_sample, ref_run, ref_path):
@@ -92,8 +90,8 @@ def compile_histpairs(config_dir, subsystem,
     main_gdir = config["main_gdir"]
 
     # ROOT files
-    data_file = ROOT.TFile.Open(data_path)
-    ref_file = ROOT.TFile.Open(ref_path)
+    data_file_uproot = uproot.open(data_path)
+    ref_file_uproot = uproot.open(ref_path)
 
     histPairs = []
 
@@ -106,52 +104,46 @@ def compile_histpairs(config_dir, subsystem,
         data_dirname = "{0}{1}".format(main_gdir.format(data_run), gdir)
         ref_dirname = "{0}{1}".format(main_gdir.format(ref_run), gdir)
 
-        data_dir = data_file.GetDirectory(data_dirname)
-        ref_dir = ref_file.GetDirectory(ref_dirname)
+        data_dir_uproot = data_file_uproot[data_dirname[:-1]]
+        ref_dir_uproot = ref_file_uproot[ref_dirname[:-1]]
 
-        if not data_dir:
+        if not data_dir_uproot:
             raise error(
                 "Subsystem dir {0} not found in data root file".format(data_dirname))
-        if not ref_dir:
+        if not ref_dir_uproot:
             raise error(
                 "Subsystem dir {0} not found in ref root file".format(ref_dirname))
 
-        data_keys = data_dir.GetListOfKeys()
-        ref_keys = ref_dir.GetListOfKeys()
+        data_keys_uproot = data_dir_uproot.keys()
+        ref_keys_uproot = ref_dir_uproot.keys()
 
         valid_names = []
 
         # Add existing histograms that match h to valid_names
         if "*" not in h:
-            if data_keys.Contains(h) and ref_keys.Contains(h):
-                valid_names.append(h)
+             if h in [str(keys)[0:-2] for keys in data_keys_uproot] and h in [str(keys)[0:-2] for keys in ref_keys_uproot]:
+                 valid_names.append(h)
         else:
-            # Check entire directory for files matching wildcard
-            for name in [key.GetName() for key in data_keys]:
-                if h.split("*")[0] in name and ref_keys.Contains(name):
-                    valid_names.append(name)
+            # Check entire directory for files matching wildcard (Throw out wildcards with < in them as they are not plottable)
+            for name in data_keys_uproot:
+                if h.split("*")[0] in str(name) and name in ref_keys_uproot and not "<" in str(name):
+                    valid_names.append(name[:-2])
 
         # Load the histograms and create HistPairs
         for name in valid_names:
-            data_hist = data_dir.Get(name)
-            ref_hist = ref_dir.Get(name)
+            data_hist_uproot = data_dir_uproot[name]
+            ref_hist_uproot = ref_dir_uproot[name]
 
-            # This try/catch is a dirty way of checking that this objects are something plottable
-            try:
-                data_hist.SetDirectory(0)
-                ref_hist.SetDirectory(0)
-            except:
-                continue
+            #This is a dirty way of making sure the histogram is something plottable.
+            if("/" in name):
+                continue;
 
             hPair = HistPair(hconf,
-                             data_series, data_sample, data_run, name, data_hist,
-                             ref_series, ref_sample, ref_run, name, ref_hist)
+                             data_series, data_sample, data_run, str(name), data_hist_uproot,
+                             ref_series, ref_sample, ref_run, str(name), ref_hist_uproot)
             histPairs.append(hPair)
 
-    data_file.Close()
-    ref_file.Close()
     return histPairs
-
 
 def load_comparators(plugin_dir):
     """Load comparators from each python module in ADQM_PLUGINS."""
@@ -161,7 +153,7 @@ def load_comparators(plugin_dir):
     comparators = dict()
 
     for modname in os.listdir(plugin_dir):
-        if modname[0] == '_' or modname[-4:] == '.pyc':
+        if modname[0] == '_' or modname[-4:] == '.pyc' or modname[-4:] == '.swp':
             continue
         if modname[-3:] == '.py':
             modname = modname[:-3]
