@@ -131,12 +131,16 @@ def compile_histpairs(config_dir, subsystem,
 
         # Load the histograms and create HistPairs
         for name in valid_names:
-            data_hist_uproot = data_dir_uproot[name]
-            ref_hist_uproot = ref_dir_uproot[name]
-
-            #This is a dirty way of making sure the histogram is something plottable.
+            #this is a dirty way of checking to see if the histogram is plotable
             if("/" in name):
-                continue;
+                continue
+
+            data_hits_uproot, ref_hist_uproot = None, None
+            try:
+                data_hist_uproot = data_dir_uproot[name]
+                ref_hist_uproot = ref_dir_uproot[name]
+            except Exception as e:
+                continue
 
             hPair = HistPair(hconf,
                              data_series, data_sample, data_run, str(name), data_hist_uproot,
