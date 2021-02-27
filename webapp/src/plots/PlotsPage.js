@@ -85,6 +85,7 @@ export default class PlotsPage extends Component {
               this.setState({plots, procReq: null, showLoading: false});
             }else
             {
+              this.setState({plots});
               this.processChunk({query, plots, chunk_index, chunk_size});
             }
         });
@@ -111,7 +112,7 @@ export default class PlotsPage extends Component {
 
     var plots = [];
     var chunk_index = 0;
-    const chunk_size = 100;
+    const chunk_size = 200;
 
     Promise.all([refReq, dataReq])
       .then(res => {

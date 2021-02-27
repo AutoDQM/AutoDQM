@@ -107,20 +107,26 @@ def pullvals(histpair,
     xLabels = None
     yLabels = None
     c = None
+    x_axis_type = 'linear'
+    y_axis_type = 'linear';
     if data_hist.axes[0].labels():
        xLabels = [str(x) for x in data_hist.axes[0].labels()]
+       x_axis_type = 'category'
     else:
        xLabels = [str(data_hist.axes[0]._members["fXmin"] + x * (data_hist.axes[0]._members["fXmax"]-data_hist.axes[0]._members["fXmin"])/data_hist.axes[0]._members["fNbins"]) for x in range(0,data_hist.axes[0]._members["fNbins"]+1)]
 
     if data_hist.axes[1].labels():
        yLabels = [str(x) for x in data_hist.axes[1].labels()]
+       y_axis_type = 'category'
     else:
        yLabels = [str(data_hist.axes[1]._members["fXmin"] + x * (data_hist.axes[1]._members["fXmax"]-data_hist.axes[1]._members["fXmin"])/data_hist.axes[1]._members["fNbins"]) for x in range(0,data_hist.axes[1]._members["fNbins"]+1)]
 
     if("xlabels" in histpair.config.keys()):
         xLabels=histpair.config["xlabels"]
+        x_axis_type = 'category'
     if("ylabels" in histpair.config.keys()):
         yLabels=histpair.config["ylabels"]
+        y_axis_type = 'category'
 
 #    if pull_hist.shape[1] != len(xLabels):
     pull_hist = numpy.transpose(pull_hist)
@@ -135,8 +141,8 @@ def pullvals(histpair,
 
     c  = go.Figure(data=go.Heatmap(z=pull_hist, zmin=-pull_cap, zmax=pull_cap, colorscale=colors, x=xLabels, y=yLabels))
     c['layout'].update(plot_bgcolor='white')
-    c.update_xaxes(showline=True, linewidth=2, linecolor='black', mirror=True, showgrid=False, type='category')
-    c.update_yaxes(showline=True, linewidth=2, linecolor='black', mirror=True, showgrid=False, type='category')
+    c.update_xaxes(showline=True, linewidth=2, linecolor='black', mirror=True, showgrid=False, type=x_axis_type)
+    c.update_yaxes(showline=True, linewidth=2, linecolor='black', mirror=True, showgrid=False, type=y_axis_type)
     c.update_layout(
         title=plotTitle , title_x=0.5,
         xaxis_title= xAxisTitle,
