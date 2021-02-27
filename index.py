@@ -25,7 +25,9 @@ def handle_request(req):
         if req['type'] == "fetch_run":
             data = fetch_run(req['series'], req['sample'], req['run'])
         elif req['type'] == "process":
-            data = process(req['subsystem'],
+            data = process(int(req['chunk_index']),
+                           int(req['chunk_size']),
+                           req['subsystem'],
                            req['data_series'],
                            req['data_sample'],
                            req['data_run'],
@@ -68,7 +70,7 @@ def fetch_run(series, sample, run):
     return {}
 
 
-def process(subsystem,
+def process(chunk_index, chunk_size, subsystem,
             data_series, data_sample, data_run,
             ref_series, ref_sample, ref_run):
 
@@ -82,8 +84,9 @@ def process(subsystem,
     plugin_dir = VARS['PLUGINS']
     config_dir = VARS['CONFIG']
 
+
     # Process this query
-    results = compare_hists.process(config_dir, subsystem,
+    results = compare_hists.process(chunk_index, chunk_size, config_dir, subsystem,
                                     data_series, data_sample,
                                     data_run, data_path,
                                     ref_series, ref_sample,
@@ -99,7 +102,11 @@ def process(subsystem,
         r['json_path'] = relativize(r['json_path'])
         r['png_path'] = relativize(r['png_path'])
 
-    return {'items': results}
+    new_chunk_index = chunk_index + chunk_size;
+    if(len(results) == 0):
+        new_chunk_index = -1;
+
+    return {'items': results, "chunk_index": new_chunk_index}
 
 
 def get_subsystems():

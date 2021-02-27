@@ -74,6 +74,22 @@ export default class PlotsPage extends Component {
     this.setState({hoveredPlot});
   };
 
+  processChunk = ({query, plots, chunk_index, chunk_size}) => {
+        const procReq = api.generateReport(query, chunk_index, chunk_size);
+        this.setState({refReq: null, dataReq: null, procReq});
+        procReq.then(res => {
+            plots = plots.concat(res.items);
+            chunk_index = res.chunk_index;
+            if(chunk_index == -1)
+            {
+              this.setState({plots, procReq: null, showLoading: false});
+            }else
+            {
+              this.processChunk({query, plots, chunk_index, chunk_size});
+            }
+        });
+  };
+
   loadReport = query => {
     const refReq = api.loadRun(query.refSeries, query.refSample, query.refRun);
     const dataReq = api.loadRun(
@@ -93,19 +109,13 @@ export default class PlotsPage extends Component {
       return res;
     });
 
+    var plots = [];
+    var chunk_index = 0;
+    const chunk_size = 100;
+
     Promise.all([refReq, dataReq])
       .then(res => {
-        const procReq = api.generateReport(query);
-        this.setState({refReq: null, dataReq: null, procReq});
-        procReq
-          .then(res => {
-            const plots = res.items;
-            this.setState({plots, procReq: null, showLoading: false});
-          })
-          .catch(err => {
-            if (err.type === 'cancel') return;
-            this.setState({procReq: null, error: err, showLoading: false});
-          });
+        this.processChunk({query, plots, chunk_index, chunk_size});
       })
       .catch(err => {
         if (err.type === 'cancel') return;
@@ -115,8 +125,10 @@ export default class PlotsPage extends Component {
           error: err,
           showLoading: false,
         });
-      });
+    });
+
   };
+
 
   validParams = params => {
     return (

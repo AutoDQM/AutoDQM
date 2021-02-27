@@ -10,7 +10,7 @@ from autodqm import cfg
 from autodqm.histpair import HistPair
 import plotly
 
-def process(config_dir, subsystem,
+def process(chunk_index, chunk_size, config_dir, subsystem,
             data_series, data_sample, data_run, data_path,
             ref_series, ref_sample, ref_run, ref_path,
             output_dir='./out/', plugin_dir='./plugins/'):
@@ -21,7 +21,7 @@ def process(config_dir, subsystem,
     # Report only errors to stderr
     # ROOT.gErrorIgnoreLevel = ROOT.kWarning + 1
 
-    histpairs = compile_histpairs(config_dir, subsystem,
+    histpairs = compile_histpairs(chunk_index, chunk_size, config_dir, subsystem,
                                   data_series, data_sample, data_run, data_path,
                                   ref_series, ref_sample, ref_run, ref_path)
 
@@ -80,7 +80,7 @@ def process(config_dir, subsystem,
 
     return hist_outputs
 
-def compile_histpairs(config_dir, subsystem,
+def compile_histpairs(chunk_index, chunk_size, config_dir, subsystem,
                       data_series, data_sample, data_run, data_path,
                       ref_series, ref_sample, ref_run, ref_path):
 
@@ -122,32 +122,30 @@ def compile_histpairs(config_dir, subsystem,
         # Add existing histograms that match h to valid_names
         if "*" not in h:
              if h in [str(keys)[0:-2] for keys in data_keys_uproot] and h in [str(keys)[0:-2] for keys in ref_keys_uproot]:
-                 valid_names.append(h)
+                 try:
+                     data_hist_uproot = data_dir_uproot[h]
+                     ref_hist_uproot = ref_dir_uproot[h]
+                 except Exception as e:
+                     continue
+                 hPair = HistPair(hconf,
+                                  data_series, data_sample, data_run, str(h), data_hist_uproot,
+                                  ref_series, ref_sample, ref_run, str(h), ref_hist_uproot)
+                 histPairs.append(hPair)
         else:
             # Check entire directory for files matching wildcard (Throw out wildcards with < in them as they are not plottable)
             for name in data_keys_uproot:
                 if h.split("*")[0] in str(name) and name in ref_keys_uproot and not "<" in str(name):
-                    valid_names.append(name[:-2])
-
-        # Load the histograms and create HistPairs
-        for name in valid_names:
-            #this is a dirty way of checking to see if the histogram is plotable
-            if("/" in name):
-                continue
-
-            data_hits_uproot, ref_hist_uproot = None, None
-            try:
-                data_hist_uproot = data_dir_uproot[name]
-                ref_hist_uproot = ref_dir_uproot[name]
-            except Exception as e:
-                continue
-
-            hPair = HistPair(hconf,
-                             data_series, data_sample, data_run, str(name), data_hist_uproot,
-                             ref_series, ref_sample, ref_run, str(name), ref_hist_uproot)
-            histPairs.append(hPair)
-
-    return histPairs
+                    if("/" not in name[:-2]):
+                        try:
+                            data_hist_uproot = data_dir_uproot[name[:-2]]
+                            ref_hist_uproot = ref_dir_uproot[name[:-2]]
+                        except Exception as e:
+                            continue
+                        hPair = HistPair(hconf,
+                                         data_series, data_sample, data_run, str(name[:-2]), data_hist_uproot,
+                                         ref_series, ref_sample, ref_run, str(name[:-2]), ref_hist_uproot)
+                        histPairs.append(hPair)
+    return histPairs[min(chunk_index, len(histPairs)):min(chunk_index+chunk_size, len(histPairs))]
 
 def load_comparators(plugin_dir):
     """Load comparators from each python module in ADQM_PLUGINS."""
