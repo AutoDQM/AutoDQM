@@ -112,7 +112,7 @@ export default class PlotsPage extends Component {
 
     var plots = [];
     var chunk_index = 0;
-    const chunk_size = 200;
+    const chunk_size = 100;
 
     Promise.all([refReq, dataReq])
       .then(res => {
