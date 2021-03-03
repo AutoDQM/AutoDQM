@@ -35,12 +35,13 @@ def pullvals(histpair,
     # Clone data_hist array to create pull_hist array to be filled later
     pull_hist = numpy.copy(data_hist_norm)
 
+    # Declare data_hist_Entries and ref_hist_Entries
     data_hist_Entries = numpy.sum(data_hist_norm);
     ref_hist_Entries = numpy.sum(ref_hist_norm);
     # Reject empty histograms
     is_good = data_hist_Entries != 0 and data_hist_Entries >= min_entries
 
-    # Normalize data_hist
+    # Normalize data_hist (Note if col is selected numpy just transposes normalizes by rows then transposes again)
     if norm_type == "row":
         data_hist_norm = normalize_rows(data_hist_norm, ref_hist_norm)
     elif norm_type == "col":
@@ -50,6 +51,7 @@ def pullvals(histpair,
         if data_hist_Entries > 0:
             data_hist_norm = data_hist_norm * ref_hist_Entries / data_hist_Entries
 
+    #Calculate asymmetric error bars 
     data_hist_errs = numpy.nan_to_num(abs(numpy.array(scipy.stats.chi2.interval(0.6827, 2 * data_hist_norm)) / 2 - 1 - data_hist_norm))
     ref_hist_errs = numpy.nan_to_num(abs(numpy.array(scipy.stats.chi2.interval(0.6827, 2 * ref_hist_norm)) / 2 - 1 - ref_hist_norm))
 
@@ -100,10 +102,11 @@ def pullvals(histpair,
 
     is_outlier = is_good and (chi2 > chi2_cut or abs(max_pull) > pull_cut)
 
-    # Set up canvas
+    # Setting empty bins to be blank
     pull_hist = numpy.where(pull_hist < -2*pull_cap, None, pull_hist)
     colors = ['rgb(26, 42, 198)', 'rgb(118, 167, 231)', 'rgb(215, 226, 194)', 'rgb(212, 190, 109)', 'rgb(188, 76, 38)']
 
+    #Getting Plot labels for x-axis and y-axis as well as type (linear or categorical)
     xLabels = None
     yLabels = None
     c = None
@@ -128,17 +131,19 @@ def pullvals(histpair,
         yLabels=histpair.config["ylabels"]
         y_axis_type = 'category'
 
-#    if pull_hist.shape[1] != len(xLabels):
     pull_hist = numpy.transpose(pull_hist)
 
+    #Getting Plot Titles for histogram, x-axis and y-axis
     xAxisTitle = data_hist.axes[0]._bases[0]._members["fTitle"]
     yAxisTitle = data_hist.axes[1]._bases[0]._members["fTitle"]
     plotTitle = histpair.data_name + " Pull Values  |  data:" + str(histpair.data_run) + " & ref:" + str(histpair.ref_run)
 
+    #Plotly doesn't support #circ, #theta, #phi but does support unicode
     xAxisTitle = xAxisTitle.replace("#circ", "\u00B0").replace("#theta","\u03B8").replace("#phi","\u03C6").replace("#eta","\u03B7")
     yAxisTitle = yAxisTitle.replace("#circ", "\u00B0").replace("#theta","\u03B8").replace("#phi","\u03C6").replace("#eta","\u03B7")
     plotTitle = plotTitle.replace("#circ", "\u00B0").replace("#theta","\u03B8").replace("#phi","\u03C6").replace("#eta","\u03B7")
 
+    #Plot pull-values using 2d heatmap will settings to look similar to old Pyroot version
     c  = go.Figure(data=go.Heatmap(z=pull_hist, zmin=-pull_cap, zmax=pull_cap, colorscale=colors, x=xLabels, y=yLabels))
     c['layout'].update(plot_bgcolor='white')
     c.update_xaxes(showline=True, linewidth=2, linecolor='black', mirror=True, showgrid=False, type=x_axis_type)
