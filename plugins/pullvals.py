@@ -219,5 +219,7 @@ def normalize_rows(data_hist_norm, ref_hist_norm):
             fbin_err = (fbin)**(.5)
 
             # Normalize bin
+
             data_hist_norm[x, y] = (fbin * sf)
     return data_hist_norm
+
