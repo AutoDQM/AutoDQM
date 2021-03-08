@@ -34,9 +34,11 @@ export function generateReport({
   dataSeries,
   dataSample,
   dataRun,
-}) {
+}, chunk_index, chunk_size) {
   return cancellableQuery(API, {
     type: 'process',
+    chunk_index: chunk_index,
+    chunk_size: chunk_size,
     subsystem: subsystem,
     ref_series: refSeries,
     ref_sample: refSample,

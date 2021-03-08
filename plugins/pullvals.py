@@ -1,8 +1,11 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-import ROOT
+import uproot
+import numpy
+from scipy.stats import chi2
 from autodqm.plugin_results import PluginResults
-
+import scipy
+import plotly.graph_objects as go
 
 def comparators():
     return {
@@ -18,55 +21,56 @@ def pullvals(histpair,
     ref_hist = histpair.ref_hist
 
     # Check that the hists are histograms
-    if not data_hist.InheritsFrom('TH1') or not ref_hist.InheritsFrom('TH1'):
-        return None
-
     # Check that the hists are 2 dimensional
-    if data_hist.GetDimension() != 2 or ref_hist.GetDimension() != 2:
+    if not "2" in str(type(data_hist)) or not "2" in str(type(ref_hist)):
         return None
+    # Extract values from TH2F or TProfile2D Format
+    data_hist_norm = None
+    ref_hist_norm = None
+    #raise Exception(projectionXY(data_hist))
+    #raise Exception(data_hist.xnumbins, data_hist._fBinEntries)
+    data_hist_norm = numpy.copy(data_hist.values())
+    ref_hist_norm = numpy.copy(ref_hist.values())
 
-    ROOT.gStyle.SetOptStat(0)
-    ROOT.gStyle.SetPalette(ROOT.kLightTemperature)
-    ROOT.gStyle.SetNumberContours(255)
+    # Clone data_hist array to create pull_hist array to be filled later
+    pull_hist = numpy.copy(data_hist_norm)
 
-    # Get empty clone of reference histogram for pull hist
-    if ref_hist.InheritsFrom('TProfile2D'):
-        pull_hist = ref_hist.ProjectionXY("pull_hist")
-    else:
-        pull_hist = ref_hist.Clone("pull_hist")
-    pull_hist.Reset()
-
+    # Declare data_hist_Entries and ref_hist_Entries
+    data_hist_Entries = numpy.sum(data_hist_norm);
+    ref_hist_Entries = numpy.sum(ref_hist_norm);
     # Reject empty histograms
-    is_good = data_hist.GetEntries() != 0 and data_hist.GetEntries() >= min_entries
+    is_good = data_hist_Entries != 0 and data_hist_Entries >= min_entries
 
-    # Normalize data_hist
+    # Normalize data_hist (Note if col is selected numpy just transposes normalizes by rows then transposes again)
     if norm_type == "row":
-        normalize_rows(data_hist, ref_hist)
+        data_hist_norm = normalize_rows(data_hist_norm, ref_hist_norm)
     elif norm_type == "col":
-        normalize_cols(data_hist, ref_hist)
-    else:    
-        if data_hist.GetEntries() > 0:
-            data_hist.Scale(ref_hist.GetSumOfWeights() / data_hist.GetSumOfWeights())
+        data_hist_norm = normalize_rows(numpy.transpose(data_hist_norm), numpy.transpose(ref_hist_norm))
+        data_hist_norm = numpy.transpose(data_hist_norm)
+    else:
+        if data_hist_Entries > 0:
+            data_hist_norm = data_hist_norm * ref_hist_Entries / data_hist_Entries
+
+    #Calculate asymmetric error bars 
+    data_hist_errs = numpy.nan_to_num(abs(numpy.array(scipy.stats.chi2.interval(0.6827, 2 * data_hist_norm)) / 2 - 1 - data_hist_norm))
+    ref_hist_errs = numpy.nan_to_num(abs(numpy.array(scipy.stats.chi2.interval(0.6827, 2 * ref_hist_norm)) / 2 - 1 - ref_hist_norm))
 
     max_pull = 0
     nBins = 0
     chi2 = 0
-    for x in range(1, ref_hist.GetNbinsX() + 1):
-        for y in range(1, ref_hist.GetNbinsY() + 1):
+    for x in range(0, data_hist_norm.shape[0]):
+        for y in range(0, data_hist_norm.shape[1]):
 
             # Bin 1 data
-            bin1 = data_hist.GetBinContent(x, y)
+            bin1 = data_hist_norm[x, y]
 
             # Bin 2 data
-            bin2 = ref_hist.GetBinContent(x, y)
+            bin2 = ref_hist_norm[x, y]
 
-            # TEMPORARY - Getting Symmetric Error - Need to update with >Proper Poisson error 
-            if ref_hist.InheritsFrom('TProfile2D'):
-                bin1err = data_hist.GetBinError(x, y)
-                bin2err = ref_hist.GetBinError(x, y)
-            else:
-                bin1err, bin2err = bin1**(.5), bin2**(.5)
-
+            # Getting Proper Poisson error 
+            bin1err, bin2err = data_hist_errs[0, x, y], ref_hist_errs[1, x, y]
+            if bin1 < bin2:
+                bin1err, bin2err = data_hist_errs[1, x, y], ref_hist_errs[0, x, y]
             # Count bins for chi2 calculation
             nBins += 1
 
@@ -90,44 +94,83 @@ def pullvals(histpair,
             if bin1 == bin2 == 0:
                 fill_val = -999
 
-            # Fill Pull Histogram
-            pull_hist.SetBinContent(x, y, fill_val)
+            # Fill Pull Histogram            
+            pull_hist[x, y] = fill_val
 
     # Compute chi2
     chi2 = (chi2 / nBins)
 
     is_outlier = is_good and (chi2 > chi2_cut or abs(max_pull) > pull_cut)
 
-    # Set up canvas
-    c = ROOT.TCanvas('c', 'Pull')
+    # Setting empty bins to be blank
+    pull_hist = numpy.where(pull_hist < -2*pull_cap, None, pull_hist)
+    colors = ['rgb(26, 42, 198)', 'rgb(118, 167, 231)', 'rgb(215, 226, 194)', 'rgb(212, 190, 109)', 'rgb(188, 76, 38)']
 
-    # Plot pull hist
-    pull_hist.GetZaxis().SetRangeUser(-(pull_cap), pull_cap)
-    pull_hist.SetTitle(pull_hist.GetTitle() + " Pull Values")
-    pull_hist.Draw("colz")
+    #Getting Plot labels for x-axis and y-axis as well as type (linear or categorical)
+    xLabels = None
+    yLabels = None
+    c = None
+    x_axis_type = 'linear'
+    y_axis_type = 'linear';
+    if data_hist.axes[0].labels():
+       xLabels = [str(x) for x in data_hist.axes[0].labels()]
+       x_axis_type = 'category'
+    else:
+       xLabels = [str(data_hist.axes[0]._members["fXmin"] + x * (data_hist.axes[0]._members["fXmax"]-data_hist.axes[0]._members["fXmin"])/data_hist.axes[0]._members["fNbins"]) for x in range(0,data_hist.axes[0]._members["fNbins"]+1)]
 
-    # Text box
-    data_text = ROOT.TLatex(.52, .91,
-                            "#scale[0.6]{Data: " + histpair.data_run + "}")
-    ref_text = ROOT.TLatex(.72, .91,
-                           "#scale[0.6]{Ref: " + histpair.ref_run + "}")
-    data_text.SetNDC(ROOT.kTRUE)
-    ref_text.SetNDC(ROOT.kTRUE)
-    data_text.Draw()
-    ref_text.Draw()
+    if data_hist.axes[1].labels():
+       yLabels = [str(x) for x in data_hist.axes[1].labels()]
+       y_axis_type = 'category'
+    else:
+       yLabels = [str(data_hist.axes[1]._members["fXmin"] + x * (data_hist.axes[1]._members["fXmax"]-data_hist.axes[1]._members["fXmin"])/data_hist.axes[1]._members["fNbins"]) for x in range(0,data_hist.axes[1]._members["fNbins"]+1)]
+
+    if("xlabels" in histpair.config.keys()):
+        xLabels=histpair.config["xlabels"]
+        x_axis_type = 'category'
+    if("ylabels" in histpair.config.keys()):
+        yLabels=histpair.config["ylabels"]
+        y_axis_type = 'category'
+
+    pull_hist = numpy.transpose(pull_hist)
+
+    #Getting Plot Titles for histogram, x-axis and y-axis
+    xAxisTitle = data_hist.axes[0]._bases[0]._members["fTitle"]
+    yAxisTitle = data_hist.axes[1]._bases[0]._members["fTitle"]
+    plotTitle = histpair.data_name + " Pull Values  |  data:" + str(histpair.data_run) + " & ref:" + str(histpair.ref_run)
+
+    #Plotly doesn't support #circ, #theta, #phi but does support unicode
+    xAxisTitle = xAxisTitle.replace("#circ", "\u00B0").replace("#theta","\u03B8").replace("#phi","\u03C6").replace("#eta","\u03B7")
+    yAxisTitle = yAxisTitle.replace("#circ", "\u00B0").replace("#theta","\u03B8").replace("#phi","\u03C6").replace("#eta","\u03B7")
+    plotTitle = plotTitle.replace("#circ", "\u00B0").replace("#theta","\u03B8").replace("#phi","\u03C6").replace("#eta","\u03B7")
+
+    #Plot pull-values using 2d heatmap will settings to look similar to old Pyroot version
+    c  = go.Figure(data=go.Heatmap(z=pull_hist, zmin=-pull_cap, zmax=pull_cap, colorscale=colors, x=xLabels, y=yLabels))
+    c['layout'].update(plot_bgcolor='white')
+    c.update_xaxes(showline=True, linewidth=2, linecolor='black', mirror=True, showgrid=False, type=x_axis_type)
+    c.update_yaxes(showline=True, linewidth=2, linecolor='black', mirror=True, showgrid=False, type=y_axis_type)
+    c.update_layout(
+        title=plotTitle , title_x=0.5,
+        xaxis_title= xAxisTitle,
+        yaxis_title= yAxisTitle,
+        font=dict(
+            family="Times New Roman",
+            size=9,
+            color="black"
+        )
+    )
 
     info = {
         'Chi_Squared': chi2,
         'Max_Pull_Val': max_pull,
-        'Data_Entries': data_hist.GetEntries(),
-        'Ref_Entries': ref_hist.GetEntries(),
+        'Data_Entries': str(data_hist_Entries),
+        'Ref_Entries': str(ref_hist_Entries),
     }
 
-    artifacts = [pull_hist, data_text, ref_text]
+    artifacts = [pull_hist, str(data_hist_Entries), str(ref_hist_Entries)]
 
     return PluginResults(
         c,
-        show=is_outlier,
+        show=bool(is_outlier),
         info=info,
         artifacts=artifacts)
 
@@ -139,20 +182,20 @@ def pull(bin1, binerr1, bin2, binerr2):
     '''
     return (bin1 - bin2) / ((binerr1**2 + binerr2**2)**0.5)
 
-def normalize_rows(data_hist, ref_hist):
+def normalize_rows(data_hist_norm, ref_hist_norm):
 
-    for y in range(1, ref_hist.GetNbinsY() + 1):
+    for y in range(0, ref_hist_norm.shape[1]):
 
         # Stores sum of row elements
         rrow = 0
         frow = 0
 
         # Sum over row elements
-        for x in range(1, ref_hist.GetNbinsX() + 1):
+        for x in range(0, ref_hist_norm.shape[0]):
 
             # Bin data
-            rbin = ref_hist.GetBinContent(x, y)
-            fbin = data_hist.GetBinContent(x, y)
+            rbin = ref_hist_norm[x,y]
+            fbin = data_hist_norm[x, y]
 
             rrow += rbin
             frow += fbin
@@ -170,55 +213,13 @@ def normalize_rows(data_hist, ref_hist):
             sf = 1
 
         # Normalization
-        for x in range(1, data_hist.GetNbinsX() + 1):
+        for x in range(0, ref_hist_norm.shape[0]):
             # Bin data
-            fbin = data_hist.GetBinContent(x, y)
-            fbin_err = data_hist.GetBinError(x, y)
+            fbin = data_hist_norm[x, y]
+            fbin_err = (fbin)**(.5)
 
             # Normalize bin
-            data_hist.SetBinContent(x, y, (fbin * sf))
-            data_hist.SetBinError(x, y, (fbin_err * sf))
 
-    return
+            data_hist_norm[x, y] = (fbin * sf)
+    return data_hist_norm
 
-def normalize_cols(data_hist, ref_hist):
-
-    for x in range(1, ref_hist.GetNbinsX() + 1):
-
-        # Stores sum of row elements
-        rcol = 0
-        fcol = 0
-
-        # Sum over row elements
-        for y in range(1, ref_hist.GetNbinsY() + 1):
-
-            # Bin data
-            rbin = ref_hist.GetBinContent(x, y)
-            fbin = data_hist.GetBinContent(x, y)
-
-            rcol += rbin
-            fcol += fbin
-
-        # Scaling factors
-        # Prevent divide-by-zero error
-        if fcol == 0:
-            fcol = 1
-        if fcol > 0:
-            sf = float(rcol) / fcol
-        else:
-            sf = 1
-        # Prevent scaling everything to zero
-        if sf == 0:
-            sf = 1
-
-        # Normalization
-        for y in range(1, data_hist.GetNbinsY() + 1):
-            # Bin data
-            fbin = data_hist.GetBinContent(x, y)
-            fbin_err = data_hist.GetBinError(x, y)
-
-            # Normalize bin
-            data_hist.SetBinContent(x, y, (fbin * sf))
-            data_hist.SetBinError(x, y, (fbin_err * sf))
-
-    return

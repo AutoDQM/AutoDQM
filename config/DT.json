@@ -14,9 +14,6 @@
       "norm_type": "row",
       "path": "02-Segments/*"
 },
-
-
-
 {
 
       "path": "02-Segments/Wheel0/Sector1/Station1/*"
@@ -531,3 +528,4 @@
       "path": "02-Segments/Wheel2/Sector14/Station4/*"
 }
 ]}
+
