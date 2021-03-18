@@ -30,8 +30,6 @@ def pca(histpair,
 
     data_year = int(histpair.data_series[-4:])
     possible_pickles = glob.glob("/var/www/cgi-bin/models/pca/{0}/{1}/*_{2}.pkl".format(jar_dir,data_year, data_name))
-    
-
     if len(possible_pickles) != 1:
         return None
     pca_pickle = pickle.load(open(possible_pickles[0], "rb"))
