@@ -21,5 +21,21 @@ Current Developers
 ^^^^^^^^^^^^^^^^^^
 
 
+* `Zora Che <https://github.com/zorache>`_
+* `Chad Freer <https://github.com/chadfreer>`_
 * `Jonathan Guiang <https://github.com/jkguiang>`_
-* `Alex Aubuchon <https://github.com/A-lxe>`_
+* `Yacine Haddad <https://github.com/yhaddad>`_
+* `Sam May <https://github.com/sam-may>`_
+* `Vivan Nguyen <https://github.com/vivannguyen>`_
+* `John Rotter <https://github.com/jrotter2>`_
+* `Katie Salyer <https://github.com/ksalyer>`_
+* `Indara Suarez <https://github.com/indarasuarez>`_
+* `Si Sutantawibul <https://github.com/chosila>`_
+* `Rob White <https://github.com/GluonicPenguin>`_
+
+
+Past Developers
+^^^^^^^^^^^^^^^^^^
+
+
+* `Alex Aubuchon <https://github.com/reasonablytall>`_

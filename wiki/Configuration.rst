@@ -77,31 +77,31 @@ Algorithm Arguments and the Histpair object
 
 .. code-block:: python
 
-   def new_algo(histpair,
-                new_cut=500, min_entries=100000, new_option='new_opt',
-                **kwargs):
+  class HistPair(object):
+    """Data class for storing data and ref histograms to be compared by AutoDQM, as well as any relevant configuration parameters."""
 
-Every algorithm that AutoDQM uses must handle a ```histpair`` <https://github.com/jkguiang/AutoDQM/blob/release-v2.1.0/autodqm/histpair.py>`_\ object. Put simply, each ``histpair`` object contains all of the information passed from the user's input (i.e. the name of the data and reference runs, the series and samples of those runs, etc.). Any other key word arguments should be specified or otherwise passed through ``**kwargs``.
+    def __init__(self, config,
+                 data_series, data_sample, data_run, data_name, data_hist,
+                 ref_series, ref_sample, ref_run, ref_name, ref_hist)   
+
+
+Every algorithm that AutoDQM uses must handle a ``histpair`` `object <https://github.com/jkguiang/AutoDQM/blob/release-v2.1.0/autodqm/histpair.py>`_\. Put simply, each ``histpair`` object contains all of the information passed from the user's input (i.e. the name of the data and reference runs, the series and samples of those runs, etc.). Any other key word arguments should be specified or otherwise passed through ``**kwargs``.
 
 Plugin Results Object
 ~~~~~~~~~~~~~~~~~~~~~
 
 .. code-block:: python
 
-   from autodqm.plugin_results import PluginResults
+  class PluginResults(object):
+    """Data class for storing the results of a plugin function
+    self.canvas: the canvas to be saved and displayed
+    self.show: whether the canvas should be shown by default
+    self.info: dictionary of any extra information that should be displayed
+    self.artifacts: root objects that need to be protected from garbage collection
+    """
 
-   def new_algo( ..., **kwargs ):
+    def __init__(self, canvas, show=False, info={}, artifacts=[])
 
-       """
-           New algorithm contents
-       """
-
-       return PluginResults(
-           c,
-           show=is_outlier,
-           info=info,
-           artifacts=artifacts
-
-In order for AutoDQM to understand your algorithm's output (i.e. drawn histograms, text files, etc.), you must pass them in a ```PluginResults`` <https://github.com/jkguiang/AutoDQM/blob/release-v2.1.0/autodqm/plugin_results.py>`_\ object.
+In order for AutoDQM to understand your algorithm's output (i.e. drawn histograms, text files, etc.), you must pass them in a ``PluginResults`` object `<https://github.com/jkguiang/AutoDQM/blob/release-v2.1.0/autodqm/plugin_results.py>_`\.
 
 When your algorithm has been properly formatted, you can make a pull request to AutoDQM's `development <https://github.com/jkguiang/AutoDQM/tree/develop-lxplus>`_ branch, making sure to place it in the `plugins <https://github.com/jkguiang/AutoDQM/tree/develop-lxplus/plugins>`_ directory.

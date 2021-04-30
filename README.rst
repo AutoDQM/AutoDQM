@@ -20,24 +20,24 @@ Features
 AutoDQM.py
           
 
--  [x] Outputs histograms that clearly highlight outliers
--  [x] Creates a .txt file along with each .pdf with relevant
-   information on it
--  [x] Allows user to easily change input
--  [x] Seeks and accurately finds outliers
+-  Outputs histograms that clearly highlight outliers
+-  Creates a .txt file along with each .pdf with relevant information
+   on it
+-  Allows user to easily change input
+-  Seeks and accurately finds outliers
 
 index.php
          
 
--  [x] Previews input in a readable way
--  [x] Gives a clear indication of the status of a user's query
+-  Previews input in a readable way
+-  Gives a clear indication of the status of a user's query
 
 plots.php
          
 
--  [x] Dynamically displays text files below AutoPlotter toolbar
--  [x] Unique url's for sharing plots pages with the data and reference
-   data set names
+-  Dynamically displays text files below AutoPlotter toolbar
+-  Unique url's for sharing plots pages with the data and reference data
+   set names
 
 Setting Up AutoDQM for Development
 ----------------------------------

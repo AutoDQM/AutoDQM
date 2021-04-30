@@ -21,7 +21,7 @@ sys.path.insert(0, os.path.abspath('..'))
 # -- Project information -----------------------------------------------------
 
 project = 'AutoDQM'
-copyright = '2020, CMS Collaboration'
+copyright = '2021, CMS Collaboration'
 author = 'CMS Collaboration'
 
 # The full version, including alpha/beta/rc tags
@@ -56,10 +56,6 @@ master_doc = 'index'
 # This pattern also affects html_static_path and html_extra_path.
 exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 
-# List of modules to be mocked up. This is useful when some external
-# dependencies are not met at build time and break the building process.
-autodoc_mock_imports = ["ROOT"]
-
 # -- Options for HTML output -------------------------------------------------
 
 # The theme to use for HTML and HTML Help pages.  See the documentation for
@@ -83,6 +79,10 @@ apidoc_toc_file = False
 apidoc_module_first = True
 apidoc_separate_modules = True
 apidoc_extra_args = ["-e"]
+
+# List of modules to be mocked up. This is useful when some external
+# dependencies are not met at build time and break the building process.
+autodoc_mock_imports = ["ROOT"]
 
 def setup(app):
     # Override default css
