@@ -29,8 +29,10 @@ jobs:
       - name: Push to GitHub Packages
         uses: docker/build-push-action@v2
         with:
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-          registry: docker.pkg.github.com
-          repository: jrotter2/AutoDQM/autodqm-webapp
-          tag_with_ref: true
+          push: true
+          tags: jrotter2/AutoDQM:latest
+          #username: ${{ github.actor }}
+          #password: ${{ secrets.GITHUB_TOKEN }}
+          #registry: docker.pkg.github.com
+          #repository: jrotter2/AutoDQM/autodqm-webapp
+          #tag_with_ref: true
