@@ -38,11 +38,11 @@ jobs:
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
       # Runs a single command using the runners shell
-      - name: Push to GitHub Packages
+      - name: Build Image and Push to GitHub Packages
         uses: docker/build-push-action@v2
         with:
           push: true
-          tags: jrotter2/autodqm:latest
+          tags: ${{ github.repository }}/autodqm-webapp:latest
           #username: ${{ github.actor }}
           #password: ${{ secrets.GITHUB_TOKEN }}
           #registry: docker.pkg.github.com
