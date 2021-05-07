@@ -42,7 +42,7 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           push: true
-          tags: docker.pkg.github.com/${{ github.repository }}/autodqmwebapp:latest
+          tags: docker.pkg.github.com/jrotter2/autodqm/autodqmwebapp:latest
           #username: ${{ github.actor }}
           #password: ${{ secrets.GITHUB_TOKEN }}
           #registry: docker.pkg.github.com
