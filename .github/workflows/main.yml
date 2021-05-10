@@ -50,8 +50,9 @@ jobs:
           #repository: jrotter2/AutoDQM/autodqm-webapp
           #tag_with_ref: true
   deploy:
+    runs-on: ubuntu-latest
+    container: gitlab-registry.cern.ch/paas-tools/openshift-client:latest
     needs: build
-    runs-on: gitlab-registry.cern.ch/paas-tools/openshift-client:latest
     steps:
       - name: Pushing to Openshift
         run: oc tag --token=${{ secrets.IMPORT_TOKEN_DEV }} --server=https://openshift-dev.cern.ch --namespace test-autodqm-dev --source=docker ghcr.io/jrotter2/autodqmwebapp:latest autodqmwebapp:latest
