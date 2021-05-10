@@ -1,5 +1,5 @@
 FROM cern/cc7-base
-EXPOSE 8080
+EXPOSE 80
 
 RUN yum update -y && yum install -y \
       ImageMagick \
@@ -54,8 +54,6 @@ COPY plugins /var/www/cgi-bin/plugins
 COPY models /var/www/cgi-bin/models
 COPY modules /var/www/cgi-bin/modules
 COPY config /var/www/public/config
-
-RUN touch /run/httpd/httpd.pid
 
 CMD ["/usr/sbin/httpd","-D","FOREGROUND"]
 
