@@ -54,5 +54,5 @@ jobs:
     needs: build
     steps:
       - name: Pushing to Openshift
-        run: oc tag --token=${{ secrets.IMPORT_TOKEN_DEV }} --server=https://openshift-dev.cern.ch --namespace test-autodqm-dev --source=docker ghcr.io/jrotter2/autodqmwebapp:latest autodqmwebapp:latest
+        run: oc tag --token=${{ secrets.IMPORT_TOKEN_DEV }} --server=https://openshift.cern.ch --namespace autodqm-dev --source=docker ghcr.io/jrotter2/autodqmwebapp:latest autodqmwebapp:latest
 
