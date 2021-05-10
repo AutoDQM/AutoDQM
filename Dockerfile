@@ -29,6 +29,8 @@ RUN ln -s /dev/stderr /etc/httpd/logs/error_log
 ENV REQUESTS_CA_BUNDLE /etc/ssl/certs/ca-bundle.crt
 ENV ADQM_SSLCERT /run/secrets/cmsvo-cert.pem
 ENV ADQM_SSLKEY /run/secrets/cmsvo-cert.key
+RUN mkdir -p /var/adqm
+ENV ADQM_TMP /var/adqm
 ENV ADQM_DB /db/
 ENV ADQM_PUBLIC /var/www/
 ENV ADQM_CONFIG /var/www/public/config/
