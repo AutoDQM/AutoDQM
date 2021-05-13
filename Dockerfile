@@ -55,5 +55,7 @@ COPY models /var/www/cgi-bin/models
 COPY modules /var/www/cgi-bin/modules
 COPY config /var/www/public/config
 
+RUN chgrp -R 0 /run && chmod -R g=u /run
+
 CMD ["/usr/sbin/httpd","-D","FOREGROUND"]
 
