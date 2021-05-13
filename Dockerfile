@@ -23,10 +23,11 @@ RUN pip3 install -r /code/requirements.txt
 RUN mkdir /db /run/secrets
 RUN chown -R apache:apache /db /var/www /run/secrets
 RUN mkdir /etc/httpd/logs/error_log  
-RUN chown apache:apache /etc/httpd/logs/error_log  
 
 RUN ln -s /dev/stdout /etc/httpd/logs/access_log
 RUN ln -s /dev/stderr /etc/httpd/logs/error_log
+
+RUN chown apache:apache /etc/httpd/logs/error_log  
 
 ENV REQUESTS_CA_BUNDLE /etc/ssl/certs/ca-bundle.crt
 ENV ADQM_SSLCERT /run/secrets/cmsvo-cert.pem
@@ -58,6 +59,7 @@ COPY modules /var/www/cgi-bin/modules
 COPY config /var/www/public/config
 
 RUN chgrp -R 0 /run && chmod -R g=u /run
+RUN chgrp -R 0 /etc && chmod -R g=u /etc
 
 CMD ["/usr/sbin/httpd","-D","FOREGROUND"]
 
