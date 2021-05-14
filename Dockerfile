@@ -8,7 +8,6 @@ RUN yum update -y && yum install -y \
       php \
       python3-pip  
 
-
 RUN echo "alias python=python3" >>~/.bashrc
 
 RUN yum update -y && yum install -y \
