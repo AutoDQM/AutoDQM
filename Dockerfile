@@ -28,6 +28,9 @@ RUN ln -s /dev/stdout /etc/httpd/logs/access_log
 RUN ln -s /dev/stderr /etc/httpd/logs/error_log
 
 RUN chown apache:apache /etc/httpd/logs/error_log  
+RUN chown apache:apache /etc/httpd/logs/access_log  
+RUN chmod 666 /etc/httpd/logs/error_log
+RUN chmod 666 /etc/httpd/logs/access_log
 
 ENV REQUESTS_CA_BUNDLE /etc/ssl/certs/ca-bundle.crt
 ENV ADQM_SSLCERT /run/secrets/cmsvo-cert.pem
