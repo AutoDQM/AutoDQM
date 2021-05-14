@@ -62,6 +62,7 @@ COPY modules /var/www/cgi-bin/modules
 COPY config /var/www/public/config
 
 RUN chgrp -R 0 /run && chmod -R g=u /run
+RUN chgrp -R 0 /etc && chmod -R g=u /etc
 
 CMD ["/usr/sbin/httpd","-D","FOREGROUND"]
 
