@@ -21,7 +21,9 @@ RUN pip3 install -r /code/requirements.txt
 
 RUN mkdir /db /run/secrets
 RUN chown -R apache:apache /db /var/www /run/secrets
-RUN mkdir /etc/httpd/logs/error_log  
+RUN mkdir /etc/httpd/logs
+RUN touch /etc/httpd/logs/error_log
+RUN touch /etc/httpd/logs/access_log
 
 RUN ln -s /dev/stdout /etc/httpd/logs/access_log
 RUN ln -s /dev/stderr /etc/httpd/logs/error_log
