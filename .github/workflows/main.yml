@@ -42,8 +42,8 @@ jobs:
         with:
           push: true
           tags: ghcr.io/jrotter2/autodqmwebapp:latest
-          #cache-from: ghcr.io/jrotter2/autodqmwebapp:latest
-          #cache-to: ghcr.io/jrotter2/autodqmwebapp:latest
+          cache-from: ghcr.io/jrotter2/autodqmwebapp:latest
+          cache-to: ghcr.io/jrotter2/autodqmwebapp:latest
           #tags: docker.pkg.github.com/jrotter2/autodqm/autodqmwebapp:latest
           #username: ${{ github.actor }}
           #password: ${{ secrets.GITHUB_TOKEN }}
