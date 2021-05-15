@@ -1,5 +1,5 @@
 FROM cern/cc7-base
-EXPOSE 8080
+EXPOSE 80
 
 RUN yum update -y && yum install -y \
       ImageMagick \
