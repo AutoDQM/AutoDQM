@@ -30,6 +30,7 @@ RUN chown apache:apache /etc/httpd/logs/access_log
 RUN chmod 666 /etc/httpd/logs/error_log
 RUN chmod 666 /etc/httpd/logs/access_log
 
+ENV HOME /root
 ENV REQUESTS_CA_BUNDLE /etc/ssl/certs/ca-bundle.crt
 ENV ADQM_SSLCERT /run/secrets/cmsvo-cert.pem
 ENV ADQM_SSLKEY /run/secrets/cmsvo-cert.key
