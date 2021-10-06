@@ -46,11 +46,13 @@ jobs:
       - name: Build Docker Image and Push to GitHub Packages
         uses: docker/build-push-action@v2
         with:
-          username: ${{ secrets.CERN_LOGIN }}
-          password: ${{ secrets.CERN_TOKEN }}
           push: true
-          tags: |
-            ghcr.io/jrotter2/autodqmwebapp:latest
-            registry.cern.ch/cmsweb/autodqmwebapp:latest
+          tags: ghcr.io/jrotter2/autodqmwebapp:latest
           cache-from: ghcr.io/jrotter2/autodqmwebapp:cache
           cache-to: ghcr.io/jrotter2/autodqmwebapp:cache
+          
+      - name: Pushing to registry.cern.ch
+        run: |
+           docker login -u ${{ secrets.CERN_LOGIN }} -p ${{ secrets.CERN_TOKEN }} registry.cern.ch
+           docker tag ghcr.io/jrotter2/autodqmwebapp:latest registry.cern.ch/cmsweb/autodqmwebapp:latest
+           docker push registry.cern.ch/cmsweb/autodqmwebapp:latest
