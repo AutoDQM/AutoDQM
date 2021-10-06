@@ -1,6 +1,5 @@
 # This is a basic workflow to help you get started with Actions
-
-name: CI
+name: Build-CI
 
 # Controls when the action will run. 
 on:
@@ -13,48 +12,66 @@ on:
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow contains a single job called "build"
-  build:
-    # The type of runner that the job will run on
-    runs-on: ubuntu-latest
-    # Steps represent a sequence of tasks that will be executed as part of the job
-    steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v2
-      -
-        name: Set up QEMU
-        uses: docker/setup-qemu-action@v1
-      -
-        name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v1
-      -
-        name: Login to GitHub Packages Docker Registry
-        uses: docker/login-action@v1
-        with:
-          registry: ghcr.io
-          username: ${{ github.repository_owner }}
-          password: ${{ secrets.PAT }}
-      # Runs a single command using the runners shell
-      - name: Build Docker Image and Push to GitHub Packages
-        uses: docker/build-push-action@v2
-        with:
-          push: true
-          tags: ghcr.io/jrotter2/autodqmwebapp:latest
-          cache-from: ghcr.io/jrotter2/autodqmwebapp:cache
-          cache-to: ghcr.io/jrotter2/autodqmwebapp:cache
-          #tags: docker.pkg.github.com/jrotter2/autodqm/autodqmwebapp:latest
-          #username: ${{ github.actor }}
-          #password: ${{ secrets.GITHUB_TOKEN }}
-          #registry: docker.pkg.github.com
-          #repository: jrotter2/AutoDQM/autodqm-webapp
-          #tag_with_ref: true
-  deploy:
-    runs-on: ubuntu-latest
-    container: gitlab-registry.cern.ch/paas-tools/openshift-client:latest
-    needs: build
-    steps:
-      - name: Pushing to Openshift
-        run: oc tag --token=${{ secrets.IMPORT_TOKEN_DEV }} --server=https://openshift.cern.ch --namespace autodqm-dev --source=docker ghcr.io/jrotter2/autodqmwebapp:latest autodqmwebapp:latest
 
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+
+    - name: Check out code into the Go module directory
+      uses: actions/checkout@v2
+
+    - name: Build
+      run: |
+        make
+    - name: Create Release
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.PAT }}
+      with:
+        tag_name: ${{ github.ref }}
+        release_name: Release ${{ github.ref }}
+        draft: false
+        prerelease: false
+
+    - name: Upload binary
+      id: upload-autodqm-dev
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.PAT }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ./autodqm-dev
+        asset_name: autodqm-dev
+        asset_content_type: application/octet-stream
+
+    - name: Get the Ref
+      id: get-ref
+      uses: ankitvgupta/ref-to-tag-action@master
+      with:
+        ref: ${{ github.ref }}
+        head_ref: ${{ github.head_ref }}
+
+    - name: Build image
+      run: |
+        curl -ksLO https://raw.githubusercontent.com/dmwm/CMSKubernetes/master/docker/httpgo/Dockerfile
+        sed -i -e "s,ENV TAG=.*,ENV TAG=${{steps.get-ref.outputs.tag}},g" Dockerfile
+        docker build . --tag docker.pkg.github.com/jrotter2/autodqm-dev/autodqm-dev
+        docker tag docker.pkg.github.com/jrotter2/autodqm-dev/autodqm-dev registry.cern.ch/cmsweb/autodqm
+    - name: Login to registry.cern.ch
+      uses: docker/login-action@v1.6.0
+      with:
+        registry: registry.cern.ch
+        username: ${{ secrets.CERN_LOGIN }}
+        password: ${{ secrets.CERN_TOKEN }}
+
+    - name: Publish image to registry.cern.ch
+      uses: docker/build-push-action@v1
+      with:
+        username: ${{ secrets.CERN_LOGIN }}
+        password: ${{ secrets.CERN_TOKEN }}
+        registry: registry.cern.ch
+        repository: cmsweb/autodqm
+        tag_with_ref: true
