@@ -59,6 +59,7 @@ jobs:
       - name: Publish image to registry.cern.ch
         uses: docker/build-push-action@v2
         with:
+          push: true
           username: ${{ secrets.CERN_LOGIN }}
           password: ${{ secrets.CERN_TOKEN }}
           registry: registry.cern.ch
