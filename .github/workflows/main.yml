@@ -52,9 +52,5 @@ jobs:
           tags: |
             ghcr.io/jrotter2/autodqmwebapp:latest
             registry.cern.ch/cmsweb/autodqmwebapp:latest
-          cache-from: |
-            ghcr.io/jrotter2/autodqmwebapp:cache
-            registry.cern.ch/cmsweb/autodqmwebapp:cache
-          cache-to: |
-            ghcr.io/jrotter2/autodqmwebapp:cache
-            registry.cern.ch/cmsweb/autodqmwebapp:cache
+          cache-from: ghcr.io/jrotter2/autodqmwebapp:cache
+          cache-to: ghcr.io/jrotter2/autodqmwebapp:cache
