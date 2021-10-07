@@ -35,24 +35,43 @@ jobs:
           registry: ghcr.io
           username: ${{ github.repository_owner }}
           password: ${{ secrets.PAT }}
+          
+      # Builds and exports image
       - 
-        name: Login to registry.cern.ch
+        name: Build Docker Image and Save It
+        uses: docker/build-push-action@v2
+        with:
+          tags: autodqmwebapp:latest
+          outputs: type=docker,dest=/tmp/autodqmwebapp.tar
+      -
+        name: Upload artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: autodqmwebapp
+          path: /tmp/autodqmwebapp.tar
+  push:
+    runs-on: ubuntu-latest
+    steps:
+      -
+        name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+      -
+        name: Download artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: autodqmwebapp
+          path: /tmp/autodqmwebapp.tar
+          
+      - name: Login to registry.cern.ch
         uses: docker/login-action@v1
         with:
           registry: registry.cern.ch
           username: ${{ secrets.CERN_LOGIN }}
           password: ${{ secrets.CERN_TOKEN }}
-      # Runs a single command using the runners shell
-      - name: Build Docker Image and Push to GitHub Packages
-        uses: docker/build-push-action@v2
-        with:
-          push: true
-          tags: ghcr.io/jrotter2/autodqmwebapp:latest
-          cache-from: ghcr.io/jrotter2/autodqmwebapp:cache
-          cache-to: ghcr.io/jrotter2/autodqmwebapp:cache
           
       - name: Pushing to registry.cern.ch
         run: |
+           docker load --input /tmp/autodqmwebapp.tar
            docker login -u ${{ secrets.CERN_LOGIN }} -p ${{ secrets.CERN_TOKEN }} registry.cern.ch
-           docker tag ghcr.io/jrotter2/autodqmwebapp:latest registry.cern.ch/cmsweb/autodqmwebapp:latest
+           docker tag autodqmwebapp:latest registry.cern.ch/cmsweb/autodqmwebapp:latest
            docker push registry.cern.ch/cmsweb/autodqmwebapp:latest
