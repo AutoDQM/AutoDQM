@@ -51,6 +51,7 @@ jobs:
           path: /tmp/autodqmwebapp.tar
   push:
     runs-on: ubuntu-latest
+    needs: build
     steps:
       -
         name: Set up Docker Buildx
