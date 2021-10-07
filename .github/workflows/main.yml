@@ -65,7 +65,8 @@ jobs:
           
       - name: Pushing to registry.cern.ch
         run: |
-           docker load --input /tmp/autodqmwebapp.tar
+           echo ${{ secrets.CERN_LOGIN }}
            docker login -u ${{ secrets.CERN_LOGIN }} -p ${{ secrets.CERN_TOKEN }} registry.cern.ch
+           docker load --input /tmp/autodqmwebapp.tar
            docker tag autodqmwebapp:latest registry.cern.ch/cmsweb/autodqmwebapp:latest
            docker push registry.cern.ch/cmsweb/autodqmwebapp:latest
