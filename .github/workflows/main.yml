@@ -42,6 +42,8 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           tags: autodqmwebapp:latest
+          cache-from: ghcr.io/jrotter2/autodqmwebapp:cache
+          cache-to: ghcr.io/jrotter2/autodqmwebapp:cache
           outputs: type=docker,dest=/tmp/autodqmwebapp.tar
       -
         name: Upload artifact
