@@ -61,7 +61,7 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: autodqmwebapp
-          path: /tmp/autodqmwebapp.tar
+          path: /tmp
           
       - name: Pushing to registry.cern.ch
         run: |
