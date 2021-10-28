@@ -16,10 +16,10 @@
     "reactstrap": "^6.3.1"
   },
   "scripts": {
-    "start": "export PORT=8080 react-scripts start",
+    "start": "export PORT=8083 react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
   },
-  "proxy": "0.0.0.0:8080"
+  "proxy": "0.0.0.0:8083"
 }
