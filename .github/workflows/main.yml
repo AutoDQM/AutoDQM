@@ -44,13 +44,13 @@ jobs:
           tags: autodqmwebapp:latest
           cache-from: ghcr.io/jrotter2/autodqmwebapp:cache
           cache-to: ghcr.io/jrotter2/autodqmwebapp:cache
-          outputs: type=docker,dest=/tmp/autodqmwebapp.tar
+          outputs: type=docker,dest=/tmp/autodqm.tar
       -
         name: Upload artifact
         uses: actions/upload-artifact@v2
         with:
-          name: autodqmwebapp
-          path: /tmp/autodqmwebapp.tar
+          name: autodqm
+          path: /tmp/autodqm.tar
   push:
     runs-on: ubuntu-latest
     needs: build
@@ -62,13 +62,13 @@ jobs:
         name: Download artifact
         uses: actions/download-artifact@v2
         with:
-          name: autodqmwebapp
+          name: autodqm
           path: /tmp
           
       - name: Pushing to registry.cern.ch
         run: |
            echo ${{ secrets.CERN_LOGIN }}
            docker login -u ${{ secrets.CERN_LOGIN }} -p ${{ secrets.CERN_TOKEN }} registry.cern.ch
-           docker load --input /tmp/autodqmwebapp.tar
-           docker tag autodqmwebapp:latest registry.cern.ch/cmsweb/autodqmwebapp:latest
-           docker push registry.cern.ch/cmsweb/autodqmwebapp:latest
+           docker load --input /tmp/autodqm.tar
+           docker tag autodqm:latest registry.cern.ch/cmsweb/autodqm:latest
+           docker push registry.cern.ch/cmsweb/autodqm:latest
