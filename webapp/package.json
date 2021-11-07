@@ -10,7 +10,7 @@
     "react-dom": "^16.4.1",
     "react-emotion": "^9.2.6",
     "react-router-dom": "^4.3.1",
-    "react-scripts": "1.1.4",
+    "react-scripts": "4.0.3",
     "react-select": "^2.0.0",
     "react-switch": "^3.0.4",
     "reactstrap": "^6.3.1"
