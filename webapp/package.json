@@ -21,6 +21,5 @@
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
   },
-  "homepage":"/dqm/autodqm/",
   "proxy": "0.0.0.0:8083"
 }

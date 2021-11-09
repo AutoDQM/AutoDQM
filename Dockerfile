@@ -42,6 +42,7 @@ ENV ADQM_CONFIG /var/www/public/config/
 ENV ADQM_PLUGINS /var/www/cgi-bin/plugins/
 ENV ADQM_MODELS /var/www/cgi-bin/models/
 ENV ADQM_MODULES /var/www/cgi-bin/modules/
+ENV PUBLIC_URL /dqm/autodqm/
 
 WORKDIR /webapp
 COPY webapp/package.json /webapp/package.json
