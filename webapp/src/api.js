@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API = '/cgi-bin/index.py';
+const API = './cgi-bin/index.py';
 
 export function getSubsystems() {
   return cancellableQuery(API, {type: 'get_subsystems'});
