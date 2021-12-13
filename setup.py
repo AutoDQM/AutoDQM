@@ -16,7 +16,7 @@ def get_version():
         exec(version_file.read(), _globals)
     return _globals["__version__"]
 
-requirements = ['lxml==4.5.2','requests-futures==1.0.0']
+requirements = ['lxml==4.6.5','requests-futures==1.0.0']
 
 setup(
     author="Rob White",
