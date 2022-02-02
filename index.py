@@ -16,6 +16,7 @@ from modules.histCollection import HistCleaner
 from modules.dqmpca import DQMPCA
 
 VARS = {}
+SITE_BASENAME = "/dqm/autodqm"
 
 
 def handle_request(req):
@@ -93,7 +94,7 @@ def process(subsystem,
 
     # Relativize the results paths
     def relativize(p): return os.path.join(
-        '/results', os.path.relpath(p, results_dir))
+        SITE_BASENAME + '/results', os.path.relpath(p, results_dir))
     for r in results:
         r['pdf_path'] = relativize(r['pdf_path'])
         r['json_path'] = relativize(r['json_path'])

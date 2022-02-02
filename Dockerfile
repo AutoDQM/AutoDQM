@@ -52,6 +52,9 @@ RUN npm run build
 RUN cp -r /webapp/build /var/www/public
 RUN cp -r /webapp/build /webapp/public
 
+RUN mkdir /var/www/results /var/www/results/pdfs /var/www/results/pngs /var/www/results/jsons
+RUN chmod 777 /var/www/results /var/www/results/pdfs /var/www/results/pngs /var/www/results/jsons
+
 COPY httpd.conf /etc/httpd/conf/httpd.conf
 COPY index.py /var/www/cgi-bin/index.py
 COPY autodqm /var/www/cgi-bin/autodqm
