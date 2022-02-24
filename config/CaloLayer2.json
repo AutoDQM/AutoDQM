@@ -4,6 +4,7 @@
       "norm_type": "col",
       "path": "Central-Jets/*"
     }, {
+      "norm_type": "col",
       "path": "Forward-Jets/*"
     }, {
       "path": "Isolated-EG/*"

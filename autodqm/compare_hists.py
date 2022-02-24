@@ -10,18 +10,15 @@ from autodqm import cfg
 from autodqm.histpair import HistPair
 import plotly
 
-def process(config_dir, subsystem,
+def process(chunk_index, chunk_size, config_dir, subsystem,
             data_series, data_sample, data_run, data_path,
             ref_series, ref_sample, ref_run, ref_path,
             output_dir='./out/', plugin_dir='./plugins/'):
 
     # Ensure no graphs are drawn to screen and no root messages are sent to
     # terminal
-    # ROOT.gROOT.SetBatch(ROOT.kTRUE)
-    # Report only errors to stderr
-    # ROOT.gErrorIgnoreLevel = ROOT.kWarning + 1
 
-    histpairs = compile_histpairs(config_dir, subsystem,
+    histpairs = compile_histpairs(chunk_index, chunk_size, config_dir, subsystem,
                                   data_series, data_sample, data_run, data_path,
                                   ref_series, ref_sample, ref_run, ref_path)
 
@@ -80,7 +77,7 @@ def process(config_dir, subsystem,
 
     return hist_outputs
 
-def compile_histpairs(config_dir, subsystem,
+def compile_histpairs(chunk_index, chunk_size, config_dir, subsystem,
                       data_series, data_sample, data_run, data_path,
                       ref_series, ref_sample, ref_run, ref_path):
 
@@ -90,8 +87,8 @@ def compile_histpairs(config_dir, subsystem,
     main_gdir = config["main_gdir"]
 
     # ROOT files
-    data_file_uproot = uproot.open(data_path)
-    ref_file_uproot = uproot.open(ref_path)
+    data_file = uproot.open(data_path)
+    ref_file = uproot.open(ref_path)
 
     histPairs = []
 
@@ -104,50 +101,50 @@ def compile_histpairs(config_dir, subsystem,
         data_dirname = "{0}{1}".format(main_gdir.format(data_run), gdir)
         ref_dirname = "{0}{1}".format(main_gdir.format(ref_run), gdir)
 
-        data_dir_uproot = data_file_uproot[data_dirname[:-1]]
-        ref_dir_uproot = ref_file_uproot[ref_dirname[:-1]]
+        data_dir = data_file[data_dirname[:-1]]
+        ref_dir = ref_file[ref_dirname[:-1]]
 
-        if not data_dir_uproot:
+        if not data_dir:
             raise error(
                 "Subsystem dir {0} not found in data root file".format(data_dirname))
-        if not ref_dir_uproot:
+        if not ref_dir:
             raise error(
                 "Subsystem dir {0} not found in ref root file".format(ref_dirname))
 
-        data_keys_uproot = data_dir_uproot.keys()
-        ref_keys_uproot = ref_dir_uproot.keys()
+        data_keys = data_dir.keys()
+        ref_keys = ref_dir.keys()
 
         valid_names = []
 
-        # Add existing histograms that match h to valid_names
+        # Add existing histograms that match h
         if "*" not in h:
-             if h in [str(keys)[0:-2] for keys in data_keys_uproot] and h in [str(keys)[0:-2] for keys in ref_keys_uproot]:
-                 valid_names.append(h)
+             if h in [str(keys)[0:-2] for keys in data_keys] and h in [str(keys)[0:-2] for keys in ref_keys]:
+                 try:
+                     data_hist = data_dir[h]
+                     ref_hist = ref_dir[h]
+                 except Exception as e:
+                     continue
+                 hPair = HistPair(hconf,
+                                  data_series, data_sample, data_run, str(h), data_hist,
+                                  ref_series, ref_sample, ref_run, str(h), ref_hist)
+                 histPairs.append(hPair)
         else:
-            # Check entire directory for files matching wildcard (Throw out wildcards with < in them as they are not plottable)
-            for name in data_keys_uproot:
-                if h.split("*")[0] in str(name) and name in ref_keys_uproot and not "<" in str(name):
-                    valid_names.append(name[:-2])
+            # Check entire directory for files matching wildcard (Throw out wildcards with / in them as they are not plottable)
+            for name in data_keys:
+                if h.split("*")[0] in str(name) and name in ref_keys and not "<" in str(name):
+                    if("/" not in name[:-2]):
+                        try:
+                            data_hist = data_dir[name[:-2]]
+                            ref_hist = ref_dir[name[:-2]]
+                        except Exception as e:
+                            continue
+                        hPair = HistPair(hconf,
+                                         data_series, data_sample, data_run, str(name[:-2]), data_hist,
+                                         ref_series, ref_sample, ref_run, str(name[:-2]), ref_hist)
+                        histPairs.append(hPair)
 
-        # Load the histograms and create HistPairs
-        for name in valid_names:
-            #this is a dirty way of checking to see if the histogram is plotable
-            if("/" in name):
-                continue
-
-            data_hits_uproot, ref_hist_uproot = None, None
-            try:
-                data_hist_uproot = data_dir_uproot[name]
-                ref_hist_uproot = ref_dir_uproot[name]
-            except Exception as e:
-                continue
-
-            hPair = HistPair(hconf,
-                             data_series, data_sample, data_run, str(name), data_hist_uproot,
-                             ref_series, ref_sample, ref_run, str(name), ref_hist_uproot)
-            histPairs.append(hPair)
-
-    return histPairs
+    #Return histpairs that match the chunk_index <<CAN BE IMPROVED IN THE FUTURE TO BE MORE EFFICIENT>>
+    return histPairs[min(chunk_index, len(histPairs)):min(chunk_index+chunk_size, len(histPairs))] 
 
 def load_comparators(plugin_dir):
     """Load comparators from each python module in ADQM_PLUGINS."""

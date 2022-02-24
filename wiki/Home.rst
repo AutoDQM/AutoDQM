@@ -6,7 +6,7 @@ AutoDQM is a statistical tool for Data Quality Management (DQM) at the Large Had
 #. `Motivation <https://github.com/jkguiang/AutoDQM/wiki#motivation>`_
 #. `The Statistical Arsenal <https://github.com/jkguiang/AutoDQM/wiki#the-statistical-arsenal>`_
 #. `Example Output <https://github.com/jkguiang/AutoDQM/wiki#example-output>`_
-
+#. `AutoDQM Machine Learning <https://autodqm-ml.readthedocs.io/en/latest>`_
 Motivation
 ----------
 
