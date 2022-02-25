@@ -6,8 +6,19 @@ statistical tests for further analysis by the user. Its output can be
 easily parsed by eye on an AutoPlotter-based html page which is
 automatically generated when you submit a query from the AutoDQM GUI.
 Full documentation for AutoDQM can be found on our
-`wiki <http://github.com/jkguiang/AutoDQM/wiki>`__.
+`wiki <https://autodqm-official.readthedocs.io/en/latest/index.html>`__.
 
+AutoDQM_ML
+========
+
+| The AutoDQM_ML repository is a toolkit for developing machine learning algorithms to detect anomalies in offline DQM histograms. 
+| `Github repo <https://github.com/AutoDQM/AutoDQM_ML>`_ 
+| `AutoDQM_ML wiki <https://autodqm-ml.readthedocs.io/en/latest/index.html>`_ 
+| `AutoDQM_ML tutorial <https://autodqm.github.io/autodqm_ml.github.io/>`_
+
+
+Index
+========
 1. `Features <#features>`__
 2. `Setting Up AutoDQM for
    Development <#setting-up-autodqm-for-development>`__
@@ -42,8 +53,7 @@ plots.php
 Setting Up AutoDQM for Development
 ----------------------------------
 
-This shows how to set up AutoDQM to be served from your local machine or
-a machine on CERN OpenStack. This was written based on a fresh CC7 VM on
+This shows how to set up AutoDQM to be served from a machine on CERN OpenStack. This was written based on a fresh CC7 VM on
 CERN OpenStack.
 
 You'll need a CERN User/Host certificate authorized with the CMS VO. CMS
@@ -95,13 +105,24 @@ docker-compose, and deploy the image as a docker stack
     docker-compose build
     docker stack deploy --compose-file=./docker-compose.yml autodqm
 
-You can now view AutoDQM at ``http://127.0.0.1``. If you would like to
-make your instance of AutoDQM public, oopen port 80 to http traffic on
+To view AutoDQM, first your browser proxy will need to be set to listen to a port. Insturctions to do this can be found `here <https://github.com/chosila/AutoDQM-1/wiki/Set-up-manual-proxy-on-firefox>`_. 
+
+After setting the proxy on your browser, forward your lxplus connection: 
+
+.. code:: sh
+    
+    ssh <cmsusr>@lxplus.cern.ch -ND <port>
+
+Note: Any port number will work so long as you match this forwarded port number to the port number in the browser network settings.
+
+
+You can now view AutoDQM at ``<VM name>.cern.ch:8083/dqm/autodqm/``. If you would like to
+make your instance of AutoDQM public, open port 8083 to http traffic on
 your firewall. For example, on CC7:
 
 .. code:: sh
 
-    sudo firewall-cmd --permanent --add-port=80/tcp
+    sudo firewall-cmd --permanent --add-port=8083/tcp
     sudo firewall-cmd --reload
 
 After making changes to configuration or source code, rebuild and

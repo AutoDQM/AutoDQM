@@ -4,7 +4,10 @@ services:
     build: .
     image: autodqm:latest
     ports:
-      - "80:80"
+      - "8083:8083"
+    environment:
+      - ADQM_SSLCERT=/run/secrets/cmsvo-cert.pem
+      - ADQM_SSLKEY=/run/secrets/cmsvo-cert.key
     volumes:
       - adqm-db:/db
       - .:/code

@@ -30,7 +30,7 @@ class App extends Component {
       ? api.queryUrl(this.state.recentQuery)
       : '';
     return (
-      <Router>
+      <Router basename="/dqm/autodqm/">
         <React.Fragment>
           <Nav tabs>
             <NavItem>
