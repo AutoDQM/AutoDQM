@@ -42,8 +42,7 @@ plots.php
 Setting Up AutoDQM for Development
 ----------------------------------
 
-This shows how to set up AutoDQM to be served from your local machine or
-a machine on CERN OpenStack. This was written based on a fresh CC7 VM on
+This shows how to set up AutoDQM to be served from a machine on CERN OpenStack. This was written based on a fresh CC7 VM on
 CERN OpenStack.
 
 You'll need a CERN User/Host certificate authorized with the CMS VO. CMS
@@ -95,13 +94,20 @@ docker-compose, and deploy the image as a docker stack
     docker-compose build
     docker stack deploy --compose-file=./docker-compose.yml autodqm
 
-You can now view AutoDQM at ``http://127.0.0.1``. If you would like to
+To view AutoDQM, first your browser proxy will need to be set to listen to a port. Insturctions to do this can be found here. 
+
+After setting the proxy on Firefox, to forward your lxplus connection, you can do: 
+.. code:: sh
+    
+    ssh <cmsusr>.cern.ch -ND <port number> 
+
+You can now view AutoDQM at ``<VM name>.cern.ch:8083/dqm/autodqm/``. If you would like to
 make your instance of AutoDQM public, oopen port 80 to http traffic on
 your firewall. For example, on CC7:
 
 .. code:: sh
 
-    sudo firewall-cmd --permanent --add-port=80/tcp
+    sudo firewall-cmd --permanent --add-port=8083/tcp
     sudo firewall-cmd --reload
 
 After making changes to configuration or source code, rebuild and
