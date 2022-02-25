@@ -100,9 +100,9 @@ After setting the proxy on Firefox, forward your lxplus connection:
 
 .. code:: sh
     
-    ssh <cmsusr>.cern.ch -ND 1080 
+    ssh <cmsusr>@lxplus.cern.ch -ND <port>
 
-Note: 1080 is chosen to match the proxy setting in Firefox. Any port number will work so long as you match this forwarded port number to the port number in Firefox network settings.
+Note: Any port number will work so long as you match this forwarded port number to the port number in Firefox network settings.
 
 
 You can now view AutoDQM at ``<VM name>.cern.ch:8083/dqm/autodqm/``. If you would like to
