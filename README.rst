@@ -94,15 +94,19 @@ docker-compose, and deploy the image as a docker stack
     docker-compose build
     docker stack deploy --compose-file=./docker-compose.yml autodqm
 
-To view AutoDQM, first your browser proxy will need to be set to listen to a port. Insturctions to do this can be found here. 
+To view AutoDQM, first your browser proxy will need to be set to listen to a port. Insturctions to do this can be found `here <https://github.com/chosila/AutoDQM-1/wiki/Set-up-manual-proxy-on-firefox>`_. 
 
-After setting the proxy on Firefox, to forward your lxplus connection, you can do: 
+After setting the proxy on Firefox, forward your lxplus connection: 
+
 .. code:: sh
     
-    ssh <cmsusr>.cern.ch -ND <port number> 
+    ssh <cmsusr>.cern.ch -ND 1080 
+
+Note: 1080 is chosen to match the proxy setting in Firefox. Any port number will work so long as you match this forwarded port number to the port number in Firefox network settings.
+
 
 You can now view AutoDQM at ``<VM name>.cern.ch:8083/dqm/autodqm/``. If you would like to
-make your instance of AutoDQM public, oopen port 80 to http traffic on
+make your instance of AutoDQM public, open port 8083 to http traffic on
 your firewall. For example, on CC7:
 
 .. code:: sh
