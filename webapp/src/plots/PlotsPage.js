@@ -116,7 +116,7 @@ export default class PlotsPage extends Component {
     //chunk_size is the number of plots processeed in each chunk
     var plots = [];
     var chunk_index = 0;
-    const chunk_size = 200;
+    const chunk_size = 60;
 
     Promise.all([refReq, dataReq])
       .then(res => {
