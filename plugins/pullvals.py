@@ -69,7 +69,7 @@ def pullvals(histpair,
     ## compute chi2
     chi2 = new_pull*new_pull/nBins
 
-    max_pull = max(numpy.abs(new_pull))
+    max_pull = numpy.maximum(numpy.abs(new_pull))
 
     # Clamp the displayed value
     # fill_val = max(min(new_pull, pull_cap), -pull_cap)
