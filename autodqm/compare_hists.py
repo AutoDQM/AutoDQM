@@ -34,9 +34,9 @@ def process(chunk_index, chunk_size, config_dir, subsystem,
     comparator_funcs = load_comparators(plugin_dir)
 
     pool = multiprocessing.Pool(multiprocessing.cpu_count())
-    parallel_obj = [pool.apply(get_hist_outputs, args=(hp, comparator_funcs, output_dir)) for hp in histpairs]
-    hist_outputs = [obj.get() for obj in parallel_obj] 
-    #hist_outputs = []
+    #parallel_obj = [pool.apply(get_hist_outputs, args=(hp, comparator_funcs, output_dir)) for hp in histpairs]
+    #hist_outputs = [obj.get() for obj in parallel_obj] 
+    hist_outputs =  [pool.apply(get_hist_outputs, args=(hp, comparator_funcs, output_dir)) for hp in histpairs]
     return hist_outputs
 
 def get_hist_outputs(hp, comparator_funcs,output_dir):
