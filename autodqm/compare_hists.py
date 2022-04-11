@@ -11,7 +11,7 @@ from autodqm.histpair import HistPair
 import plotly
 import multiprocessing 
 
-pool = multiprocessing.Pool(multiprocessing.cpu_count())
+
 
 def process(chunk_index, chunk_size, config_dir, subsystem,
             data_series, data_sample, data_run, data_path,
@@ -33,9 +33,10 @@ def process(chunk_index, chunk_size, config_dir, subsystem,
 
     comparator_funcs = load_comparators(plugin_dir)
 
+    pool = multiprocessing.Pool(2)
     parallel_obj = [pool.apply_async(get_hist_outputs, args=(hp, comparator_funcs, output_dir)) for hp in histpairs]
     hist_outputs = [obj.get() for obj in parallel_obj] 
-
+    #hist_outputs = []
     return hist_outputs
 
 def get_hist_outputs(hp, comparator_funcs,output_dir):
@@ -76,15 +77,15 @@ def get_hist_outputs(hp, comparator_funcs,output_dir):
                 'json_path': json_path,
                 'png_path': png_path,
             }
-            with open(json_path, 'w') as jf:
-                json.dump(info, jf)
+            #with open(json_path, 'w') as jf:
+            json.dump(info, open(json_path, 'w'))#jf)
         else:
-            with open(json_path) as jf:
-                info = json.load(jf)
+            #with open(json_path) as jf:
+                info = json.load(open(json_path))#jf)
 
         #hist_outputs.append(info)
 
-    return info#hist_outputs
+    return info# hist_outputs #info
 
 def compile_histpairs(chunk_index, chunk_size, config_dir, subsystem,
                       data_series, data_sample, data_run, data_path,
