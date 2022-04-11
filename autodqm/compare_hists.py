@@ -76,6 +76,7 @@ def get_hist_outputs(hp, comparator_funcs,output_dir):
                 'pdf_path': pdf_path,
                 'json_path': json_path,
                 'png_path': png_path,
+                'cpu_count()' : multiprocessing.cpu_count()
             }
             #with open(json_path, 'w') as jf:
             json.dump(info, open(json_path, 'w'))#jf)
