@@ -55,10 +55,36 @@ def pullvals(histpair,
     data_hist_errs = numpy.nan_to_num(abs(numpy.array(scipy.stats.chi2.interval(0.6827, 2 * data_hist_norm)) / 2 - 1 - data_hist_norm))
     ref_hist_errs = numpy.nan_to_num(abs(numpy.array(scipy.stats.chi2.interval(0.6827, 2 * ref_hist_norm)) / 2 - 1 - ref_hist_norm))
 
-    max_pull = 0
-    nBins = 0
+    #max_pull = 0
+    nBins = data_hist_norm.size
     chi2 = 0
-    for x in range(0, data_hist_norm.shape[0]):
+
+    ## pull value
+    data_hist_err, ref_hist_err = data_hist_errs[0, :, :], ref_hist_errs[1, :, :]
+    mask = data_hist_norm < ref_hist_norm
+    data_hist_err[mask] = data_hist_errs[1, :, :][mask]
+    ref_hist_err[mask] = ref_hist_errs[0, :, :][mask]
+    new_pull = pull(data_hist_norm, data_hist_err, ref_hist_norm, ref_hist_err)
+    
+    ## compute chi2
+    chi2 = new_pull*new_pull/nBins
+
+    max_pull = max(numpy.abs(new_pull))
+
+    # Clamp the displayed value
+    # fill_val = max(min(new_pull, pull_cap), -pull_cap)
+    fill_val = numpy.clip(new_pull, a_min=-pull_cap, a_max=pull)   
+
+
+    # If the input bins were explicitly empty, make this bin white by
+    # setting it out of range
+    mask = bin1 + bin2 == 0
+    fill_val[mask] = -999
+
+    # Fill Pull Histogram            
+    pull_hist = fill_val 
+
+    """for x in range(0, data_hist_norm.shape[0]):
         for y in range(0, data_hist_norm.shape[1]):
 
             # Bin 1 data
@@ -95,10 +121,10 @@ def pullvals(histpair,
                 fill_val = -999
 
             # Fill Pull Histogram            
-            pull_hist[x, y] = fill_val
+            pull_hist[x, y] = fill_val """
 
     # Compute chi2
-    chi2 = (chi2 / nBins)
+    #chi2 = (chi2 / nBins)
 
     is_outlier = is_good and (chi2 > chi2_cut or abs(max_pull) > pull_cut)
 
@@ -179,8 +205,10 @@ def pull(bin1, binerr1, bin2, binerr2):
     ''' Calculate the pull value between two bins.
         pull = (data - expected)/sqrt(sum of errors in quadrature))
         data = |bin1 - bin2|, expected = 0
+        
+        only divide where bin1+bin2 != 0, output zero where that happens
     '''
-    return (bin1 - bin2) / ((binerr1**2 + binerr2**2)**0.5)
+    return numpy.divide( (bin1 - bin2) , ((binerr1**2 + binerr2**2)**0.5), where=(bin1+bin2)!=0, out=numpy.zeros_like(bin1))
 
 def normalize_rows(data_hist_norm, ref_hist_norm):
 
