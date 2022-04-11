@@ -33,12 +33,12 @@ def process(chunk_index, chunk_size, config_dir, subsystem,
 
     comparator_funcs = load_comparators(plugin_dir)
 
-    parallel_obj = [pool.apply_async(get_hist_outputs, args=(hp, comparator_funcs, comp_name, output_dir, result_id)) for hp in histpairs]
+    parallel_obj = [pool.apply_async(get_hist_outputs, args=(hp, comparator_funcs, output_dir, result_id)) for hp in histpairs]
     hist_outputs = [obj.get() for obj in parallel_obj] 
 
     return hist_outputs
 
-def get_hist_outputs(hp, comparator_funcs,comp_name,output_dir,result_id,):
+def get_hist_outputs(hp, comparator_funcs,output_dir,result_id,):
     try:
         comparators = [(c, comparator_funcs[c]) for c in hp.comparators]
     except KeyError as e:
