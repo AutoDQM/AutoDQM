@@ -9,6 +9,9 @@ import uproot
 from autodqm import cfg
 from autodqm.histpair import HistPair
 import plotly
+import multiprocessing 
+
+pool = multiprocessing.Pool(multiprocessing.cpu_count())
 
 def process(chunk_index, chunk_size, config_dir, subsystem,
             data_series, data_sample, data_run, data_path,
@@ -26,56 +29,62 @@ def process(chunk_index, chunk_size, config_dir, subsystem,
         if not os.path.exists(d):
             os.makedirs(d)
 
-    hist_outputs = []
+    #hist_outputs = []
 
     comparator_funcs = load_comparators(plugin_dir)
-    for hp in histpairs:
-        try:
-            comparators = [(c, comparator_funcs[c]) for c in hp.comparators]
-        except KeyError as e:
-            raise error("Comparator {} was not found.".format(str(e)))
 
-        for comp_name, comparator in comparators:
-            result_id = identifier(hp, comp_name)
-            pdf_path = '{}/pdfs/{}.pdf'.format(output_dir, result_id)
-            json_path = '{}/jsons/{}.json'.format(output_dir, result_id)
-            png_path = '{}/pngs/{}.png'.format(output_dir, result_id)
-
-            if not os.path.isfile(json_path):
-                results = comparator(hp, **hp.config)
-
-                # Continue if no results
-                if not results:
-                    continue
-
-                # Make pdf
-                results.canvas.write_image(pdf_path)
-
-                # Make png
-                subprocess.Popen(
-                    ['convert', '-density', '50', '-trim', '-fuzz', '1%', pdf_path, png_path])
-
-                # Make json
-                info = {
-                    'id': result_id,
-                    'name': hp.data_name,
-                    'comparator': comp_name,
-                    'display': results.show or hp.config.get('always_show', False),
-                    'config': hp.config,
-                    'results': results.info,
-                    'pdf_path': pdf_path,
-                    'json_path': json_path,
-                    'png_path': png_path,
-                }
-                with open(json_path, 'w') as jf:
-                    json.dump(info, jf)
-            else:
-                with open(json_path) as jf:
-                    info = json.load(jf)
-
-            hist_outputs.append(info)
+    parallel_obj = [pool.apply_async(get_hist_outputs, args=(hp, comparator_funcs, comp_name, output_dir, result_id)) for hp in histpairs]
+    hist_outputs = [obj.get() for obj in parallel_obj] 
 
     return hist_outputs
+
+def get_hist_outputs(hp, comparator_funcs,comp_name,output_dir,result_id,):
+    try:
+        comparators = [(c, comparator_funcs[c]) for c in hp.comparators]
+    except KeyError as e:
+        raise error("Comparator {} was not found.".format(str(e)))
+
+    for comp_name, comparator in comparators:
+        result_id = identifier(hp, comp_name)
+        pdf_path = '{}/pdfs/{}.pdf'.format(output_dir, result_id)
+        json_path = '{}/jsons/{}.json'.format(output_dir, result_id)
+        png_path = '{}/pngs/{}.png'.format(output_dir, result_id)
+
+        if not os.path.isfile(json_path):
+            results = comparator(hp, **hp.config)
+
+            # Continue if no results
+            if not results:
+                continue
+
+            # Make pdf
+            results.canvas.write_image(pdf_path)
+
+            # Make png
+            subprocess.Popen(
+                ['convert', '-density', '50', '-trim', '-fuzz', '1%', pdf_path, png_path])
+
+            # Make json
+            info = {
+                'id': result_id,
+                'name': hp.data_name,
+                'comparator': comp_name,
+                'display': results.show or hp.config.get('always_show', False),
+                'config': hp.config,
+                'results': results.info,
+                'pdf_path': pdf_path,
+                'json_path': json_path,
+                'png_path': png_path,
+            }
+            with open(json_path, 'w') as jf:
+                json.dump(info, jf)
+        else:
+            with open(json_path) as jf:
+                info = json.load(jf)
+
+        #hist_outputs.append(info)
+
+    return info#hist_outputs
 
 def compile_histpairs(chunk_index, chunk_size, config_dir, subsystem,
                       data_series, data_sample, data_run, data_path,
