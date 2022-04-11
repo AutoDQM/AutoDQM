@@ -36,8 +36,8 @@ def pullvals(histpair,
     pull_hist = numpy.copy(data_hist_norm)
 
     # Declare data_hist_Entries and ref_hist_Entries
-    data_hist_Entries = numpy.sum(data_hist_norm);
-    ref_hist_Entries = numpy.sum(ref_hist_norm);
+    data_hist_Entries = numpy.sum(data_hist_norm)
+    ref_hist_Entries = numpy.sum(ref_hist_norm)
     # Reject empty histograms
     is_good = data_hist_Entries != 0 and data_hist_Entries >= min_entries
 
@@ -55,9 +55,12 @@ def pullvals(histpair,
     data_hist_errs = numpy.nan_to_num(abs(numpy.array(scipy.stats.chi2.interval(0.6827, 2 * data_hist_norm)) / 2 - 1 - data_hist_norm))
     ref_hist_errs = numpy.nan_to_num(abs(numpy.array(scipy.stats.chi2.interval(0.6827, 2 * ref_hist_norm)) / 2 - 1 - ref_hist_norm))
 
-    #max_pull = 0
+    # max_pull = 0
+    # nBins=0#nBins = data_hist_norm.size
+    # chi2 = 0
+
+
     nBins = data_hist_norm.size
-    chi2 = 0
 
     ## pull value
     data_hist_err, ref_hist_err = data_hist_errs[0, :, :], ref_hist_errs[1, :, :]
@@ -65,26 +68,24 @@ def pullvals(histpair,
     data_hist_err[mask] = data_hist_errs[1, :, :][mask]
     ref_hist_err[mask] = ref_hist_errs[0, :, :][mask]
     new_pull = pull(data_hist_norm, data_hist_err, ref_hist_norm, ref_hist_err)
-    
-    ## compute chi2
-    chi2 = new_pull*new_pull/nBins
 
-    max_pull = numpy.maximum(numpy.abs(new_pull))
+    ## compute chi2
+    chi2 = (new_pull*new_pull).sum()/nBins
+
+    max_pull = numpy.abs(new_pull).max()
 
     # Clamp the displayed value
-    # fill_val = max(min(new_pull, pull_cap), -pull_cap)
-    fill_val = numpy.clip(new_pull, a_min=-pull_cap, a_max=pull)   
-
+    fill_val = numpy.clip(new_pull, -pull_cap, pull_cap)   
 
     # If the input bins were explicitly empty, make this bin white by
     # setting it out of range
-    mask = bin1 + bin2 == 0
+    mask = data_hist_norm + ref_hist_norm == 0
     fill_val[mask] = -999
 
     # Fill Pull Histogram            
     pull_hist = fill_val 
 
-    """for x in range(0, data_hist_norm.shape[0]):
+    f""" or x in range(0, data_hist_norm.shape[0]):
         for y in range(0, data_hist_norm.shape[1]):
 
             # Bin 1 data
@@ -137,7 +138,7 @@ def pullvals(histpair,
     yLabels = None
     c = None
     x_axis_type = 'linear'
-    y_axis_type = 'linear';
+    y_axis_type = 'linear'
     if data_hist.axes[0].labels():
        xLabels = [str(x) for x in data_hist.axes[0].labels()]
        x_axis_type = 'category'
@@ -208,7 +209,7 @@ def pull(bin1, binerr1, bin2, binerr2):
         
         only divide where bin1+bin2 != 0, output zero where that happens
     '''
-    return numpy.divide( (bin1 - bin2) , ((binerr1**2 + binerr2**2)**0.5), where=(bin1+bin2)!=0, out=numpy.zeros_like(bin1))
+    return numpy.divide( (bin1 - bin2) , ((binerr1**2 + binerr2**2)**0.5), where=(bin1+bin2)!=0)#, out=numpy.zeros_like(bin1))
 
 def normalize_rows(data_hist_norm, ref_hist_norm):
 
