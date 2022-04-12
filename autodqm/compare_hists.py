@@ -34,14 +34,14 @@ def process(chunk_index, chunk_size, config_dir, subsystem,
 
     comparator_funcs = load_comparators(plugin_dir)
 
-    #pool = multiprocessing.Pool(1)#multiprocessing.cpu_count())
-    #parallel_obj = [pool.apply_async(get_hist_outputs, args=(hp, comparator_funcs, output_dir)) for hp in histpairs]
-    #hist_outputs = [obj.get() for obj in parallel_obj] 
+    pool = multiprocessing.Pool(1)#multiprocessing.cpu_count())
+    parallel_obj = [pool.apply_async(get_hist_outputs, args=(hp, comparator_funcs, output_dir)) for hp in histpairs]
+    hist_outputs = [obj.get() for obj in parallel_obj] 
     #hist_outputs =  [pool.apply(get_hist_outputs, args=(hp, comparator_funcs, output_dir)) for hp in histpairs]
-    #return hist_outputs
+    return hist_outputs
 
-#def get_hist_outputs(hp, comparator_funcs,output_dir):
-    for hp in histpairs:
+def get_hist_outputs(hp, comparator_funcs,output_dir):
+    for i in [1]:#for hp in histpairs:
         try:
             comparators = [(c, comparator_funcs[c]) for c in hp.comparators]
         except KeyError as e:
@@ -88,9 +88,9 @@ def process(chunk_index, chunk_size, config_dir, subsystem,
                     info = json.load(open(json_path))#jf)
             info['time'] = time.time()-s
             info['t process'] = time.time() - processtime
-            hist_outputs.append(info)
+            #hist_outputs.append(info)
 
-    return hist_outputs #info
+    return info#hist_outputs #info
 
 def compile_histpairs(chunk_index, chunk_size, config_dir, subsystem,
                       data_series, data_sample, data_run, data_path,
