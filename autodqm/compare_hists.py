@@ -21,10 +21,7 @@ def process(chunk_index, chunk_size, config_dir, subsystem,
 
     # Ensure no graphs are drawn to screen and no root messages are sent to
     # terminal
-
-    s = time.time()
-
-
+    processtime = time.time()
     histpairs = compile_histpairs(chunk_index, chunk_size, config_dir, subsystem,
                                   data_series, data_sample, data_run, data_path,
                                   ref_series, ref_sample, ref_run, ref_path)
@@ -51,6 +48,7 @@ def process(chunk_index, chunk_size, config_dir, subsystem,
             raise error("Comparator {} was not found.".format(str(e)))
 
         for comp_name, comparator in comparators:
+            s = time.time()
             result_id = identifier(hp, comp_name)
             pdf_path = '{}/pdfs/{}.pdf'.format(output_dir, result_id)
             json_path = '{}/jsons/{}.json'.format(output_dir, result_id)
@@ -89,10 +87,9 @@ def process(chunk_index, chunk_size, config_dir, subsystem,
                 #with open(json_path) as jf:
                     info = json.load(open(json_path))#jf)
             info['time'] = time.time()-s
+            info['t process'] = time.time() - processtime
             hist_outputs.append(info)
 
-
-    
     return hist_outputs #info
 
 def compile_histpairs(chunk_index, chunk_size, config_dir, subsystem,
