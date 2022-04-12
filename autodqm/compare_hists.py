@@ -67,8 +67,8 @@ def process(chunk_index, chunk_size, config_dir, subsystem,
                 results.canvas.write_image(pdf_path)
 
                 # Make png
-                #subprocess.Popen(
-                #    ['convert', '-density', '50', '-trim', '-fuzz', '1%', pdf_path, png_path])
+                subprocess.Popen(
+                    ['convert', '-density', '50', '-trim', '-fuzz', '1%', pdf_path, png_path])
 
                 # Make json
                 info = {
