@@ -88,11 +88,11 @@ def process(chunk_index, chunk_size, config_dir, subsystem,
             else:
                 #with open(json_path) as jf:
                     info = json.load(open(json_path))#jf)
-
+            info['time'] = time.time()-s
             hist_outputs.append(info)
 
 
-    info['time'] = time.time()-s
+    
     return hist_outputs #info
 
 def compile_histpairs(chunk_index, chunk_size, config_dir, subsystem,
