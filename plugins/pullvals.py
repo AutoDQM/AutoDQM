@@ -85,7 +85,15 @@ def pullvals(histpair,
     # Fill Pull Histogram            
     pull_hist = fill_val 
 
-    f""" or x in range(0, data_hist_norm.shape[0]):
+
+    chi2_ = chi2
+    max_pull_ = max_pull
+    pull_hist_ = pull_hist
+
+    max_pull = 0 
+    nBins = 0 
+    chi2 = 0
+    for x in range(0, data_hist_norm.shape[0]):
         for y in range(0, data_hist_norm.shape[1]):
 
             # Bin 1 data
@@ -122,10 +130,21 @@ def pullvals(histpair,
                 fill_val = -999
 
             # Fill Pull Histogram            
-            pull_hist[x, y] = fill_val """
+            pull_hist[x, y] = fill_val
 
     # Compute chi2
-    #chi2 = (chi2 / nBins)
+    chi2 = (chi2 / nBins)
+
+
+
+    print('-------------------------------------------')
+    print('chi2: ', chi2, chi2_)
+    print('max pull: ', max_pull_ == max_pull)
+    print('pull_hist: ', numpy.array_equiv(pull_hist, pull_hist_))
+    print('----------------------------------------------')
+
+
+
 
     is_outlier = is_good and (chi2 > chi2_cut or abs(max_pull) > pull_cut)
 
