@@ -213,7 +213,7 @@ def pull(bin1, binerr1, bin2, binerr2):
         
         only divide where bin1+bin2 != 0, output zero where that happens
     '''
-    return numpy.divide( (bin1 - bin2) , ((binerr1**2 + binerr2**2)**0.5), where=(bin1+bin2)!=0)#, out=numpy.zeros_like(bin1))
+    return numpy.divide( (bin1 - bin2) , ((binerr1**2 + binerr2**2)**0.5), where=(binerr1+binerr2)!=0)#, out=numpy.zeros_like(bin1))
 
 def normalize_rows(data_hist_norm, ref_hist_norm):
 
