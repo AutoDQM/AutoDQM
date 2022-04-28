@@ -9,7 +9,6 @@ import uproot
 from autodqm import cfg
 from autodqm.histpair import HistPair
 import plotly
-import multiprocessing 
 import time
 
 
@@ -33,13 +32,6 @@ def process(chunk_index, chunk_size, config_dir, subsystem,
 
     comparator_funcs = load_comparators(plugin_dir)
 
-    #pool = multiprocessing.Pool(2)#multiprocessing.cpu_count())
-    #parallel_obj = [pool.apply_async(get_hist_outputs, args=(hp, comparator_funcs, output_dir)) for hp in histpairs]
-    #hist_outputs = [obj.get() for obj in parallel_obj] 
-    #hist_outputs =  [pool.apply(get_hist_outputs, args=(hp, comparator_funcs, output_dir)) for hp in histpairs]
-    #return hist_outputs
-
-#def get_hist_outputs(hp, comparator_funcs,output_dir):
     for hp in histpairs:
         try:
             comparators = [(c, comparator_funcs[c]) for c in hp.comparators]
@@ -78,18 +70,17 @@ def process(chunk_index, chunk_size, config_dir, subsystem,
                     'pdf_path': pdf_path,
                     'json_path': json_path,
                     'png_path': png_path,
-                    'time' : time.time()- s,
-                    'cpu_count()' : multiprocessing.cpu_count()
+                    'time' : time.time()- s
                 }
-                #with open(json_path, 'w') as jf:
-                json.dump(info, open(json_path, 'w'))#jf)
+                with open(json_path, 'w') as jf:
+                    json.dump(info, jf)
             else:
-                #with open(json_path) as jf:
-                    info = json.load(open(json_path))#jf)
+                with open(json_path) as jf:
+                    info = json.load(jf)
             
-            #hist_outputs.append(info)
+            hist_outputs.append(info)
 
-    return hist_outputs #info
+    return hist_outputs
 
 def compile_histpairs(chunk_index, chunk_size, config_dir, subsystem,
                       data_series, data_sample, data_run, data_path,
