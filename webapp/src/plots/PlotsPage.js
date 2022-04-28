@@ -86,7 +86,7 @@ export default class PlotsPage extends Component {
               this.setState({plots, procReq: null, showLoading: false});
             }else
             {
-              this.setState({plots});
+              this.setState({plots})
               this.processChunk({query, plots, chunk_index, chunk_size});
             }
         });
@@ -114,13 +114,15 @@ export default class PlotsPage extends Component {
     //Plots will hold the entire set of plots while the process is being chunk processed
     //chunk_index is the first plot to be processed
     //chunk_size is the number of plots processeed in each chunk
+    //this chunk_size chosen to avoid timeout with the current setup. if higher efficiency is 
+    //achieved, chunk_size could increase
     var plots = [];
     var chunk_index = 0;
-    const chunk_size = 60;
+    const chunk_size = 790; 
 
     Promise.all([refReq, dataReq])
       .then(res => {
-        this.processChunk({query, plots, chunk_index, chunk_size});
+        this.processChunk({query, plots, chunk_index, chunk_size});	
       })
       .catch(err => {
         if (err.type === 'cancel') return;
