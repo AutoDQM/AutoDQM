@@ -10,6 +10,7 @@ from autodqm import cfg
 from autodqm.histpair import HistPair
 import plotly
 
+
 def process(chunk_index, chunk_size, config_dir, subsystem,
             data_series, data_sample, data_run, data_path,
             ref_series, ref_sample, ref_run, ref_path,
@@ -17,7 +18,6 @@ def process(chunk_index, chunk_size, config_dir, subsystem,
 
     # Ensure no graphs are drawn to screen and no root messages are sent to
     # terminal
-
     histpairs = compile_histpairs(chunk_index, chunk_size, config_dir, subsystem,
                                   data_series, data_sample, data_run, data_path,
                                   ref_series, ref_sample, ref_run, ref_path)
@@ -29,6 +29,7 @@ def process(chunk_index, chunk_size, config_dir, subsystem,
     hist_outputs = []
 
     comparator_funcs = load_comparators(plugin_dir)
+
     for hp in histpairs:
         try:
             comparators = [(c, comparator_funcs[c]) for c in hp.comparators]
@@ -72,7 +73,7 @@ def process(chunk_index, chunk_size, config_dir, subsystem,
             else:
                 with open(json_path) as jf:
                     info = json.load(jf)
-
+            
             hist_outputs.append(info)
 
     return hist_outputs

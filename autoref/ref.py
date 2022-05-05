@@ -1,5 +1,5 @@
 from datetime import datetime
-import ROOT
+import numpy
 
 def get_ref_cands(ref_data):
     """Check various cuts to get 1st and 2nd order reference
@@ -111,7 +111,7 @@ def _get_avg_lumi(init_lumi, end_lumi):
     diff = init_lumi-end_lumi
     quot = init_lumi/end_lumi
 
-    avg = diff/ROOT.TMath.Log(quot)
+    avg = diff/numpy.log(quot)#ROOT.TMath.Log(quot)
 
     return avg
 
