@@ -1,5 +1,4 @@
 from datetime import datetime
-#import ROOT
 import numpy
 
 def get_ref_cands(ref_data):

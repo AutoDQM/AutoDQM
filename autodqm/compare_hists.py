@@ -9,8 +9,6 @@ import uproot
 from autodqm import cfg
 from autodqm.histpair import HistPair
 import plotly
-import time
-
 
 
 def process(chunk_index, chunk_size, config_dir, subsystem,
@@ -39,7 +37,6 @@ def process(chunk_index, chunk_size, config_dir, subsystem,
             raise error("Comparator {} was not found.".format(str(e)))
 
         for comp_name, comparator in comparators:
-            s = time.time()
             result_id = identifier(hp, comp_name)
             pdf_path = '{}/pdfs/{}.pdf'.format(output_dir, result_id)
             json_path = '{}/jsons/{}.json'.format(output_dir, result_id)
@@ -70,7 +67,6 @@ def process(chunk_index, chunk_size, config_dir, subsystem,
                     'pdf_path': pdf_path,
                     'json_path': json_path,
                     'png_path': png_path,
-                    'time' : time.time()- s
                 }
                 with open(json_path, 'w') as jf:
                     json.dump(info, jf)
