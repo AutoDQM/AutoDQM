@@ -62,7 +62,7 @@ class App extends Component {
               )}
             />
             <Route
-              path="/plots/:subsystem/:refSeries/:refSample/:refRun/:dataSeries/:dataSample/:dataRun"
+              path="/plots/:subsystem/:refSeries/:refSample/:refRun/:dataSeries/:dataSample/:dataRun" 
               render={props => (
                 <PlotsPage onNewQuery={this.handleNewQuery} {...props} />
               )}
