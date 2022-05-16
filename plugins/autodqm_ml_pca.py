@@ -126,6 +126,7 @@ def autodqm_ml_pca(histpair, **kwargs):
 
     if not os.path.exists(f_pca):
         show = False
+        return None
     else:
         show = True
 
