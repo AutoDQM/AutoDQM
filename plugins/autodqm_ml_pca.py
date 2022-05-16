@@ -124,8 +124,6 @@ def autodqm_ml_pca(histpair, **kwargs):
     year = int(histpair.data_series[-4:])
     f_pca = "/var/www/cgi-bin/models/autodqm_ml_pca/{0}/{1}/{2}.json".format(histpair.config["jar_dir"], year, histpair.data_name)
 
-    raise Exception("Checking autodqm_ml_pca")
-
     if not os.path.exists(f_pca):
         return None
 
