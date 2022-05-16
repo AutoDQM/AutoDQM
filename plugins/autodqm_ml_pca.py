@@ -94,7 +94,7 @@ def plot(histpair, hist, hist_reconstructed):
 
     c = go.Figure()
     c.add_trace(go.Bar(name="Data:"+str(histpair.data_run), x=bins, y=hist, marker_color='rgb(125,153,207)', opacity=.7))
-    c.add_trace(go.Bar(name="PCA Reco", x=bins, y=hist_reconstructed, marker_color='rgb(192, 255, 195)', opacity=.7))
+    c.add_trace(go.Scatter(name="PCA Reco", x=bins, y=hist_reconstructed, marker_color='rgb(192, 255, 195)', opacity=.7))
 
     c['layout'].update(bargap=0)
     c['layout'].update(barmode='overlay')
