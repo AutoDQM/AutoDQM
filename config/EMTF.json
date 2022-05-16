@@ -32,7 +32,9 @@
       "path": "cscLCT*"
     },
     {
-      "path": "emtf*"
+      "path": "emtf*",
+      "jar_dir" : "EMTF",
+      "comparators" : ["autodqm_ml_pca", "ks_test"]
     }
   ]
 }

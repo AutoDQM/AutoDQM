@@ -61,14 +61,15 @@ def predict(hist, pca):
     if n_dim != 1: # only 1d hists for now 
         raise ValueError()
 
-    hist_transformed = pca.transform(hist)
+    hist_reshape = hist.reshape(1,-1)
+    hist_transformed = pca.transform(hist_reshape)
     hist_reconstructed = pca.inverse_transform(hist_transformed)
 
     sse = numpy.sum(
         (hist - hist_reconstructed) ** 2
-    )
+    ).flatten()
 
-    return sse, hist_reconstructed
+    return float(sse), hist_reconstructed.flatten()
 
 
 def plot(histpair, hist, hist_reconstructed):
@@ -123,6 +124,8 @@ def autodqm_ml_pca(histpair, **kwargs):
     year = int(histpair.data_series[-4:])
     f_pca = "/var/www/cgi-bin/models/autodqm_ml_pca/{0}/{1}/{2}.json".format(histpair.config["jar_dir"], year, histpair.data_name)
 
+    raise Exception("Checking autodqm_ml_pca")
+
     if not os.path.exists(f_pca):
         return None
 
@@ -133,6 +136,7 @@ def autodqm_ml_pca(histpair, **kwargs):
     hist = histpair.data_hist.values()
 
     # Normalize entries if this was done during training (usually yes)
+    n_entries = int(numpy.sum(hist))
     if pca.normalize:
         hist = normalize(hist)
 
@@ -148,9 +152,9 @@ def autodqm_ml_pca(histpair, **kwargs):
         "reco" : hist_reconstructed
     } 
     info = {
-        "Data_Entries" : str(numpy.sum(hist)),
+        "Data_Entries" : str(n_entries),
         "Sum of Squared Errors" : round(sse, 6),
-        "PCA Components" : pca.n_components_ 
+        "PCA Components" : int(pca.n_components_)
     }
 
     return PluginResults(
