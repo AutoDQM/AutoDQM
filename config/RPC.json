@@ -1,7 +1,7 @@
 {
     "main_gdir": "DQMData/Run {0}/RPC/Run summary/",
     "hists": [{
-	"comparators": ["pca", "ks_test"],
+	"comparators": ["pca", "ks_test", "autodqm_ml_pca"],
 	"jar_dir": "RPC",
       "path": "AllHits/SummaryHistograms/ClusterSize_*"
   },{

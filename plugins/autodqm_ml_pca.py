@@ -125,7 +125,9 @@ def autodqm_ml_pca(histpair, **kwargs):
     f_pca = "/var/www/cgi-bin/models/autodqm_ml_pca/{0}/{1}/{2}.json".format(histpair.config["jar_dir"], year, histpair.data_name)
 
     if not os.path.exists(f_pca):
-        return None
+        show = False
+    else:
+        show = True
 
     # Found matched PCA
     pca = load_model(f_pca)
@@ -157,7 +159,7 @@ def autodqm_ml_pca(histpair, **kwargs):
 
     return PluginResults(
         canvas,
-        show=True,
+        show=show,
         info=info,
         artifacts=artifacts
     )
