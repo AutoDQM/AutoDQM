@@ -118,9 +118,6 @@ if __name__ == '__main__':
     sslcert = find_file(args.sslcert)
     sslkey = find_file(args.sslkey)
 
-    print('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
-    print(args.config)
-
     autodqm_offline(args.subsystem,
                     args.data_run, args.data_sample, args.data_series,
                     args.ref_run, args.ref_sample, args.ref_series,
