@@ -1,6 +1,10 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
+import sys
+sys.path.insert(0,'..')
+
+
 import autodqm.cfg
 import os
 import argparse
@@ -8,6 +12,7 @@ from glob import glob
 from tqdm import tqdm
 from autodqm.dqm import DQMSession
 from autodqm.compare_hists import process
+
 
 
 def autodqm_offline(subsystem,
@@ -38,7 +43,7 @@ def autodqm_offline(subsystem,
 
     print('')
     print("Processing results...")
-    results = process(cfg_dir, subsystem,
+    results = process(0, 9999, cfg_dir, subsystem,
                       data_series, data_sample, data_run, data_path,
                       ref_series, ref_sample, ref_run, ref_path,
                       output_dir=output_dir, plugin_dir=plugin_dir)
@@ -94,18 +99,18 @@ if __name__ == '__main__':
     parser.add_argument('--ref_sample', type=str, default=None,
                         help="ref sample to look for runs in. Defaults to data_ref")
 
-    parser.add_argument('-c', '--config', default='./config',
+    parser.add_argument('-c', '--config', default=os.environ['ADQM_CONFIG'],
                         help="config directory to use")
-    parser.add_argument('-o', '--output', default='./out/',
+    parser.add_argument('-o', '--output', default=os.environ['ADQM_OUT'],
                         help="artifact (pdfs, pngs, txts) output directory")
-    parser.add_argument('-p', '--plugins', default='./plugins/',
+    parser.add_argument('-p', '--plugins', default=os.environ['ADQM_PLUGINS'],
                         help="comparison plugins directory")
-    parser.add_argument('-d', '--db', default='./db/',
+    parser.add_argument('-d', '--db', default=os.environ['ADQM_DB'],
                         help="local database for storing runs")
 
-    parser.add_argument('--sslcert', type=str, default='~/.globus/usercert.*',
+    parser.add_argument('--sslcert', type=str, default=os.environ['ADQM_SSLCERT'],
                         help="path to a CMS VO public certificate")
-    parser.add_argument('--sslkey', type=str, default='~/.globus/userkey.*',
+    parser.add_argument('--sslkey', type=str, default=os.environ['ADQM_SSLKEY'],
                         help="path to a CMS VO private key")
 
     args = parser.parse_args()
