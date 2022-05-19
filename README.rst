@@ -165,7 +165,7 @@ To create the environment, go into the ``runoffline`` directory, then run:
 
 .. code:: sh
 
-    conda create env -f en environment.yml
+    conda create env -f environment.yml
     
 The conda environment can then be activated with 
 
