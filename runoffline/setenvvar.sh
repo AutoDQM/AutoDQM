@@ -1,0 +1,8 @@
+export ADQM_OUT='/root/AutoDQM/runoffline/out'
+export ADQM_PLUGINS='/root/AutoDQM/plugins'
+export ADQM_CONFIG='/root/AutoDQM/config'
+export ADQM_DB='/root/AutoDQM/runoffline/db'
+export ADQM_TMP='/root/AutoDQM/runoffline/tmp'
+export ADQM_SSLCERT='/root/.globus/cern-cert.public.pem'
+export ADQM_SSLKEY='/root/.globus/cern-cert.private.key'
+export ADQM_CACERT='/root/.globus/cern-cert.p12'
