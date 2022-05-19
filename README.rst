@@ -159,7 +159,7 @@ Then to activate conda:
 
 .. code:: sh
 
-   source <path to your .bashrc file> 
+   source ~/.bashrc 
    
 To create the environment, go into the ``runoffline`` directory, then run:
 
