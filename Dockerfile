@@ -21,6 +21,7 @@ RUN pip3 install -r /code/requirements.txt
 
 RUN mkdir /db /run/secrets
 RUN chown -R 1000:1000 /db /var/www /run/secrets
+RUN chmod -R 777 /db
 
 RUN ln -s /dev/stdout /home/access_log
 RUN ln -s /dev/stderr /home/error_log
