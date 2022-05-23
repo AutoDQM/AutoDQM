@@ -22,7 +22,8 @@ def pullvals(histpair,
 
     # Check that the hists are histograms
     # Check that the hists are 2 dimensional
-    if not "2" in str(type(data_hist)) or not "2" in str(type(ref_hist)):
+    if not ( (       "TH2" in str(type(data_hist)) and       "TH2" in str(type(ref_hist)) ) or
+             ("TProfile2D" in str(type(data_hist)) and "TProfile2" in str(type(ref_hist)) ) ):
         return None
     # Extract values from TH2F or TProfile2D Format
     data_hist_norm = None
