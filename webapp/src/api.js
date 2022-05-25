@@ -18,16 +18,16 @@ export function getSamples(dqmSource, series) {
   return cancellableQuery(API, {type: 'get_samples', dqmSource, series});
 }
 
-export function getRuns(dqmSource, series, sample) {
-  return cancellableQuery(API, {type: 'get_runs', dqmSource, series, sample});
+export function getRuns(dqmSource, subsystem, series, sample) {
+  return cancellableQuery(API, {type: 'get_runs', dqmSource, subsystem, series, sample});
 }
 
 export function getReferences(dqmSource, subsystem, series, sample, run) {
   return cancellableQuery(API, {type: 'get_ref', dqmSource, subsystem, series, sample, run});
 }
 
-export function loadRun(dqmSource, series, sample, run) {
-  return cancellableQuery(API, {type: 'fetch_run', dqmSource, series, sample, run});
+export function loadRun(dqmSource, subsystem, series, sample, run) {
+  return cancellableQuery(API, {type: 'fetch_run', dqmSource, subsystem, series, sample, run});
 }
 
 export function generateReport({

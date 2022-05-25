@@ -35,11 +35,11 @@ def autodqm_offline(dqmSource, subsystem,
     with DQMSession(cert, db) as dqm:
         print('')
         print("Getting data root file...")
-        data_path = get_run(dqm, dqmSource, data_series, data_sample, data_run)
+        data_path = get_run(dqm, dqmSource, subsystem, data_series, data_sample, data_run)
 
         print('')
         print("Getting reference root file...")
-        ref_path = get_run(dqm, dqmSource, ref_series, ref_sample, ref_run)
+        ref_path = get_run(dqm, dqmSource, subsystem, ref_series, ref_sample, ref_run)
 
     print('')
     print("Processing results...")
@@ -53,8 +53,8 @@ def autodqm_offline(dqmSource, subsystem,
     return results
 
 
-def get_run(dqm, dqmSource, series, sample, run):
-    stream = dqm.stream_run(dqmSource, series, sample, run)
+def get_run(dqm, dqmSource, subsystem, series, sample, run):
+    stream = dqm.stream_run(dqmSource, subsystem, series, sample, run)
     first = next(stream)
     path = first.path
     if first.cur == first.total:

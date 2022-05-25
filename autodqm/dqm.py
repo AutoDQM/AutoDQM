@@ -11,7 +11,7 @@ from collections import namedtuple
 from requests_futures.sessions import FuturesSession
 
 TIMEOUT = 5
-VERBOSE = 0
+VERBOSE = 1
 BASE_URL = 'https://cmsweb.cern.ch'
 DQM_URL = 'https://cmsweb.cern.ch/dqm/offline/data/browse/ROOT/'
 CA_URL = 'https://cafiles.cern.ch/cafiles/certificates/CERN%20Root%20Certification%20Authority%202.crt'
@@ -23,6 +23,17 @@ CA_PATH = 'CERN_Root_CA.crt'
 StreamProg = namedtuple('StreamProg', ('cur', 'total', 'path'))
 DQMRow = namedtuple('DQMRow', ('name', 'full_name', 'url', 'size', 'date'))
 
+## Map from subsystem to Online DQM directory
+## FIXME: Will break for any new subsystems added to config!!! - AWB 2022.05.25
+OnlineMap = dict({'CaloLayer1':'L1T',
+                  'CaloLayer2':'L1T',
+                  'BMTF':'L1T',
+                  'EMTF':'L1T',
+                  'OMTF':'L1T',
+                  'uGMT':'L1T',
+                  'CSC':'CSC',
+                  'RPC':'RPC',
+                  'DT':'DT'})
 
 class DQMSession(FuturesSession):
     """Encapsulates an interface to DQM Offline."""
@@ -41,12 +52,13 @@ class DQMSession(FuturesSession):
         if not os.path.exists(self.verify):
             _get_cern_ca(self.verify)
 
-    def fetch_run(self, dqmSource, series, sample, run):
+    def fetch_run(self, dqmSource, subsystem, series, sample, run):
         """Fetch and cache a run data file.
         Returns the path to the downloaded file."""
-        if VERBOSE: print('\ndqm.py fetch_run(dqmSource = %s, series = %s, sample = %s, run = %s)' % (dqmSource, series, sample, run))
+        if VERBOSE: print('\ndqm.py fetch_run(dqmSource = %s, subsystem = %s, series = %s, sample = %s, run = %s)' %
+                          (dqmSource, subsystem, series, sample, run))
         
-        dl = self.stream_run(dqmSource, series, sample, run)
+        dl = self.stream_run(dqmSource, subsystem, series, sample, run)
 
         # Get the path from the first yield
         path = next(dl).path
@@ -57,10 +69,11 @@ class DQMSession(FuturesSession):
         if VERBOSE: print('  * path = %s' % path)
         return path
 
-    def stream_run(self, dqmSource, series, sample, run, chunk_size=4096):
+    def stream_run(self, dqmSource, subsystem, series, sample, run, chunk_size=4096):
         """Stream and cache a run data file.
         Returns a generator that yields StreamProg tuples corresponding to the download progress."""
-        if VERBOSE: print('\ndqm.py stream_run(dqmSource = %s, series = %s, sample = %s, run = %s, chunk_size = %d)' % (dqmSource, series, sample, run, chunk_size))
+        if VERBOSE: print('\ndqm.py stream_run(dqmSource = %s, subsystem = %s, series = %s, sample = %s, run = %s, chunk_size = %d)' %
+                          (dqmSource, subsystem, series, sample, run, chunk_size))
 
         run_path = self._run_path(series, sample, run)
         run_dir = os.path.dirname(run_path)
@@ -68,12 +81,14 @@ class DQMSession(FuturesSession):
         if not os.path.exists(run_path):
             _try_makedirs(run_dir)
 
-            runs = self.fetch_run_list(dqmSource, series, sample, run)
+            runs = self.fetch_run_list(dqmSource, subsystem, series, sample, run)
 
             isOnline = (series.startswith('000') and series.endswith('xxxx'))
             if isOnline:  ## Use cmsweb.cern.ch/dqm/offline/data/browse/ROOT/OnlineData/
-                ## FIXME: Need to update "L1T" to variable string which depends on subsystem - AWB 2022.05.25
-                run_info = next(r for r in runs if r.name == run and 'L1T_R000' in r.full_name)
+                if not subsystem in OnlineMap.keys():
+                    raise error("dqm.py stream_run: {} not in OnlineMap".format(subsystem))
+                DQM_dir = OnlineMap[subsystem]
+                run_info = next(r for r in runs if r.name == run and DQM_dir+'_R000' in r.full_name)
             else:                   ## Use cmsweb.cern.ch/dqm/offline/data/browse/ROOT/OfflineData/
                 run_info = next(r for r in runs if r.name == run)
 
@@ -113,9 +128,10 @@ class DQMSession(FuturesSession):
             url = next((r.url for r in series_rows if r.name == series))
             return _resolve(self._fetch_dqm_rows(url)).data
 
-    def fetch_run_list(self, dqmSource, series, sample, selRun=None):
+    def fetch_run_list(self, dqmSource, subsystem, series, sample, selRun=None):
         """Return DQMRows corresponding to the runs available under the given series and sample."""
-        if VERBOSE: print('\ndqm.py fetch_run_list(dqmSource = %s, series = %s, sample = %s, selRun = %s)' % (dqmSource, series, sample, selRun))
+        if VERBOSE: print('\ndqm.py fetch_run_list(dqmSource = %s, subsystem = %s, series = %s, sample = %s, selRun = %s)' %
+                          (dqmSource, subsystem, series, sample, selRun))
         if selRun and len(str(selRun)) != 6:
             raise error("dqm.py fetch_run_list selRun = {}, not 6 digits!".format(selRun))
 
@@ -156,8 +172,10 @@ class DQMSession(FuturesSession):
             rows = _resolve(fut).data
             for row in rows:
                 if selRun and row.name != selRun: continue
-                ## FIXME: Need to update "L1T" to variable string which depends on subsystem - AWB 2022.05.25
-                if isOnline and not ('L1T_R000' in row.full_name): continue
+                if not subsystem in OnlineMap.keys():
+                    raise error("dqm.py fetch_run_list: {} not in OnlineMap".format(subsystem))
+                DQM_dir = OnlineMap[subsystem]
+                if isOnline and not (DQM_dir+'_R000' in row.full_name): continue
                 run_rows.append(row)
             self._write_cache(mr, rows)
 

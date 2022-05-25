@@ -24,7 +24,7 @@ def handle_request(req):
     try:
         load_vars()
         if req['type'] == "fetch_run":
-            data = fetch_run(req['dqmSource'], req['series'], req['sample'], req['run'])
+            data = fetch_run(req['dqmSource'], req['subsystem'], req['series'], req['sample'], req['run'])
         elif req['type'] == "process":
             data = process(int(req['chunk_index']),
                            int(req['chunk_size']),
@@ -45,7 +45,7 @@ def handle_request(req):
         elif req['type'] == "get_samples":
             data = get_samples(req['dqmSource'], req['series'])
         elif req['type'] == "get_runs":
-            data = get_runs(req['dqmSource'], req['series'], req['sample'])
+            data = get_runs(req['dqmSource'], req['subsystem'], req['series'], req['sample'])
         elif req['type'] == "get_ref":
             data = get_ref(req['dqmSource'],
                            req['subsystem'],
@@ -69,9 +69,9 @@ def handle_request(req):
         return res
 
 
-def fetch_run(dqmSource, series, sample, run):
+def fetch_run(dqmSource, subsystem, series, sample, run):
     with make_dqm() as dqm:
-        dqm.fetch_run(dqmSource, series, sample, run)
+        dqm.fetch_run(dqmSource, subsystem, series, sample, run)
     return {}
 
 
@@ -82,8 +82,8 @@ def process(chunk_index, chunk_size,
 
     with make_dqm() as dqm:
         # Get root file paths
-        data_path = dqm.fetch_run(dqmSource, data_series, data_sample, data_run)
-        ref_path = dqm.fetch_run(dqmSource, ref_series, ref_sample, ref_run)
+        data_path = dqm.fetch_run(dqmSource, subsystem, data_series, data_sample, data_run)
+        ref_path = dqm.fetch_run(dqmSource, subsystem, ref_series, ref_sample, ref_run)
 
     # Get config and results/plugins directories
     results_dir = os.path.join(VARS['PUBLIC'], 'results')
@@ -138,16 +138,16 @@ def get_samples(dqmSource, series):
     return {'items': [r._asdict() for r in rows]}
 
 
-def get_runs(dqmSource, series, sample):
+def get_runs(dqmSource, subsystem, series, sample):
     with make_dqm() as dqm:
         ## TODO: truncate list to reasonable range, e.g. 2018 and later - AWB 2022.05.23
-        rows = dqm.fetch_run_list(dqmSource, series, sample)
+        rows = dqm.fetch_run_list(dqmSource, subsystem, series, sample)
     return {'items': [r._asdict() for r in rows]}
 
 def get_ref(dqmSource, subsystem, data_run, series, sample):
     config_dir = VARS['CONFIG']
     with make_dqm() as dqm:
-        rows = dqm.fetch_run_list(dqmSource, series, sample)
+        rows = dqm.fetch_run_list(dqmSource, subsystem, series, sample)
     ref_runs = []
     for row in [r._asdict() for r in rows]:
         ref_runs.append(row['name'])
