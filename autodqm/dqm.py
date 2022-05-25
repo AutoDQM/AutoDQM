@@ -11,7 +11,7 @@ from collections import namedtuple
 from requests_futures.sessions import FuturesSession
 
 TIMEOUT = 5
-VERBOSE = 1
+VERBOSE = 0
 BASE_URL = 'https://cmsweb.cern.ch'
 DQM_URL = 'https://cmsweb.cern.ch/dqm/offline/data/browse/ROOT/'
 CA_URL = 'https://cafiles.cern.ch/cafiles/certificates/CERN%20Root%20Certification%20Authority%202.crt'
