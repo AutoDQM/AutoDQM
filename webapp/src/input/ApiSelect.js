@@ -27,6 +27,7 @@ export default class ApiSelect extends Component {
     if (
       prevP.type !== curP.type ||
       prevP.dqmSource !== curP.dqmSource ||
+      prevP.subsystem !== curP.subsystem ||
       prevP.series !== curP.series ||
       prevP.sample !== curP.sample ||
       prevP.onError !== curP.onError ||
@@ -50,15 +51,11 @@ export default class ApiSelect extends Component {
 
   loadOptions = () => {
 
-    // const {type, dqmSource, series, sample, onError, onLoad} = this.props;
-    // FIXME: Line above doesn't work: dqmSource null or does not exist. - AWB 2022.05.25
-    // FIXME: Temporarily using two lines below, hard-coding dqmSource to Online. - AWB 2022.05.25
-    const {type, series, sample, onError, onLoad} = this.props;
-    const dqmSource = "Online";
+    const {type, dqmSource, subsystem, series, sample, onError, onLoad} = this.props;
     let req;
-    if (type === 'get_runs' && series && sample) {
-      req = api.getRuns(dqmSource, series, sample);
-    } else if (type === 'get_samples' && series) {
+    if (type === 'get_runs' && dqmSource && subsystem && series && sample) {
+      req = api.getRuns(dqmSource, subsystem, series, sample);
+    } else if (type === 'get_samples' && dqmSource && series) {
       req = api.getSamples(dqmSource, series);
     } else if (type === 'get_series' && dqmSource) {
       req = api.getSeries(dqmSource);
@@ -91,7 +88,7 @@ export default class ApiSelect extends Component {
   };
 
   render() {
-    const {type, dqmSource, series, sample, onError, onLoad, ...selectProps} = this.props;
+    const {type, dqmSource, subsystem, series, sample, onError, onLoad, ...selectProps} = this.props;
     return (
       <div style={{position: "relative"}}>
         <Select

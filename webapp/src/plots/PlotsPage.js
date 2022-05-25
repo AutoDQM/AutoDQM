@@ -93,8 +93,8 @@ export default class PlotsPage extends Component {
   };
 
   loadReport = query => {
-    const refReq  = api.loadRun(query.dqmSource, query.refSeries, query.refSample, query.refRun);
-    const dataReq = api.loadRun(query.dqmSource, query.dataSeries, query.dataSample, query.dataRun);
+    const refReq  = api.loadRun(query.dqmSource, query.subsystem, query.refSeries, query.refSample, query.refRun);
+    const dataReq = api.loadRun(query.dqmSource, query.subsystem, query.dataSeries, query.dataSample, query.dataRun);
     this.setState({refReq, dataReq, showLoading: true});
 
     refReq.then(res => {

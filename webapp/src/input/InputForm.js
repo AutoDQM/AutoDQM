@@ -33,8 +33,8 @@ export default class InputForm extends Component {
 
   render() {
     const q = this.props.query;
-    const data = {series: q.dataSeries, sample: q.dataSample, run: q.dataRun};
-    const ref = {series: q.refSeries, sample: q.refSample, run: q.refRun};
+    const data = {dqmSource: q.dqmSource, subsystem: q.subsystem, series: q.dataSeries, sample: q.dataSample, run: q.dataRun};
+    const ref = {dqmSource: q.dqmSource, subsystem: q.subsystem, series: q.refSeries, sample: q.refSample, run: q.refRun};
 
     return (
       <React.Fragment>
@@ -110,6 +110,7 @@ function RunSelectForm(props) {
       <ApiSelect
         placeholder="Select series..."
         type="get_series"
+        dqmSource={props.dqmSource}
         value={option(props.series)}
         onChange={c => props.onChange('series', c)}
       />
@@ -117,6 +118,7 @@ function RunSelectForm(props) {
       <ApiSelect
         placeholder="Select sample..."
         type="get_samples"
+        dqmSource={props.dqmSource}
         series={props.series}
         value={option(props.sample)}
         onChange={c => props.onChange('sample', c)}
@@ -125,6 +127,8 @@ function RunSelectForm(props) {
       <ApiSelect
         placeholder="Select run..."
         type="get_runs"
+        dqmSource={props.dqmSource}
+        subsystem={props.subsystem}
         series={props.series}
         sample={props.sample}
         value={option(props.run)}
