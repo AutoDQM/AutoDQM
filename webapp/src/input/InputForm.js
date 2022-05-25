@@ -11,6 +11,10 @@ export default class InputForm extends Component {
     return api.queryUrl(query);
   };
 
+  handleDqmSourceChange = change => {
+    this.props.onChange({dqmSource: change.value});
+  };
+
   handleSubsystemChange = change => {
     this.props.onChange({subsystem: change.value});
   };
@@ -38,6 +42,20 @@ export default class InputForm extends Component {
           <Col>
             <Row>
               <Col>
+                <h3>Source</h3>
+              </Col>
+              <Col/>
+            </Row>
+            <ApiSelect
+              placeholder="Select DQM source..."
+              type="get_dqmSources"
+              value={option(q.dqmSource)}
+              onChange={this.handleDqmSourceChange}
+            />
+          </Col>
+          <Col>
+            <Row>
+              <Col>
                 <h3>Subsystem</h3>
               </Col>
               <Col/>
@@ -61,7 +79,7 @@ export default class InputForm extends Component {
             <RunSelectForm {...data} onChange={this.handleDataChange} />
           </Col>
           <Col md="6">
-            <h3>Ref Run</h3>
+            <h3>Reference Run</h3>
             <RunSelectForm {...ref} onChange={this.handleRefChange} />
           </Col>
         </Row>

@@ -26,6 +26,7 @@ export default class ApiSelect extends Component {
     const curP = this.props;
     if (
       prevP.type !== curP.type ||
+      prevP.dqmSource !== curP.dqmSource ||
       prevP.series !== curP.series ||
       prevP.sample !== curP.sample ||
       prevP.onError !== curP.onError ||
@@ -48,16 +49,23 @@ export default class ApiSelect extends Component {
   };
 
   loadOptions = () => {
+
+    // const {type, dqmSource, series, sample, onError, onLoad} = this.props;
+    // FIXME: Line above doesn't work: dqmSource null or does not exist. - AWB 2022.05.25
+    // FIXME: Temporarily using two lines below, hard-coding dqmSource to Online. - AWB 2022.05.25
     const {type, series, sample, onError, onLoad} = this.props;
+    const dqmSource = "Online";
     let req;
     if (type === 'get_runs' && series && sample) {
-      req = api.getRuns(series, sample);
+      req = api.getRuns(dqmSource, series, sample);
     } else if (type === 'get_samples' && series) {
-      req = api.getSamples(series);
-    } else if (type === 'get_series') {
-      req = api.getSeries();
+      req = api.getSamples(dqmSource, series);
+    } else if (type === 'get_series' && dqmSource) {
+      req = api.getSeries(dqmSource);
     } else if (type === 'get_subsystems') {
       req = api.getSubsystems();
+    } else if (type === 'get_dqmSources') {
+      req = api.getDqmSources();
     } else {
       return;
     }
@@ -72,7 +80,8 @@ export default class ApiSelect extends Component {
           .sort((a, b) => a.label.localeCompare(b.label));
         onLoad && onLoad([...opts]);
 
-        if(type === 'get_runs') opts.reverse();
+        if ( type === 'get_runs' ||
+	     (dqmSource === "Online" && (type === 'get_series' || type === 'get_sample')) ) opts.reverse();
         this.setState({opts, req: null});
       })
       .catch(err => {
@@ -82,7 +91,7 @@ export default class ApiSelect extends Component {
   };
 
   render() {
-    const {type, series, sample, onError, onLoad, ...selectProps} = this.props;
+    const {type, dqmSource, series, sample, onError, onLoad, ...selectProps} = this.props;
     return (
       <div style={{position: "relative"}}>
         <Select

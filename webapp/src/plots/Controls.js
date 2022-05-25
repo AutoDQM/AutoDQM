@@ -76,6 +76,7 @@ class RunSwitch extends Component {
 
   switchRun = run => {
     const params = [
+      this.props.dqmSource,
       this.props.subsystem,
       this.props.refSeries,
       this.props.refSample,

@@ -11,14 +11,16 @@ from autodqm.histpair import HistPair
 import plotly
 
 
-def process(chunk_index, chunk_size, config_dir, subsystem,
+def process(chunk_index, chunk_size, config_dir,
+            dqmSource, subsystem,
             data_series, data_sample, data_run, data_path,
             ref_series, ref_sample, ref_run, ref_path,
             output_dir='./out/', plugin_dir='./plugins/'):
 
     # Ensure no graphs are drawn to screen and no root messages are sent to
     # terminal
-    histpairs = compile_histpairs(chunk_index, chunk_size, config_dir, subsystem,
+    histpairs = compile_histpairs(chunk_index, chunk_size, config_dir,
+                                  dqmSource, subsystem,
                                   data_series, data_sample, data_run, data_path,
                                   ref_series, ref_sample, ref_run, ref_path)
 
@@ -78,7 +80,8 @@ def process(chunk_index, chunk_size, config_dir, subsystem,
 
     return hist_outputs
 
-def compile_histpairs(chunk_index, chunk_size, config_dir, subsystem,
+def compile_histpairs(chunk_index, chunk_size, config_dir,
+                      dqmSource, subsystem,
                       data_series, data_sample, data_run, data_path,
                       ref_series, ref_sample, ref_run, ref_path):
 

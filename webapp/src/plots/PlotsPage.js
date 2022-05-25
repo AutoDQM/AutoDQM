@@ -81,7 +81,7 @@ export default class PlotsPage extends Component {
         procReq.then(res => {
             plots = plots.concat(res.items);
             chunk_index = res.chunk_index;
-            if(chunk_index == -1)
+            if(chunk_index === -1)
             {
               this.setState({plots, procReq: null, showLoading: false});
             }else
@@ -93,12 +93,8 @@ export default class PlotsPage extends Component {
   };
 
   loadReport = query => {
-    const refReq = api.loadRun(query.refSeries, query.refSample, query.refRun);
-    const dataReq = api.loadRun(
-      query.dataSeries,
-      query.dataSample,
-      query.dataRun,
-    );
+    const refReq  = api.loadRun(query.dqmSource, query.refSeries, query.refSample, query.refRun);
+    const dataReq = api.loadRun(query.dqmSource, query.dataSeries, query.dataSample, query.dataRun);
     this.setState({refReq, dataReq, showLoading: true});
 
     refReq.then(res => {
@@ -139,6 +135,7 @@ export default class PlotsPage extends Component {
 
   validParams = params => {
     return (
+      params.dqmSource &&
       params.subsystem &&
       params.refSeries &&
       params.refSample &&

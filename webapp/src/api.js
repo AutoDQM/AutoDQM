@@ -2,31 +2,36 @@ import axios from 'axios';
 
 const API = '/dqm/autodqm/cgi-bin/index.py';
 
+export function getDqmSources() {
+  return cancellableQuery(API, {type: 'get_dqmSources'});
+}
+
 export function getSubsystems() {
   return cancellableQuery(API, {type: 'get_subsystems'});
 }
 
-export function getSeries() {
-  return cancellableQuery(API, {type: 'get_series'});
+export function getSeries(dqmSource) {
+  return cancellableQuery(API, {type: 'get_series', dqmSource});
 }
 
-export function getSamples(series) {
-  return cancellableQuery(API, {type: 'get_samples', series});
+export function getSamples(dqmSource, series) {
+  return cancellableQuery(API, {type: 'get_samples', dqmSource, series});
 }
 
-export function getRuns(series, sample) {
-  return cancellableQuery(API, {type: 'get_runs', series, sample});
+export function getRuns(dqmSource, series, sample) {
+  return cancellableQuery(API, {type: 'get_runs', dqmSource, series, sample});
 }
 
-export function getReferences(subsystem, series, sample, run) {
-  return cancellableQuery(API, {type: 'get_ref', subsystem, series, sample, run});
+export function getReferences(dqmSource, subsystem, series, sample, run) {
+  return cancellableQuery(API, {type: 'get_ref', dqmSource, subsystem, series, sample, run});
 }
 
-export function loadRun(series, sample, run) {
-  return cancellableQuery(API, {type: 'fetch_run', series, sample, run});
+export function loadRun(dqmSource, series, sample, run) {
+  return cancellableQuery(API, {type: 'fetch_run', dqmSource, series, sample, run});
 }
 
 export function generateReport({
+  dqmSource,
   subsystem,
   refSeries,
   refSample,
@@ -39,6 +44,7 @@ export function generateReport({
     type: 'process',
     chunk_index: chunk_index,
     chunk_size: chunk_size,
+    dqmSource: dqmSource,
     subsystem: subsystem,
     ref_series: refSeries,
     ref_sample: refSample,
@@ -50,6 +56,7 @@ export function generateReport({
 }
 
 export function queryUrl({
+  dqmSource,
   subsystem,
   refSeries,
   refSample,
@@ -59,6 +66,7 @@ export function queryUrl({
   dataRun,
 }) {
   const params = [
+    dqmSource,
     subsystem,
     refSeries,
     refSample,
