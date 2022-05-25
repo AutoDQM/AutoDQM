@@ -159,13 +159,13 @@ Then to activate conda:
 
 .. code:: sh
 
-   source <path to your .bashrc file> 
+   source ~/.bashrc 
    
 To create the environment, go into the ``runoffline`` directory, then run:
 
 .. code:: sh
 
-    conda create env -f en environment.yml
+    conda env create -f environment.yml
     
 The conda environment can then be activated with 
 
