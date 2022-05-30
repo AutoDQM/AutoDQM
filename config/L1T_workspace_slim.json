@@ -1,0 +1,151 @@
+{
+  "main_gdir": "DQMData/Run {0}/L1T/Run summary/",
+  "hists": [
+
+    {
+      "path": "L1TStage2uGMT/ugmtMuonBX"
+    },
+    {
+      "path": "L1TStage2uGMT/ugmtMuonBXvsLink"
+    },
+    {
+      "path": "L1TStage2uGMT/ugmtMuonPt"
+    },
+    {
+      "path": "L1TStage2uGMT/ugmtMuonEta"
+    },
+    {
+      "path": "L1TStage2uGMT/ugmtMuonPhi"
+    },
+    {
+      "path": "L1TStage2uGT/algoBits_after_prescale_bx_inEvt"
+    },
+    {
+      "path": "L1TStage2uGT/algoBits_after_prescale"
+    },
+    {
+      "path": "L1TStage2CaloLayer2/Central-Jets/CenJetsBxOcc"
+    },
+    {
+      "path": "L1TStage2CaloLayer2/Forward-Jets/ForJetsBxOcc"
+    },
+    {
+      "path": "L1TStage2CaloLayer2/Isolated-EG/IsoEGsBxOcc"
+    },
+    {
+      "path": "L1TStage2CaloLayer2/NonIsolated-EG/NonIsoEGsBxOcc"
+    },
+    {
+      "path": "L1TStage2CaloLayer2/Isolated-Tau/IsoTausBxOcc"
+    },
+    {
+      "path": "L1TStage2CaloLayer2/NonIsolated-Tau/TausBxOcc"
+    },
+    {
+      "path": "L1TStage2CaloLayer2/Central-Jets/CenJetsRank"
+    },
+    {
+      "path": "L1TStage2CaloLayer2/Forward-Jets/ForJetsRank"
+    },
+    {
+      "path": "L1TStage2CaloLayer2/Isolated-EG/IsoEGsRank"
+    },
+    {
+      "path": "L1TStage2CaloLayer2/NonIsolated-EG/NonIsoEGsRank"
+    },
+    {
+      "path": "L1TStage2CaloLayer2/Isolated-Tau/IsoTausRank"
+    },
+    {
+      "path": "L1TStage2CaloLayer2/NonIsolated-Tau/TausRank"
+    },
+    {
+      "path": "L1TStage2CaloLayer2/Energy-Sums/EtSumBxOcc"
+    },
+    {
+      "path": "L1TStage2CaloLayer2/Energy-Sums/ETTRank"
+    },
+    {
+      "path": "L1TStage2CaloLayer2/Energy-Sums/ETTEMRank"
+    },
+    {
+      "path": "L1TStage2CaloLayer2/Energy-Sums/HTTRank"
+    },
+    {
+      "path": "L1TStage2CaloLayer2/Energy-Sums/METRank"
+    },
+    {
+      "path": "L1TStage2CaloLayer2/Energy-Sums/METPhi"
+    },
+    {
+      "path": "L1TStage2CaloLayer2/Energy-Sums/METHFRank"
+    },
+    {
+      "path": "L1TStage2CaloLayer2/Energy-Sums/METHFPhi"
+    },
+    {
+      "path": "L1TStage2CaloLayer2/Energy-Sums/MHTRank"
+    },
+    {
+      "path": "L1TStage2CaloLayer2/Energy-Sums/MHTPhi"
+    },
+    {
+      "path": "L1TStage2CaloLayer2/Energy-Sums/MHTHFRank"
+    },
+    {
+      "path": "L1TStage2CaloLayer2/Energy-Sums/MHTHFPhi"
+    },
+    {
+      "path": "L1TStage2uGMT/BMTFInput/ugmtBMTFBX"
+    },
+    {
+      "path": "L1TStage2BMTF/bmtf_wedge_bx"
+    },
+    {
+      "path": "L1TStage2BMTF/bmtf_hwPt"
+    },
+    {
+      "path": "L1TStage2uGMT/BMTFInput/ugmtBMTFhwEta"
+    },
+    {
+      "path": "L1TStage2uGMT/BMTFInput/ugmtBMTFglbhwPhi"
+    },
+    {
+      "path": "L1TStage2uGMT/BMTFInput/ugmtBMTFhwSign"
+    },
+    {
+      "path": "L1TStage2uGMT/OMTFInput/ugmtOMTFBX"
+    },
+    {
+      "path": "L1TStage2uGMT/ugmtBXvsProcessorOMTF"
+    },
+    {
+      "path": "L1TStage2uGMT/OMTFInput/ugmtOMTFhwPt"
+    },
+    {
+      "path": "L1TStage2uGMT/OMTFInput/ugmtOMTFhwEta"
+    },
+    {
+      "path": "L1TStage2uGMT/OMTFInput/ugmtOMTFglbhwPhiPos"
+    },
+    {
+      "path": "L1TStage2uGMT/OMTFInput/ugmtOMTFglbhwPhiNeg"
+    },
+    {
+      "path": "L1TStage2uGMT/OMTFInput/ugmtOMTFhwSign"
+    },
+    {
+      "path": "L1TStage2uGMT/EMTFInput/ugmtEMTFBX"
+    },
+    {
+      "path": "L1TStage2EMTF/emtfTrackBX"
+    },
+    {
+      "path": "L1TStage2uGMT/ugmtMuonPhiEmtf"
+    },
+    {
+      "path": "L1TStage2EMTF/cscLCTOccupancy"
+    }
+
+  ]
+}

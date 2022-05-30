@@ -31,6 +31,8 @@ OnlineMap = dict({'CaloLayer1':'L1T',
                   'EMTF':'L1T',
                   'OMTF':'L1T',
                   'uGMT':'L1T',
+                  'L1T_workspace':'L1T',
+                  'L1T_workspace_slim':'L1T',
                   'CSC':'CSC',
                   'RPC':'RPC',
                   'DT':'DT'})
