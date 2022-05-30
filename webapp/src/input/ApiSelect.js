@@ -78,7 +78,7 @@ export default class ApiSelect extends Component {
         onLoad && onLoad([...opts]);
 
         if ( type === 'get_runs' ||
-	     (dqmSource === "Online" && (type === 'get_series' || type === 'get_sample')) ) opts.reverse();
+	     (dqmSource === "Online" && (type === 'get_series' || type === 'get_samples')) ) opts.reverse();
         this.setState({opts, req: null});
       })
       .catch(err => {
