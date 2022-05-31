@@ -121,14 +121,9 @@ class DQMSession(FuturesSession):
         """Return DQMRows corresponding to the samples available under the given series."""
         if VERBOSE: print('\ndqm.py fetch_sample_list(dqmSource = %s, series = %s)' % (dqmSource, series))
 
-        isOnline = (series.startswith('000') and series.endswith('xxxx'))
         series_rows = self.fetch_series_list(dqmSource)
-        if isOnline:
-            url = next((r.url for r in series_rows if r.name == series))
-            return _resolve(self._fetch_dqm_rows(url)).data
-        else:
-            url = next((r.url for r in series_rows if r.name == series))
-            return _resolve(self._fetch_dqm_rows(url)).data
+        url = next((r.url for r in series_rows if r.name == series))
+        return _resolve(self._fetch_dqm_rows(url)).data
 
     def fetch_run_list(self, dqmSource, subsystem, series, sample, selRun=None):
         """Return DQMRows corresponding to the runs available under the given series and sample."""
