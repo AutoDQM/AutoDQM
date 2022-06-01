@@ -77,7 +77,7 @@ class DQMSession(FuturesSession):
         if VERBOSE: print('\ndqm.py stream_run(dqmSource = %s, subsystem = %s, series = %s, sample = %s, run = %s, chunk_size = %d)' %
                           (dqmSource, subsystem, series, sample, run, chunk_size))
 
-        run_path = self._run_path(series, sample, run)
+        run_path = self._run_path(dqmSource, subsystem, series, sample, run)
         run_dir = os.path.dirname(run_path)
 
         if not os.path.exists(run_path):
@@ -238,9 +238,15 @@ class DQMSession(FuturesSession):
             os.remove(dest)
             raise
 
-    def _run_path(self, series, sample, run):
+    def _run_path(self, dqmSource, subsystem, series, sample, run):
         """Return the path to the specified run data file in the cached db."""
-        return "{}/{}.root".format(os.path.join(self.db, series, sample), run)
+        if dqmSource == "Online":
+            return "{}/{}.root".format(os.path.join(self.db, dqmSource, series, sample, OnlineMap[subsystem]), run)
+        elif dqmSource == "Offline":
+            return "{}/{}.root".format(os.path.join(self.db, dqmSource, series, sample), run)
+        else:
+            raise error("dqm.py _run_path dqmSource = {}, not Onilne or Offline!".format(dqmSource))
+        
 
 
 def _parse_dqm_page(content):
