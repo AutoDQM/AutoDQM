@@ -7,6 +7,7 @@ import json
 import lxml.html
 import os
 import requests
+from autodqm import cfg
 from collections import namedtuple
 from requests_futures.sessions import FuturesSession
 
@@ -23,19 +24,9 @@ CA_PATH = 'CERN_Root_CA.crt'
 StreamProg = namedtuple('StreamProg', ('cur', 'total', 'path'))
 DQMRow = namedtuple('DQMRow', ('name', 'full_name', 'url', 'size', 'date'))
 
-## Map from subsystem to Online DQM directory
-## FIXME: Will break for any new subsystems added to config!!! - AWB 2022.05.25
-OnlineMap = dict({'CaloLayer1':'L1T',
-                  'CaloLayer2':'L1T',
-                  'BMTF':'L1T',
-                  'EMTF':'L1T',
-                  'OMTF':'L1T',
-                  'uGMT':'L1T',
-                  'L1T_workspace':'L1T',
-                  'L1T_workspace_slim':'L1T',
-                  'CSC':'CSC',
-                  'RPC':'RPC',
-                  'DT':'DT'})
+main_config = cfg.get_main(os.environ['ADQM_CONFIG'])
+OnlineMap = main_config["OnlineDataMap"]
+
 
 class DQMSession(FuturesSession):
     """Encapsulates an interface to DQM Offline."""
