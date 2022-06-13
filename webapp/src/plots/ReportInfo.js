@@ -8,6 +8,7 @@ export default function ReportInfo(props) {
         <Row>
           <Col md="6" lg="4">
             <h2>AutoDQM Report</h2>
+            <h4>DQM source: {props.dqmSource}</h4>
             <h4>Subsystem: {props.subsystem}</h4>
             <small className="text-muted">{props.timestamp}</small>
           </Col>

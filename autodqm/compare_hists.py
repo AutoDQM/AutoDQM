@@ -11,14 +11,16 @@ from autodqm.histpair import HistPair
 import plotly
 
 
-def process(chunk_index, chunk_size, config_dir, subsystem,
+def process(chunk_index, chunk_size, config_dir,
+            dqmSource, subsystem,
             data_series, data_sample, data_run, data_path,
             ref_series, ref_sample, ref_run, ref_path,
             output_dir='./out/', plugin_dir='./plugins/'):
 
     # Ensure no graphs are drawn to screen and no root messages are sent to
     # terminal
-    histpairs = compile_histpairs(chunk_index, chunk_size, config_dir, subsystem,
+    histpairs = compile_histpairs(chunk_index, chunk_size, config_dir,
+                                  dqmSource, subsystem,
                                   data_series, data_sample, data_run, data_path,
                                   ref_series, ref_sample, ref_run, ref_path)
 
@@ -78,7 +80,8 @@ def process(chunk_index, chunk_size, config_dir, subsystem,
 
     return hist_outputs
 
-def compile_histpairs(chunk_index, chunk_size, config_dir, subsystem,
+def compile_histpairs(chunk_index, chunk_size, config_dir,
+                      dqmSource, subsystem,
                       data_series, data_sample, data_run, data_path,
                       ref_series, ref_sample, ref_run, ref_path):
 
@@ -92,6 +95,9 @@ def compile_histpairs(chunk_index, chunk_size, config_dir, subsystem,
     ref_file = uproot.open(ref_path)
 
     histPairs = []
+    
+    missing_data_dirs = []
+    missing_ref_dirs  = []
 
     for hconf in conf_list:
         # Get name of hist in root file
@@ -101,16 +107,22 @@ def compile_histpairs(chunk_index, chunk_size, config_dir, subsystem,
 
         data_dirname = "{0}{1}".format(main_gdir.format(data_run), gdir)
         ref_dirname = "{0}{1}".format(main_gdir.format(ref_run), gdir)
-
-        data_dir = data_file[data_dirname[:-1]]
-        ref_dir = ref_file[ref_dirname[:-1]]
+        
+        try:
+            data_dir = data_file[data_dirname[:-1]]
+        except:
+            missing_data_dirs.append(data_dirname)
+            continue
+        try:
+            ref_dir = ref_file[ref_dirname[:-1]]
+        except:
+            missing_ref_dirs.append(ref_dirname)
+            continue
 
         if not data_dir:
-            raise error(
-                "Subsystem dir {0} not found in data root file".format(data_dirname))
+            raise error("Subsystem dir {0} not found in data root file".format(data_dirname))
         if not ref_dir:
-            raise error(
-                "Subsystem dir {0} not found in ref root file".format(ref_dirname))
+            raise error("Subsystem dir {0} not found in ref root file".format(ref_dirname))
 
         data_keys = data_dir.keys()
         ref_keys = ref_dir.keys()
@@ -143,6 +155,17 @@ def compile_histpairs(chunk_index, chunk_size, config_dir, subsystem,
                                          data_series, data_sample, data_run, str(name[:-2]), data_hist,
                                          ref_series, ref_sample, ref_run, str(name[:-2]), ref_hist)
                         histPairs.append(hPair)
+
+    ## TODO: "raise warning" is not an actual function, but need some way to alert
+    ## TODO: users that histograms in json config file are missing from ROOT files - AWB 2022.06.11
+    # if len(missing_data_dirs) > 0:
+    #     raise warning("The folloing subsystem dirs not found in data root file")
+    #     for missing_data_dir in missing_data_dirs:
+    #         raise warning("{0}".format(missing_data_dir))
+    # if len(missing_ref_dirs) > 0:
+    #     raise warning("The folloing subsystem dirs not found in ref root file")
+    #     for missing_ref_dir in missing_ref_dirs:
+    #         raise warning("{0}".format(missing_ref_dirs))
 
     #Return histpairs that match the chunk_index <<CAN BE IMPROVED IN THE FUTURE TO BE MORE EFFICIENT>>
     return histPairs[min(chunk_index, len(histPairs)):min(chunk_index+chunk_size, len(histPairs))] 

@@ -18,6 +18,7 @@ export default class InputPage extends Component {
     this.state = {
       refEqualsData,
       query: {
+        dqmSource: null,
         subsystem: null,
         refSeries: null,
         refSample: null,
@@ -67,6 +68,7 @@ export default class InputPage extends Component {
     this.setState({
       refEqualsData: true,
       query: {
+        dqmSource: null,
         subsystem: null,
         refSeries: null,
         refSample: null,
@@ -92,6 +94,7 @@ export default class InputPage extends Component {
           </Col>
           <Col md="6">
             <RefSuggestions
+              dqmSource={query.dqmSource}
               subsystem={query.subsystem}
               series={query.dataSeries}
               sample={query.dataSample}
