@@ -10,7 +10,6 @@
     "L1T_workspace_slim": "L1T",
     "CSC": "CSC",
     "RPC": "RPC",
-    "DT": "DT",
-    "HCAL" : "Hcal"
+    "DT": "DT"
   }
 }
