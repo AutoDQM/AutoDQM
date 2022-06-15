@@ -13,7 +13,7 @@ def comparators():
     }
 
 
-def ks(histpair, ks_cut=0.09, min_entries=100000, **kwargs):
+def ks(histpair, ks_cut=0.09, min_entries=10000, **kwargs):
 
     data_name = histpair.data_name
     ref_name = histpair.ref_name

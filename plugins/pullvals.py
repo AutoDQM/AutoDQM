@@ -14,7 +14,7 @@ def comparators():
 
 
 def pullvals(histpair,
-             pull_cap=25, chi2_cut=500, pull_cut=20, min_entries=100000, norm_type='all',
+             pull_cap=25, chi2_cut=500, pull_cut=20, min_entries=10000, norm_type='all',
              **kwargs):
     """Can handle poisson driven TH2s or generic TProfile2Ds"""
     data_hist = histpair.data_hist
