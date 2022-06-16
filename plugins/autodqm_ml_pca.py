@@ -146,7 +146,7 @@ def autodqm_ml_pca(histpair, **kwargs):
     if pca.normalize:
         hist = normalize(hist)
 
-    # Apply PCA
+    # Check for cases where PCA could fail/is not applicable 
     if hist is None:
         show = False
         return None
@@ -155,6 +155,11 @@ def autodqm_ml_pca(histpair, **kwargs):
         show = False
         return None
 
+    if hist.shape[0] != pca.n_features_: # number of bins don't match (can happen if you try to apply a PCA trained on histograms from one year on another year, where that histogram has the same naming but its binning has been changed)
+        show = False
+        return None
+
+    # Apply PCA
     sse, hist_reconstructed = predict(hist, pca) 
 
     # Create plot
