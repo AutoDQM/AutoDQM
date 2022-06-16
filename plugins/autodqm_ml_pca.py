@@ -147,6 +147,10 @@ def autodqm_ml_pca(histpair, **kwargs):
         hist = normalize(hist)
 
     # Apply PCA
+    if len(hist.shape) != 1: # only for 1d histograms
+        show = False
+        return None
+
     sse, hist_reconstructed = predict(hist, pca) 
 
     # Create plot
