@@ -24,8 +24,8 @@ class HistPair(object):
         self.ref_hist = ref_hist
 
         self.config = config
-        self.comparators = config.get(
-            'comparators', ('pull_values', 'ks_test'))
+        self.comparators = ('pull_values', 'ks_test', 'autodqm_ml_pca')
+
 
     def __eq__(self, other):
         return (isinstance(other, type(self))
