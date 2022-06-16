@@ -21,7 +21,7 @@ def comparators():
     }
 
 def pca(histpair,
-        sse_percentile=5, exp_var=0.95, norm_type='all', min_entries=100000,
+        sse_percentile=5, exp_var=0.95, norm_type='all', min_entries=10000,
         **kwargs):
 
     data_name = histpair.data_name
