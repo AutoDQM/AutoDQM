@@ -122,6 +122,11 @@ def autodqm_ml_pca(histpair, **kwargs):
 
     # Check to see if a trained PCA matches this histpair
     year = int(histpair.data_series[-4:])
+
+    if not "jar_dir" in histpair.config:
+        show = False
+        return None
+
     f_pca = "/var/www/cgi-bin/models/autodqm_ml_pca/{0}/{1}/{2}.json".format(histpair.config["jar_dir"], year, histpair.data_name)
 
     if not os.path.exists(f_pca):
