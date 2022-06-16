@@ -147,7 +147,7 @@ def autodqm_ml_pca(histpair, **kwargs):
         hist = normalize(hist)
 
     # Apply PCA
-    if not hist:
+    if hist is None:
         show = False
         return None
 
