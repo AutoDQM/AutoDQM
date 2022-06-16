@@ -1,0 +1,955 @@
+{
+    "algorithm": "pca",
+    "config_file": "may16_trained_csc1718//pca_default_pca.json",
+    "data_is_loaded": true,
+    "debug": true,
+    "histogram_name_map": {
+        "CSCRunsummaryCSCOfflineMonitorDigishStripNFired": "CSC//Run summary/CSCOfflineMonitor/Digis/hStripNFired",
+        "CSCRunsummaryCSCOfflineMonitorDigishWireTBin_m11b": "CSC//Run summary/CSCOfflineMonitor/Digis/hWireTBin_m11b",
+        "CSCRunsummaryCSCOfflineMonitorDigishWireTBin_m12": "CSC//Run summary/CSCOfflineMonitor/Digis/hWireTBin_m12",
+        "CSCRunsummaryCSCOfflineMonitorDigishWireTBin_m13": "CSC//Run summary/CSCOfflineMonitor/Digis/hWireTBin_m13",
+        "CSCRunsummaryCSCOfflineMonitorDigishWireTBin_m21": "CSC//Run summary/CSCOfflineMonitor/Digis/hWireTBin_m21",
+        "CSCRunsummaryCSCOfflineMonitorDigishWireTBin_m22": "CSC//Run summary/CSCOfflineMonitor/Digis/hWireTBin_m22",
+        "CSCRunsummaryCSCOfflineMonitorDigishWireTBin_m31": "CSC//Run summary/CSCOfflineMonitor/Digis/hWireTBin_m31",
+        "CSCRunsummaryCSCOfflineMonitorDigishWireTBin_m32": "CSC//Run summary/CSCOfflineMonitor/Digis/hWireTBin_m32",
+        "CSCRunsummaryCSCOfflineMonitorDigishWireTBin_m41": "CSC//Run summary/CSCOfflineMonitor/Digis/hWireTBin_m41",
+        "CSCRunsummaryCSCOfflineMonitorDigishWireTBin_m42": "CSC//Run summary/CSCOfflineMonitor/Digis/hWireTBin_m42",
+        "CSCRunsummaryCSCOfflineMonitorDigishWireTBin_p11b": "CSC//Run summary/CSCOfflineMonitor/Digis/hWireTBin_p11b",
+        "CSCRunsummaryCSCOfflineMonitorDigishWireTBin_p12": "CSC//Run summary/CSCOfflineMonitor/Digis/hWireTBin_p12",
+        "CSCRunsummaryCSCOfflineMonitorDigishWireTBin_p13": "CSC//Run summary/CSCOfflineMonitor/Digis/hWireTBin_p13",
+        "CSCRunsummaryCSCOfflineMonitorDigishWireTBin_p21": "CSC//Run summary/CSCOfflineMonitor/Digis/hWireTBin_p21",
+        "CSCRunsummaryCSCOfflineMonitorDigishWireTBin_p22": "CSC//Run summary/CSCOfflineMonitor/Digis/hWireTBin_p22",
+        "CSCRunsummaryCSCOfflineMonitorDigishWireTBin_p31": "CSC//Run summary/CSCOfflineMonitor/Digis/hWireTBin_p31",
+        "CSCRunsummaryCSCOfflineMonitorDigishWireTBin_p32": "CSC//Run summary/CSCOfflineMonitor/Digis/hWireTBin_p32",
+        "CSCRunsummaryCSCOfflineMonitorDigishWireTBin_p41": "CSC//Run summary/CSCOfflineMonitor/Digis/hWireTBin_p41",
+        "CSCRunsummaryCSCOfflineMonitorDigishWireTBin_p42": "CSC//Run summary/CSCOfflineMonitor/Digis/hWireTBin_p42",
+        "CSCRunsummaryCSCOfflineMonitorDigishWirenGroupsTotal": "CSC//Run summary/CSCOfflineMonitor/Digis/hWirenGroupsTotal",
+        "CSCRunsummaryCSCOfflineMonitorOccupancyhORecHits": "CSC//Run summary/CSCOfflineMonitor/Occupancy/hORecHits",
+        "CSCRunsummaryCSCOfflineMonitorOccupancyhOSegments": "CSC//Run summary/CSCOfflineMonitor/Occupancy/hOSegments",
+        "CSCRunsummaryCSCOfflineMonitorOccupancyhOStrips": "CSC//Run summary/CSCOfflineMonitor/Occupancy/hOStrips",
+        "CSCRunsummaryCSCOfflineMonitorOccupancyhOWires": "CSC//Run summary/CSCOfflineMonitor/Occupancy/hOWires",
+        "CSCRunsummaryCSCOfflineMonitorSegmentshSChiSq": "CSC//Run summary/CSCOfflineMonitor/Segments/hSChiSq",
+        "CSCRunsummaryCSCOfflineMonitorSegmentshSGlobalPhi": "CSC//Run summary/CSCOfflineMonitor/Segments/hSGlobalPhi",
+        "CSCRunsummaryCSCOfflineMonitorSegmentshSGlobalTheta": "CSC//Run summary/CSCOfflineMonitor/Segments/hSGlobalTheta",
+        "CSCRunsummaryCSCOfflineMonitorSegmentshSTimeCombinedSerial": "CSC//Run summary/CSCOfflineMonitor/Segments/hSTimeCombinedSerial",
+        "CSCRunsummaryCSCOfflineMonitorSegmentshSTimeVsTOF": "CSC//Run summary/CSCOfflineMonitor/Segments/hSTimeVsTOF",
+        "CSCRunsummaryCSCOfflineMonitorSegmentshSTimeVsZ": "CSC//Run summary/CSCOfflineMonitor/Segments/hSTimeVsZ",
+        "CSCRunsummaryCSCOfflineMonitorSegmentshSnSegments": "CSC//Run summary/CSCOfflineMonitor/Segments/hSnSegments",
+        "CSCRunsummaryCSCOfflineMonitorSegmentshSnhits": "CSC//Run summary/CSCOfflineMonitor/Segments/hSnhits",
+        "CSCRunsummaryCSCOfflineMonitorSegmentshSnhitsm11a": "CSC//Run summary/CSCOfflineMonitor/Segments/hSnhitsm11a",
+        "CSCRunsummaryCSCOfflineMonitorSegmentshSnhitsm11b": "CSC//Run summary/CSCOfflineMonitor/Segments/hSnhitsm11b",
+        "CSCRunsummaryCSCOfflineMonitorSegmentshSnhitsm12": "CSC//Run summary/CSCOfflineMonitor/Segments/hSnhitsm12",
+        "CSCRunsummaryCSCOfflineMonitorSegmentshSnhitsm13": "CSC//Run summary/CSCOfflineMonitor/Segments/hSnhitsm13",
+        "CSCRunsummaryCSCOfflineMonitorSegmentshSnhitsm21": "CSC//Run summary/CSCOfflineMonitor/Segments/hSnhitsm21",
+        "CSCRunsummaryCSCOfflineMonitorSegmentshSnhitsm22": "CSC//Run summary/CSCOfflineMonitor/Segments/hSnhitsm22",
+        "CSCRunsummaryCSCOfflineMonitorSegmentshSnhitsm31": "CSC//Run summary/CSCOfflineMonitor/Segments/hSnhitsm31",
+        "CSCRunsummaryCSCOfflineMonitorSegmentshSnhitsm32": "CSC//Run summary/CSCOfflineMonitor/Segments/hSnhitsm32",
+        "CSCRunsummaryCSCOfflineMonitorSegmentshSnhitsm41": "CSC//Run summary/CSCOfflineMonitor/Segments/hSnhitsm41",
+        "CSCRunsummaryCSCOfflineMonitorSegmentshSnhitsm42": "CSC//Run summary/CSCOfflineMonitor/Segments/hSnhitsm42",
+        "CSCRunsummaryCSCOfflineMonitorSegmentshSnhitsp11a": "CSC//Run summary/CSCOfflineMonitor/Segments/hSnhitsp11a",
+        "CSCRunsummaryCSCOfflineMonitorSegmentshSnhitsp11b": "CSC//Run summary/CSCOfflineMonitor/Segments/hSnhitsp11b",
+        "CSCRunsummaryCSCOfflineMonitorSegmentshSnhitsp12": "CSC//Run summary/CSCOfflineMonitor/Segments/hSnhitsp12",
+        "CSCRunsummaryCSCOfflineMonitorSegmentshSnhitsp13": "CSC//Run summary/CSCOfflineMonitor/Segments/hSnhitsp13",
+        "CSCRunsummaryCSCOfflineMonitorSegmentshSnhitsp21": "CSC//Run summary/CSCOfflineMonitor/Segments/hSnhitsp21",
+        "CSCRunsummaryCSCOfflineMonitorSegmentshSnhitsp22": "CSC//Run summary/CSCOfflineMonitor/Segments/hSnhitsp22",
+        "CSCRunsummaryCSCOfflineMonitorSegmentshSnhitsp31": "CSC//Run summary/CSCOfflineMonitor/Segments/hSnhitsp31",
+        "CSCRunsummaryCSCOfflineMonitorSegmentshSnhitsp32": "CSC//Run summary/CSCOfflineMonitor/Segments/hSnhitsp32",
+        "CSCRunsummaryCSCOfflineMonitorSegmentshSnhitsp41": "CSC//Run summary/CSCOfflineMonitor/Segments/hSnhitsp41",
+        "CSCRunsummaryCSCOfflineMonitorSegmentshSnhitsp42": "CSC//Run summary/CSCOfflineMonitor/Segments/hSnhitsp42",
+        "CSCRunsummaryCSCOfflineMonitorrecHitshRHTimingAnodem11a": "CSC//Run summary/CSCOfflineMonitor/recHits/hRHTimingAnodem11a",
+        "CSCRunsummaryCSCOfflineMonitorrecHitshRHTimingAnodem11b": "CSC//Run summary/CSCOfflineMonitor/recHits/hRHTimingAnodem11b",
+        "CSCRunsummaryCSCOfflineMonitorrecHitshRHTimingAnodem12": "CSC//Run summary/CSCOfflineMonitor/recHits/hRHTimingAnodem12",
+        "CSCRunsummaryCSCOfflineMonitorrecHitshRHTimingAnodem13": "CSC//Run summary/CSCOfflineMonitor/recHits/hRHTimingAnodem13",
+        "CSCRunsummaryCSCOfflineMonitorrecHitshRHTimingAnodem21": "CSC//Run summary/CSCOfflineMonitor/recHits/hRHTimingAnodem21",
+        "CSCRunsummaryCSCOfflineMonitorrecHitshRHTimingAnodem22": "CSC//Run summary/CSCOfflineMonitor/recHits/hRHTimingAnodem22",
+        "CSCRunsummaryCSCOfflineMonitorrecHitshRHTimingAnodem31": "CSC//Run summary/CSCOfflineMonitor/recHits/hRHTimingAnodem31",
+        "CSCRunsummaryCSCOfflineMonitorrecHitshRHTimingAnodem32": "CSC//Run summary/CSCOfflineMonitor/recHits/hRHTimingAnodem32",
+        "CSCRunsummaryCSCOfflineMonitorrecHitshRHTimingAnodem41": "CSC//Run summary/CSCOfflineMonitor/recHits/hRHTimingAnodem41",
+        "CSCRunsummaryCSCOfflineMonitorrecHitshRHTimingAnodem42": "CSC//Run summary/CSCOfflineMonitor/recHits/hRHTimingAnodem42",
+        "CSCRunsummaryCSCOfflineMonitorrecHitshRHTimingAnodep11a": "CSC//Run summary/CSCOfflineMonitor/recHits/hRHTimingAnodep11a",
+        "CSCRunsummaryCSCOfflineMonitorrecHitshRHTimingAnodep11b": "CSC//Run summary/CSCOfflineMonitor/recHits/hRHTimingAnodep11b",
+        "CSCRunsummaryCSCOfflineMonitorrecHitshRHTimingAnodep12": "CSC//Run summary/CSCOfflineMonitor/recHits/hRHTimingAnodep12",
+        "CSCRunsummaryCSCOfflineMonitorrecHitshRHTimingAnodep13": "CSC//Run summary/CSCOfflineMonitor/recHits/hRHTimingAnodep13",
+        "CSCRunsummaryCSCOfflineMonitorrecHitshRHTimingAnodep21": "CSC//Run summary/CSCOfflineMonitor/recHits/hRHTimingAnodep21",
+        "CSCRunsummaryCSCOfflineMonitorrecHitshRHTimingAnodep22": "CSC//Run summary/CSCOfflineMonitor/recHits/hRHTimingAnodep22",
+        "CSCRunsummaryCSCOfflineMonitorrecHitshRHTimingAnodep31": "CSC//Run summary/CSCOfflineMonitor/recHits/hRHTimingAnodep31",
+        "CSCRunsummaryCSCOfflineMonitorrecHitshRHTimingAnodep32": "CSC//Run summary/CSCOfflineMonitor/recHits/hRHTimingAnodep32",
+        "CSCRunsummaryCSCOfflineMonitorrecHitshRHTimingAnodep41": "CSC//Run summary/CSCOfflineMonitor/recHits/hRHTimingAnodep41",
+        "CSCRunsummaryCSCOfflineMonitorrecHitshRHTimingAnodep42": "CSC//Run summary/CSCOfflineMonitor/recHits/hRHTimingAnodep42",
+        "CSCRunsummaryCSCOfflineMonitorrecHitshRHTimingm11a": "CSC//Run summary/CSCOfflineMonitor/recHits/hRHTimingm11a",
+        "CSCRunsummaryCSCOfflineMonitorrecHitshRHTimingm11b": "CSC//Run summary/CSCOfflineMonitor/recHits/hRHTimingm11b",
+        "CSCRunsummaryCSCOfflineMonitorrecHitshRHTimingm12": "CSC//Run summary/CSCOfflineMonitor/recHits/hRHTimingm12",
+        "CSCRunsummaryCSCOfflineMonitorrecHitshRHTimingm13": "CSC//Run summary/CSCOfflineMonitor/recHits/hRHTimingm13",
+        "CSCRunsummaryCSCOfflineMonitorrecHitshRHTimingm21": "CSC//Run summary/CSCOfflineMonitor/recHits/hRHTimingm21",
+        "CSCRunsummaryCSCOfflineMonitorrecHitshRHTimingm22": "CSC//Run summary/CSCOfflineMonitor/recHits/hRHTimingm22",
+        "CSCRunsummaryCSCOfflineMonitorrecHitshRHTimingm31": "CSC//Run summary/CSCOfflineMonitor/recHits/hRHTimingm31",
+        "CSCRunsummaryCSCOfflineMonitorrecHitshRHTimingm32": "CSC//Run summary/CSCOfflineMonitor/recHits/hRHTimingm32",
+        "CSCRunsummaryCSCOfflineMonitorrecHitshRHTimingm41": "CSC//Run summary/CSCOfflineMonitor/recHits/hRHTimingm41",
+        "CSCRunsummaryCSCOfflineMonitorrecHitshRHTimingm42": "CSC//Run summary/CSCOfflineMonitor/recHits/hRHTimingm42",
+        "CSCRunsummaryCSCOfflineMonitorrecHitshRHTimingp11a": "CSC//Run summary/CSCOfflineMonitor/recHits/hRHTimingp11a",
+        "CSCRunsummaryCSCOfflineMonitorrecHitshRHTimingp11b": "CSC//Run summary/CSCOfflineMonitor/recHits/hRHTimingp11b",
+        "CSCRunsummaryCSCOfflineMonitorrecHitshRHTimingp12": "CSC//Run summary/CSCOfflineMonitor/recHits/hRHTimingp12",
+        "CSCRunsummaryCSCOfflineMonitorrecHitshRHTimingp13": "CSC//Run summary/CSCOfflineMonitor/recHits/hRHTimingp13",
+        "CSCRunsummaryCSCOfflineMonitorrecHitshRHTimingp21": "CSC//Run summary/CSCOfflineMonitor/recHits/hRHTimingp21",
+        "CSCRunsummaryCSCOfflineMonitorrecHitshRHTimingp22": "CSC//Run summary/CSCOfflineMonitor/recHits/hRHTimingp22",
+        "CSCRunsummaryCSCOfflineMonitorrecHitshRHTimingp31": "CSC//Run summary/CSCOfflineMonitor/recHits/hRHTimingp31",
+        "CSCRunsummaryCSCOfflineMonitorrecHitshRHTimingp32": "CSC//Run summary/CSCOfflineMonitor/recHits/hRHTimingp32",
+        "CSCRunsummaryCSCOfflineMonitorrecHitshRHTimingp41": "CSC//Run summary/CSCOfflineMonitor/recHits/hRHTimingp41",
+        "CSCRunsummaryCSCOfflineMonitorrecHitshRHTimingp42": "CSC//Run summary/CSCOfflineMonitor/recHits/hRHTimingp42",
+        "CSCRunsummaryCSCOfflineMonitorrecHitshRHnrechits": "CSC//Run summary/CSCOfflineMonitor/recHits/hRHnrechits"
+    },
+    "histograms": {
+        "CSC//Run summary/CSCOfflineMonitor/Digis/hStripNFired": {
+            "n_bins": 1000,
+            "n_dim": 1,
+            "name": "CSCRunsummaryCSCOfflineMonitorDigishStripNFired",
+            "normalize": true,
+            "shape": [
+                1000
+            ]
+        },
+        "CSC//Run summary/CSCOfflineMonitor/Digis/hWireTBin_m11b": {
+            "n_bins": 17,
+            "n_dim": 1,
+            "name": "CSCRunsummaryCSCOfflineMonitorDigishWireTBin_m11b",
+            "normalize": true,
+            "shape": [
+                17
+            ]
+        },
+        "CSC//Run summary/CSCOfflineMonitor/Digis/hWireTBin_m12": {
+            "n_bins": 17,
+            "n_dim": 1,
+            "name": "CSCRunsummaryCSCOfflineMonitorDigishWireTBin_m12",
+            "normalize": true,
+            "shape": [
+                17
+            ]
+        },
+        "CSC//Run summary/CSCOfflineMonitor/Digis/hWireTBin_m13": {
+            "n_bins": 17,
+            "n_dim": 1,
+            "name": "CSCRunsummaryCSCOfflineMonitorDigishWireTBin_m13",
+            "normalize": true,
+            "shape": [
+                17
+            ]
+        },
+        "CSC//Run summary/CSCOfflineMonitor/Digis/hWireTBin_m21": {
+            "n_bins": 17,
+            "n_dim": 1,
+            "name": "CSCRunsummaryCSCOfflineMonitorDigishWireTBin_m21",
+            "normalize": true,
+            "shape": [
+                17
+            ]
+        },
+        "CSC//Run summary/CSCOfflineMonitor/Digis/hWireTBin_m22": {
+            "n_bins": 17,
+            "n_dim": 1,
+            "name": "CSCRunsummaryCSCOfflineMonitorDigishWireTBin_m22",
+            "normalize": true,
+            "shape": [
+                17
+            ]
+        },
+        "CSC//Run summary/CSCOfflineMonitor/Digis/hWireTBin_m31": {
+            "n_bins": 17,
+            "n_dim": 1,
+            "name": "CSCRunsummaryCSCOfflineMonitorDigishWireTBin_m31",
+            "normalize": true,
+            "shape": [
+                17
+            ]
+        },
+        "CSC//Run summary/CSCOfflineMonitor/Digis/hWireTBin_m32": {
+            "n_bins": 17,
+            "n_dim": 1,
+            "name": "CSCRunsummaryCSCOfflineMonitorDigishWireTBin_m32",
+            "normalize": true,
+            "shape": [
+                17
+            ]
+        },
+        "CSC//Run summary/CSCOfflineMonitor/Digis/hWireTBin_m41": {
+            "n_bins": 17,
+            "n_dim": 1,
+            "name": "CSCRunsummaryCSCOfflineMonitorDigishWireTBin_m41",
+            "normalize": true,
+            "shape": [
+                17
+            ]
+        },
+        "CSC//Run summary/CSCOfflineMonitor/Digis/hWireTBin_m42": {
+            "n_bins": 17,
+            "n_dim": 1,
+            "name": "CSCRunsummaryCSCOfflineMonitorDigishWireTBin_m42",
+            "normalize": true,
+            "shape": [
+                17
+            ]
+        },
+        "CSC//Run summary/CSCOfflineMonitor/Digis/hWireTBin_p11b": {
+            "n_bins": 17,
+            "n_dim": 1,
+            "name": "CSCRunsummaryCSCOfflineMonitorDigishWireTBin_p11b",
+            "normalize": true,
+            "shape": [
+                17
+            ]
+        },
+        "CSC//Run summary/CSCOfflineMonitor/Digis/hWireTBin_p12": {
+            "n_bins": 17,
+            "n_dim": 1,
+            "name": "CSCRunsummaryCSCOfflineMonitorDigishWireTBin_p12",
+            "normalize": true,
+            "shape": [
+                17
+            ]
+        },
+        "CSC//Run summary/CSCOfflineMonitor/Digis/hWireTBin_p13": {
+            "n_bins": 17,
+            "n_dim": 1,
+            "name": "CSCRunsummaryCSCOfflineMonitorDigishWireTBin_p13",
+            "normalize": true,
+            "shape": [
+                17
+            ]
+        },
+        "CSC//Run summary/CSCOfflineMonitor/Digis/hWireTBin_p21": {
+            "n_bins": 17,
+            "n_dim": 1,
+            "name": "CSCRunsummaryCSCOfflineMonitorDigishWireTBin_p21",
+            "normalize": true,
+            "shape": [
+                17
+            ]
+        },
+        "CSC//Run summary/CSCOfflineMonitor/Digis/hWireTBin_p22": {
+            "n_bins": 17,
+            "n_dim": 1,
+            "name": "CSCRunsummaryCSCOfflineMonitorDigishWireTBin_p22",
+            "normalize": true,
+            "shape": [
+                17
+            ]
+        },
+        "CSC//Run summary/CSCOfflineMonitor/Digis/hWireTBin_p31": {
+            "n_bins": 17,
+            "n_dim": 1,
+            "name": "CSCRunsummaryCSCOfflineMonitorDigishWireTBin_p31",
+            "normalize": true,
+            "shape": [
+                17
+            ]
+        },
+        "CSC//Run summary/CSCOfflineMonitor/Digis/hWireTBin_p32": {
+            "n_bins": 17,
+            "n_dim": 1,
+            "name": "CSCRunsummaryCSCOfflineMonitorDigishWireTBin_p32",
+            "normalize": true,
+            "shape": [
+                17
+            ]
+        },
+        "CSC//Run summary/CSCOfflineMonitor/Digis/hWireTBin_p41": {
+            "n_bins": 17,
+            "n_dim": 1,
+            "name": "CSCRunsummaryCSCOfflineMonitorDigishWireTBin_p41",
+            "normalize": true,
+            "shape": [
+                17
+            ]
+        },
+        "CSC//Run summary/CSCOfflineMonitor/Digis/hWireTBin_p42": {
+            "n_bins": 17,
+            "n_dim": 1,
+            "name": "CSCRunsummaryCSCOfflineMonitorDigishWireTBin_p42",
+            "normalize": true,
+            "shape": [
+                17
+            ]
+        },
+        "CSC//Run summary/CSCOfflineMonitor/Digis/hWirenGroupsTotal": {
+            "n_bins": 500,
+            "n_dim": 1,
+            "name": "CSCRunsummaryCSCOfflineMonitorDigishWirenGroupsTotal",
+            "normalize": true,
+            "shape": [
+                500
+            ]
+        },
+        "CSC//Run summary/CSCOfflineMonitor/Occupancy/hORecHits": {
+            "n_bins": 720,
+            "n_dim": 2,
+            "name": "CSCRunsummaryCSCOfflineMonitorOccupancyhORecHits",
+            "normalize": true,
+            "shape": [
+                36,
+                20
+            ]
+        },
+        "CSC//Run summary/CSCOfflineMonitor/Occupancy/hOSegments": {
+            "n_bins": 720,
+            "n_dim": 2,
+            "name": "CSCRunsummaryCSCOfflineMonitorOccupancyhOSegments",
+            "normalize": true,
+            "shape": [
+                36,
+                20
+            ]
+        },
+        "CSC//Run summary/CSCOfflineMonitor/Occupancy/hOStrips": {
+            "n_bins": 720,
+            "n_dim": 2,
+            "name": "CSCRunsummaryCSCOfflineMonitorOccupancyhOStrips",
+            "normalize": true,
+            "shape": [
+                36,
+                20
+            ]
+        },
+        "CSC//Run summary/CSCOfflineMonitor/Occupancy/hOWires": {
+            "n_bins": 720,
+            "n_dim": 2,
+            "name": "CSCRunsummaryCSCOfflineMonitorOccupancyhOWires",
+            "normalize": true,
+            "shape": [
+                36,
+                20
+            ]
+        },
+        "CSC//Run summary/CSCOfflineMonitor/Segments/hSChiSq": {
+            "n_bins": 110,
+            "n_dim": 1,
+            "name": "CSCRunsummaryCSCOfflineMonitorSegmentshSChiSq",
+            "normalize": true,
+            "shape": [
+                110
+            ]
+        },
+        "CSC//Run summary/CSCOfflineMonitor/Segments/hSGlobalPhi": {
+            "n_bins": 128,
+            "n_dim": 1,
+            "name": "CSCRunsummaryCSCOfflineMonitorSegmentshSGlobalPhi",
+            "normalize": true,
+            "shape": [
+                128
+            ]
+        },
+        "CSC//Run summary/CSCOfflineMonitor/Segments/hSGlobalTheta": {
+            "n_bins": 136,
+            "n_dim": 1,
+            "name": "CSCRunsummaryCSCOfflineMonitorSegmentshSGlobalTheta",
+            "normalize": true,
+            "shape": [
+                136
+            ]
+        },
+        "CSC//Run summary/CSCOfflineMonitor/Segments/hSTimeCombinedSerial": {
+            "n_bins": 120200,
+            "n_dim": 2,
+            "name": "CSCRunsummaryCSCOfflineMonitorSegmentshSTimeCombinedSerial",
+            "normalize": true,
+            "shape": [
+                601,
+                200
+            ]
+        },
+        "CSC//Run summary/CSCOfflineMonitor/Segments/hSTimeVsTOF": {
+            "n_bins": 36000,
+            "n_dim": 2,
+            "name": "CSCRunsummaryCSCOfflineMonitorSegmentshSTimeVsTOF",
+            "normalize": true,
+            "shape": [
+                180,
+                200
+            ]
+        },
+        "CSC//Run summary/CSCOfflineMonitor/Segments/hSTimeVsZ": {
+            "n_bins": 40000,
+            "n_dim": 2,
+            "name": "CSCRunsummaryCSCOfflineMonitorSegmentshSTimeVsZ",
+            "normalize": true,
+            "shape": [
+                200,
+                200
+            ]
+        },
+        "CSC//Run summary/CSCOfflineMonitor/Segments/hSnSegments": {
+            "n_bins": 26,
+            "n_dim": 1,
+            "name": "CSCRunsummaryCSCOfflineMonitorSegmentshSnSegments",
+            "normalize": true,
+            "shape": [
+                26
+            ]
+        },
+        "CSC//Run summary/CSCOfflineMonitor/Segments/hSnhits": {
+            "n_bins": 8,
+            "n_dim": 1,
+            "name": "CSCRunsummaryCSCOfflineMonitorSegmentshSnhits",
+            "normalize": true,
+            "shape": [
+                8
+            ]
+        },
+        "CSC//Run summary/CSCOfflineMonitor/Segments/hSnhitsm11a": {
+            "n_bins": 8,
+            "n_dim": 1,
+            "name": "CSCRunsummaryCSCOfflineMonitorSegmentshSnhitsm11a",
+            "normalize": true,
+            "shape": [
+                8
+            ]
+        },
+        "CSC//Run summary/CSCOfflineMonitor/Segments/hSnhitsm11b": {
+            "n_bins": 8,
+            "n_dim": 1,
+            "name": "CSCRunsummaryCSCOfflineMonitorSegmentshSnhitsm11b",
+            "normalize": true,
+            "shape": [
+                8
+            ]
+        },
+        "CSC//Run summary/CSCOfflineMonitor/Segments/hSnhitsm12": {
+            "n_bins": 8,
+            "n_dim": 1,
+            "name": "CSCRunsummaryCSCOfflineMonitorSegmentshSnhitsm12",
+            "normalize": true,
+            "shape": [
+                8
+            ]
+        },
+        "CSC//Run summary/CSCOfflineMonitor/Segments/hSnhitsm13": {
+            "n_bins": 8,
+            "n_dim": 1,
+            "name": "CSCRunsummaryCSCOfflineMonitorSegmentshSnhitsm13",
+            "normalize": true,
+            "shape": [
+                8
+            ]
+        },
+        "CSC//Run summary/CSCOfflineMonitor/Segments/hSnhitsm21": {
+            "n_bins": 8,
+            "n_dim": 1,
+            "name": "CSCRunsummaryCSCOfflineMonitorSegmentshSnhitsm21",
+            "normalize": true,
+            "shape": [
+                8
+            ]
+        },
+        "CSC//Run summary/CSCOfflineMonitor/Segments/hSnhitsm22": {
+            "n_bins": 8,
+            "n_dim": 1,
+            "name": "CSCRunsummaryCSCOfflineMonitorSegmentshSnhitsm22",
+            "normalize": true,
+            "shape": [
+                8
+            ]
+        },
+        "CSC//Run summary/CSCOfflineMonitor/Segments/hSnhitsm31": {
+            "n_bins": 8,
+            "n_dim": 1,
+            "name": "CSCRunsummaryCSCOfflineMonitorSegmentshSnhitsm31",
+            "normalize": true,
+            "shape": [
+                8
+            ]
+        },
+        "CSC//Run summary/CSCOfflineMonitor/Segments/hSnhitsm32": {
+            "n_bins": 8,
+            "n_dim": 1,
+            "name": "CSCRunsummaryCSCOfflineMonitorSegmentshSnhitsm32",
+            "normalize": true,
+            "shape": [
+                8
+            ]
+        },
+        "CSC//Run summary/CSCOfflineMonitor/Segments/hSnhitsm41": {
+            "n_bins": 8,
+            "n_dim": 1,
+            "name": "CSCRunsummaryCSCOfflineMonitorSegmentshSnhitsm41",
+            "normalize": true,
+            "shape": [
+                8
+            ]
+        },
+        "CSC//Run summary/CSCOfflineMonitor/Segments/hSnhitsm42": {
+            "n_bins": 8,
+            "n_dim": 1,
+            "name": "CSCRunsummaryCSCOfflineMonitorSegmentshSnhitsm42",
+            "normalize": true,
+            "shape": [
+                8
+            ]
+        },
+        "CSC//Run summary/CSCOfflineMonitor/Segments/hSnhitsp11a": {
+            "n_bins": 8,
+            "n_dim": 1,
+            "name": "CSCRunsummaryCSCOfflineMonitorSegmentshSnhitsp11a",
+            "normalize": true,
+            "shape": [
+                8
+            ]
+        },
+        "CSC//Run summary/CSCOfflineMonitor/Segments/hSnhitsp11b": {
+            "n_bins": 8,
+            "n_dim": 1,
+            "name": "CSCRunsummaryCSCOfflineMonitorSegmentshSnhitsp11b",
+            "normalize": true,
+            "shape": [
+                8
+            ]
+        },
+        "CSC//Run summary/CSCOfflineMonitor/Segments/hSnhitsp12": {
+            "n_bins": 8,
+            "n_dim": 1,
+            "name": "CSCRunsummaryCSCOfflineMonitorSegmentshSnhitsp12",
+            "normalize": true,
+            "shape": [
+                8
+            ]
+        },
+        "CSC//Run summary/CSCOfflineMonitor/Segments/hSnhitsp13": {
+            "n_bins": 8,
+            "n_dim": 1,
+            "name": "CSCRunsummaryCSCOfflineMonitorSegmentshSnhitsp13",
+            "normalize": true,
+            "shape": [
+                8
+            ]
+        },
+        "CSC//Run summary/CSCOfflineMonitor/Segments/hSnhitsp21": {
+            "n_bins": 8,
+            "n_dim": 1,
+            "name": "CSCRunsummaryCSCOfflineMonitorSegmentshSnhitsp21",
+            "normalize": true,
+            "shape": [
+                8
+            ]
+        },
+        "CSC//Run summary/CSCOfflineMonitor/Segments/hSnhitsp22": {
+            "n_bins": 8,
+            "n_dim": 1,
+            "name": "CSCRunsummaryCSCOfflineMonitorSegmentshSnhitsp22",
+            "normalize": true,
+            "shape": [
+                8
+            ]
+        },
+        "CSC//Run summary/CSCOfflineMonitor/Segments/hSnhitsp31": {
+            "n_bins": 8,
+            "n_dim": 1,
+            "name": "CSCRunsummaryCSCOfflineMonitorSegmentshSnhitsp31",
+            "normalize": true,
+            "shape": [
+                8
+            ]
+        },
+        "CSC//Run summary/CSCOfflineMonitor/Segments/hSnhitsp32": {
+            "n_bins": 8,
+            "n_dim": 1,
+            "name": "CSCRunsummaryCSCOfflineMonitorSegmentshSnhitsp32",
+            "normalize": true,
+            "shape": [
+                8
+            ]
+        },
+        "CSC//Run summary/CSCOfflineMonitor/Segments/hSnhitsp41": {
+            "n_bins": 8,
+            "n_dim": 1,
+            "name": "CSCRunsummaryCSCOfflineMonitorSegmentshSnhitsp41",
+            "normalize": true,
+            "shape": [
+                8
+            ]
+        },
+        "CSC//Run summary/CSCOfflineMonitor/Segments/hSnhitsp42": {
+            "n_bins": 8,
+            "n_dim": 1,
+            "name": "CSCRunsummaryCSCOfflineMonitorSegmentshSnhitsp42",
+            "normalize": true,
+            "shape": [
+                8
+            ]
+        },
+        "CSC//Run summary/CSCOfflineMonitor/recHits/hRHTimingAnodem11a": {
+            "n_bins": 80,
+            "n_dim": 1,
+            "name": "CSCRunsummaryCSCOfflineMonitorrecHitshRHTimingAnodem11a",
+            "normalize": true,
+            "shape": [
+                80
+            ]
+        },
+        "CSC//Run summary/CSCOfflineMonitor/recHits/hRHTimingAnodem11b": {
+            "n_bins": 80,
+            "n_dim": 1,
+            "name": "CSCRunsummaryCSCOfflineMonitorrecHitshRHTimingAnodem11b",
+            "normalize": true,
+            "shape": [
+                80
+            ]
+        },
+        "CSC//Run summary/CSCOfflineMonitor/recHits/hRHTimingAnodem12": {
+            "n_bins": 80,
+            "n_dim": 1,
+            "name": "CSCRunsummaryCSCOfflineMonitorrecHitshRHTimingAnodem12",
+            "normalize": true,
+            "shape": [
+                80
+            ]
+        },
+        "CSC//Run summary/CSCOfflineMonitor/recHits/hRHTimingAnodem13": {
+            "n_bins": 80,
+            "n_dim": 1,
+            "name": "CSCRunsummaryCSCOfflineMonitorrecHitshRHTimingAnodem13",
+            "normalize": true,
+            "shape": [
+                80
+            ]
+        },
+        "CSC//Run summary/CSCOfflineMonitor/recHits/hRHTimingAnodem21": {
+            "n_bins": 80,
+            "n_dim": 1,
+            "name": "CSCRunsummaryCSCOfflineMonitorrecHitshRHTimingAnodem21",
+            "normalize": true,
+            "shape": [
+                80
+            ]
+        },
+        "CSC//Run summary/CSCOfflineMonitor/recHits/hRHTimingAnodem22": {
+            "n_bins": 80,
+            "n_dim": 1,
+            "name": "CSCRunsummaryCSCOfflineMonitorrecHitshRHTimingAnodem22",
+            "normalize": true,
+            "shape": [
+                80
+            ]
+        },
+        "CSC//Run summary/CSCOfflineMonitor/recHits/hRHTimingAnodem31": {
+            "n_bins": 80,
+            "n_dim": 1,
+            "name": "CSCRunsummaryCSCOfflineMonitorrecHitshRHTimingAnodem31",
+            "normalize": true,
+            "shape": [
+                80
+            ]
+        },
+        "CSC//Run summary/CSCOfflineMonitor/recHits/hRHTimingAnodem32": {
+            "n_bins": 80,
+            "n_dim": 1,
+            "name": "CSCRunsummaryCSCOfflineMonitorrecHitshRHTimingAnodem32",
+            "normalize": true,
+            "shape": [
+                80
+            ]
+        },
+        "CSC//Run summary/CSCOfflineMonitor/recHits/hRHTimingAnodem41": {
+            "n_bins": 80,
+            "n_dim": 1,
+            "name": "CSCRunsummaryCSCOfflineMonitorrecHitshRHTimingAnodem41",
+            "normalize": true,
+            "shape": [
+                80
+            ]
+        },
+        "CSC//Run summary/CSCOfflineMonitor/recHits/hRHTimingAnodem42": {
+            "n_bins": 80,
+            "n_dim": 1,
+            "name": "CSCRunsummaryCSCOfflineMonitorrecHitshRHTimingAnodem42",
+            "normalize": true,
+            "shape": [
+                80
+            ]
+        },
+        "CSC//Run summary/CSCOfflineMonitor/recHits/hRHTimingAnodep11a": {
+            "n_bins": 80,
+            "n_dim": 1,
+            "name": "CSCRunsummaryCSCOfflineMonitorrecHitshRHTimingAnodep11a",
+            "normalize": true,
+            "shape": [
+                80
+            ]
+        },
+        "CSC//Run summary/CSCOfflineMonitor/recHits/hRHTimingAnodep11b": {
+            "n_bins": 80,
+            "n_dim": 1,
+            "name": "CSCRunsummaryCSCOfflineMonitorrecHitshRHTimingAnodep11b",
+            "normalize": true,
+            "shape": [
+                80
+            ]
+        },
+        "CSC//Run summary/CSCOfflineMonitor/recHits/hRHTimingAnodep12": {
+            "n_bins": 80,
+            "n_dim": 1,
+            "name": "CSCRunsummaryCSCOfflineMonitorrecHitshRHTimingAnodep12",
+            "normalize": true,
+            "shape": [
+                80
+            ]
+        },
+        "CSC//Run summary/CSCOfflineMonitor/recHits/hRHTimingAnodep13": {
+            "n_bins": 80,
+            "n_dim": 1,
+            "name": "CSCRunsummaryCSCOfflineMonitorrecHitshRHTimingAnodep13",
+            "normalize": true,
+            "shape": [
+                80
+            ]
+        },
+        "CSC//Run summary/CSCOfflineMonitor/recHits/hRHTimingAnodep21": {
+            "n_bins": 80,
+            "n_dim": 1,
+            "name": "CSCRunsummaryCSCOfflineMonitorrecHitshRHTimingAnodep21",
+            "normalize": true,
+            "shape": [
+                80
+            ]
+        },
+        "CSC//Run summary/CSCOfflineMonitor/recHits/hRHTimingAnodep22": {
+            "n_bins": 80,
+            "n_dim": 1,
+            "name": "CSCRunsummaryCSCOfflineMonitorrecHitshRHTimingAnodep22",
+            "normalize": true,
+            "shape": [
+                80
+            ]
+        },
+        "CSC//Run summary/CSCOfflineMonitor/recHits/hRHTimingAnodep31": {
+            "n_bins": 80,
+            "n_dim": 1,
+            "name": "CSCRunsummaryCSCOfflineMonitorrecHitshRHTimingAnodep31",
+            "normalize": true,
+            "shape": [
+                80
+            ]
+        },
+        "CSC//Run summary/CSCOfflineMonitor/recHits/hRHTimingAnodep32": {
+            "n_bins": 80,
+            "n_dim": 1,
+            "name": "CSCRunsummaryCSCOfflineMonitorrecHitshRHTimingAnodep32",
+            "normalize": true,
+            "shape": [
+                80
+            ]
+        },
+        "CSC//Run summary/CSCOfflineMonitor/recHits/hRHTimingAnodep41": {
+            "n_bins": 80,
+            "n_dim": 1,
+            "name": "CSCRunsummaryCSCOfflineMonitorrecHitshRHTimingAnodep41",
+            "normalize": true,
+            "shape": [
+                80
+            ]
+        },
+        "CSC//Run summary/CSCOfflineMonitor/recHits/hRHTimingAnodep42": {
+            "n_bins": 80,
+            "n_dim": 1,
+            "name": "CSCRunsummaryCSCOfflineMonitorrecHitshRHTimingAnodep42",
+            "normalize": true,
+            "shape": [
+                80
+            ]
+        },
+        "CSC//Run summary/CSCOfflineMonitor/recHits/hRHTimingm11a": {
+            "n_bins": 200,
+            "n_dim": 1,
+            "name": "CSCRunsummaryCSCOfflineMonitorrecHitshRHTimingm11a",
+            "normalize": true,
+            "shape": [
+                200
+            ]
+        },
+        "CSC//Run summary/CSCOfflineMonitor/recHits/hRHTimingm11b": {
+            "n_bins": 200,
+            "n_dim": 1,
+            "name": "CSCRunsummaryCSCOfflineMonitorrecHitshRHTimingm11b",
+            "normalize": true,
+            "shape": [
+                200
+            ]
+        },
+        "CSC//Run summary/CSCOfflineMonitor/recHits/hRHTimingm12": {
+            "n_bins": 200,
+            "n_dim": 1,
+            "name": "CSCRunsummaryCSCOfflineMonitorrecHitshRHTimingm12",
+            "normalize": true,
+            "shape": [
+                200
+            ]
+        },
+        "CSC//Run summary/CSCOfflineMonitor/recHits/hRHTimingm13": {
+            "n_bins": 200,
+            "n_dim": 1,
+            "name": "CSCRunsummaryCSCOfflineMonitorrecHitshRHTimingm13",
+            "normalize": true,
+            "shape": [
+                200
+            ]
+        },
+        "CSC//Run summary/CSCOfflineMonitor/recHits/hRHTimingm21": {
+            "n_bins": 200,
+            "n_dim": 1,
+            "name": "CSCRunsummaryCSCOfflineMonitorrecHitshRHTimingm21",
+            "normalize": true,
+            "shape": [
+                200
+            ]
+        },
+        "CSC//Run summary/CSCOfflineMonitor/recHits/hRHTimingm22": {
+            "n_bins": 200,
+            "n_dim": 1,
+            "name": "CSCRunsummaryCSCOfflineMonitorrecHitshRHTimingm22",
+            "normalize": true,
+            "shape": [
+                200
+            ]
+        },
+        "CSC//Run summary/CSCOfflineMonitor/recHits/hRHTimingm31": {
+            "n_bins": 200,
+            "n_dim": 1,
+            "name": "CSCRunsummaryCSCOfflineMonitorrecHitshRHTimingm31",
+            "normalize": true,
+            "shape": [
+                200
+            ]
+        },
+        "CSC//Run summary/CSCOfflineMonitor/recHits/hRHTimingm32": {
+            "n_bins": 200,
+            "n_dim": 1,
+            "name": "CSCRunsummaryCSCOfflineMonitorrecHitshRHTimingm32",
+            "normalize": true,
+            "shape": [
+                200
+            ]
+        },
+        "CSC//Run summary/CSCOfflineMonitor/recHits/hRHTimingm41": {
+            "n_bins": 200,
+            "n_dim": 1,
+            "name": "CSCRunsummaryCSCOfflineMonitorrecHitshRHTimingm41",
+            "normalize": true,
+            "shape": [
+                200
+            ]
+        },
+        "CSC//Run summary/CSCOfflineMonitor/recHits/hRHTimingm42": {
+            "n_bins": 200,
+            "n_dim": 1,
+            "name": "CSCRunsummaryCSCOfflineMonitorrecHitshRHTimingm42",
+            "normalize": true,
+            "shape": [
+                200
+            ]
+        },
+        "CSC//Run summary/CSCOfflineMonitor/recHits/hRHTimingp11a": {
+            "n_bins": 200,
+            "n_dim": 1,
+            "name": "CSCRunsummaryCSCOfflineMonitorrecHitshRHTimingp11a",
+            "normalize": true,
+            "shape": [
+                200
+            ]
+        },
+        "CSC//Run summary/CSCOfflineMonitor/recHits/hRHTimingp11b": {
+            "n_bins": 200,
+            "n_dim": 1,
+            "name": "CSCRunsummaryCSCOfflineMonitorrecHitshRHTimingp11b",
+            "normalize": true,
+            "shape": [
+                200
+            ]
+        },
+        "CSC//Run summary/CSCOfflineMonitor/recHits/hRHTimingp12": {
+            "n_bins": 200,
+            "n_dim": 1,
+            "name": "CSCRunsummaryCSCOfflineMonitorrecHitshRHTimingp12",
+            "normalize": true,
+            "shape": [
+                200
+            ]
+        },
+        "CSC//Run summary/CSCOfflineMonitor/recHits/hRHTimingp13": {
+            "n_bins": 200,
+            "n_dim": 1,
+            "name": "CSCRunsummaryCSCOfflineMonitorrecHitshRHTimingp13",
+            "normalize": true,
+            "shape": [
+                200
+            ]
+        },
+        "CSC//Run summary/CSCOfflineMonitor/recHits/hRHTimingp21": {
+            "n_bins": 200,
+            "n_dim": 1,
+            "name": "CSCRunsummaryCSCOfflineMonitorrecHitshRHTimingp21",
+            "normalize": true,
+            "shape": [
+                200
+            ]
+        },
+        "CSC//Run summary/CSCOfflineMonitor/recHits/hRHTimingp22": {
+            "n_bins": 200,
+            "n_dim": 1,
+            "name": "CSCRunsummaryCSCOfflineMonitorrecHitshRHTimingp22",
+            "normalize": true,
+            "shape": [
+                200
+            ]
+        },
+        "CSC//Run summary/CSCOfflineMonitor/recHits/hRHTimingp31": {
+            "n_bins": 200,
+            "n_dim": 1,
+            "name": "CSCRunsummaryCSCOfflineMonitorrecHitshRHTimingp31",
+            "normalize": true,
+            "shape": [
+                200
+            ]
+        },
+        "CSC//Run summary/CSCOfflineMonitor/recHits/hRHTimingp32": {
+            "n_bins": 200,
+            "n_dim": 1,
+            "name": "CSCRunsummaryCSCOfflineMonitorrecHitshRHTimingp32",
+            "normalize": true,
+            "shape": [
+                200
+            ]
+        },
+        "CSC//Run summary/CSCOfflineMonitor/recHits/hRHTimingp41": {
+            "n_bins": 200,
+            "n_dim": 1,
+            "name": "CSCRunsummaryCSCOfflineMonitorrecHitshRHTimingp41",
+            "normalize": true,
+            "shape": [
+                200
+            ]
+        },
+        "CSC//Run summary/CSCOfflineMonitor/recHits/hRHTimingp42": {
+            "n_bins": 200,
+            "n_dim": 1,
+            "name": "CSCRunsummaryCSCOfflineMonitorrecHitshRHTimingp42",
+            "normalize": true,
+            "shape": [
+                200
+            ]
+        },
+        "CSC//Run summary/CSCOfflineMonitor/recHits/hRHnrechits": {
+            "n_bins": 500,
+            "n_dim": 1,
+            "name": "CSCRunsummaryCSCOfflineMonitorrecHitshRHnrechits",
+            "normalize": true,
+            "shape": [
+                500
+            ]
+        }
+    },
+    "input_file": "may16_csc/SingleMuon.parquet",
+    "n_components": 2,
+    "n_histograms": 93,
+    "name": "pca",
+    "output_dir": "may16_trained_csc1718/",
+    "output_file": "may16_trained_csc1718//SingleMuon.parquet",
+    "remove_low_stat": true,
+    "tag": "default_pca"
+}
