@@ -1,0 +1,258 @@
+{
+    "algorithm": "pca",
+    "config_file": "apr28_trained_rpc1718/pca_default_pca.json",
+    "data_is_loaded": true,
+    "debug": true,
+    "histogram_name_map": {
+        "RPCRunsummaryAllHitsSummaryHistogramsBxDistribution_Disk_-1": "RPC//Run summary/AllHits/SummaryHistograms/BxDistribution_Disk_-1",
+        "RPCRunsummaryAllHitsSummaryHistogramsBxDistribution_Disk_-2": "RPC//Run summary/AllHits/SummaryHistograms/BxDistribution_Disk_-2",
+        "RPCRunsummaryAllHitsSummaryHistogramsBxDistribution_Disk_-3": "RPC//Run summary/AllHits/SummaryHistograms/BxDistribution_Disk_-3",
+        "RPCRunsummaryAllHitsSummaryHistogramsBxDistribution_Disk_-4": "RPC//Run summary/AllHits/SummaryHistograms/BxDistribution_Disk_-4",
+        "RPCRunsummaryAllHitsSummaryHistogramsBxDistribution_Disk_1": "RPC//Run summary/AllHits/SummaryHistograms/BxDistribution_Disk_1",
+        "RPCRunsummaryAllHitsSummaryHistogramsBxDistribution_Disk_2": "RPC//Run summary/AllHits/SummaryHistograms/BxDistribution_Disk_2",
+        "RPCRunsummaryAllHitsSummaryHistogramsBxDistribution_Disk_3": "RPC//Run summary/AllHits/SummaryHistograms/BxDistribution_Disk_3",
+        "RPCRunsummaryAllHitsSummaryHistogramsBxDistribution_Disk_4": "RPC//Run summary/AllHits/SummaryHistograms/BxDistribution_Disk_4",
+        "RPCRunsummaryAllHitsSummaryHistogramsBxDistribution_Wheel_-1": "RPC//Run summary/AllHits/SummaryHistograms/BxDistribution_Wheel_-1",
+        "RPCRunsummaryAllHitsSummaryHistogramsBxDistribution_Wheel_-2": "RPC//Run summary/AllHits/SummaryHistograms/BxDistribution_Wheel_-2",
+        "RPCRunsummaryAllHitsSummaryHistogramsBxDistribution_Wheel_0": "RPC//Run summary/AllHits/SummaryHistograms/BxDistribution_Wheel_0",
+        "RPCRunsummaryAllHitsSummaryHistogramsBxDistribution_Wheel_1": "RPC//Run summary/AllHits/SummaryHistograms/BxDistribution_Wheel_1",
+        "RPCRunsummaryAllHitsSummaryHistogramsBxDistribution_Wheel_2": "RPC//Run summary/AllHits/SummaryHistograms/BxDistribution_Wheel_2",
+        "RPCRunsummaryAllHitsSummaryHistogramsClusterSize_Barrel": "RPC//Run summary/AllHits/SummaryHistograms/ClusterSize_Barrel",
+        "RPCRunsummaryAllHitsSummaryHistogramsClusterSize_Endcap+": "RPC//Run summary/AllHits/SummaryHistograms/ClusterSize_Endcap+",
+        "RPCRunsummaryAllHitsSummaryHistogramsClusterSize_Endcap-": "RPC//Run summary/AllHits/SummaryHistograms/ClusterSize_Endcap-",
+        "RPCRunsummaryAllHitsSummaryHistogramsClusterSize_Layer1": "RPC//Run summary/AllHits/SummaryHistograms/ClusterSize_Layer1",
+        "RPCRunsummaryAllHitsSummaryHistogramsClusterSize_Layer2": "RPC//Run summary/AllHits/SummaryHistograms/ClusterSize_Layer2",
+        "RPCRunsummaryAllHitsSummaryHistogramsClusterSize_Layer3": "RPC//Run summary/AllHits/SummaryHistograms/ClusterSize_Layer3",
+        "RPCRunsummaryAllHitsSummaryHistogramsClusterSize_Layer4": "RPC//Run summary/AllHits/SummaryHistograms/ClusterSize_Layer4",
+        "RPCRunsummaryAllHitsSummaryHistogramsClusterSize_Layer5": "RPC//Run summary/AllHits/SummaryHistograms/ClusterSize_Layer5",
+        "RPCRunsummaryAllHitsSummaryHistogramsClusterSize_Layer6": "RPC//Run summary/AllHits/SummaryHistograms/ClusterSize_Layer6",
+        "RPCRunsummaryAllHitsSummaryHistogramsClusterSize_Ring2": "RPC//Run summary/AllHits/SummaryHistograms/ClusterSize_Ring2",
+        "RPCRunsummaryAllHitsSummaryHistogramsClusterSize_Ring3": "RPC//Run summary/AllHits/SummaryHistograms/ClusterSize_Ring3"
+    },
+    "histograms": {
+        "RPC//Run summary/AllHits/SummaryHistograms/BxDistribution_Disk_-1": {
+            "n_bins": 9,
+            "n_dim": 1,
+            "name": "RPCRunsummaryAllHitsSummaryHistogramsBxDistribution_Disk_-1",
+            "normalize": true,
+            "shape": [
+                9
+            ]
+        },
+        "RPC//Run summary/AllHits/SummaryHistograms/BxDistribution_Disk_-2": {
+            "n_bins": 9,
+            "n_dim": 1,
+            "name": "RPCRunsummaryAllHitsSummaryHistogramsBxDistribution_Disk_-2",
+            "normalize": true,
+            "shape": [
+                9
+            ]
+        },
+        "RPC//Run summary/AllHits/SummaryHistograms/BxDistribution_Disk_-3": {
+            "n_bins": 9,
+            "n_dim": 1,
+            "name": "RPCRunsummaryAllHitsSummaryHistogramsBxDistribution_Disk_-3",
+            "normalize": true,
+            "shape": [
+                9
+            ]
+        },
+        "RPC//Run summary/AllHits/SummaryHistograms/BxDistribution_Disk_-4": {
+            "n_bins": 9,
+            "n_dim": 1,
+            "name": "RPCRunsummaryAllHitsSummaryHistogramsBxDistribution_Disk_-4",
+            "normalize": true,
+            "shape": [
+                9
+            ]
+        },
+        "RPC//Run summary/AllHits/SummaryHistograms/BxDistribution_Disk_1": {
+            "n_bins": 9,
+            "n_dim": 1,
+            "name": "RPCRunsummaryAllHitsSummaryHistogramsBxDistribution_Disk_1",
+            "normalize": true,
+            "shape": [
+                9
+            ]
+        },
+        "RPC//Run summary/AllHits/SummaryHistograms/BxDistribution_Disk_2": {
+            "n_bins": 9,
+            "n_dim": 1,
+            "name": "RPCRunsummaryAllHitsSummaryHistogramsBxDistribution_Disk_2",
+            "normalize": true,
+            "shape": [
+                9
+            ]
+        },
+        "RPC//Run summary/AllHits/SummaryHistograms/BxDistribution_Disk_3": {
+            "n_bins": 9,
+            "n_dim": 1,
+            "name": "RPCRunsummaryAllHitsSummaryHistogramsBxDistribution_Disk_3",
+            "normalize": true,
+            "shape": [
+                9
+            ]
+        },
+        "RPC//Run summary/AllHits/SummaryHistograms/BxDistribution_Disk_4": {
+            "n_bins": 9,
+            "n_dim": 1,
+            "name": "RPCRunsummaryAllHitsSummaryHistogramsBxDistribution_Disk_4",
+            "normalize": true,
+            "shape": [
+                9
+            ]
+        },
+        "RPC//Run summary/AllHits/SummaryHistograms/BxDistribution_Wheel_-1": {
+            "n_bins": 9,
+            "n_dim": 1,
+            "name": "RPCRunsummaryAllHitsSummaryHistogramsBxDistribution_Wheel_-1",
+            "normalize": true,
+            "shape": [
+                9
+            ]
+        },
+        "RPC//Run summary/AllHits/SummaryHistograms/BxDistribution_Wheel_-2": {
+            "n_bins": 9,
+            "n_dim": 1,
+            "name": "RPCRunsummaryAllHitsSummaryHistogramsBxDistribution_Wheel_-2",
+            "normalize": true,
+            "shape": [
+                9
+            ]
+        },
+        "RPC//Run summary/AllHits/SummaryHistograms/BxDistribution_Wheel_0": {
+            "n_bins": 9,
+            "n_dim": 1,
+            "name": "RPCRunsummaryAllHitsSummaryHistogramsBxDistribution_Wheel_0",
+            "normalize": true,
+            "shape": [
+                9
+            ]
+        },
+        "RPC//Run summary/AllHits/SummaryHistograms/BxDistribution_Wheel_1": {
+            "n_bins": 9,
+            "n_dim": 1,
+            "name": "RPCRunsummaryAllHitsSummaryHistogramsBxDistribution_Wheel_1",
+            "normalize": true,
+            "shape": [
+                9
+            ]
+        },
+        "RPC//Run summary/AllHits/SummaryHistograms/BxDistribution_Wheel_2": {
+            "n_bins": 9,
+            "n_dim": 1,
+            "name": "RPCRunsummaryAllHitsSummaryHistogramsBxDistribution_Wheel_2",
+            "normalize": true,
+            "shape": [
+                9
+            ]
+        },
+        "RPC//Run summary/AllHits/SummaryHistograms/ClusterSize_Barrel": {
+            "n_bins": 16,
+            "n_dim": 1,
+            "name": "RPCRunsummaryAllHitsSummaryHistogramsClusterSize_Barrel",
+            "normalize": true,
+            "shape": [
+                16
+            ]
+        },
+        "RPC//Run summary/AllHits/SummaryHistograms/ClusterSize_Endcap+": {
+            "n_bins": 16,
+            "n_dim": 1,
+            "name": "RPCRunsummaryAllHitsSummaryHistogramsClusterSize_Endcap+",
+            "normalize": true,
+            "shape": [
+                16
+            ]
+        },
+        "RPC//Run summary/AllHits/SummaryHistograms/ClusterSize_Endcap-": {
+            "n_bins": 16,
+            "n_dim": 1,
+            "name": "RPCRunsummaryAllHitsSummaryHistogramsClusterSize_Endcap-",
+            "normalize": true,
+            "shape": [
+                16
+            ]
+        },
+        "RPC//Run summary/AllHits/SummaryHistograms/ClusterSize_Layer1": {
+            "n_bins": 16,
+            "n_dim": 1,
+            "name": "RPCRunsummaryAllHitsSummaryHistogramsClusterSize_Layer1",
+            "normalize": true,
+            "shape": [
+                16
+            ]
+        },
+        "RPC//Run summary/AllHits/SummaryHistograms/ClusterSize_Layer2": {
+            "n_bins": 16,
+            "n_dim": 1,
+            "name": "RPCRunsummaryAllHitsSummaryHistogramsClusterSize_Layer2",
+            "normalize": true,
+            "shape": [
+                16
+            ]
+        },
+        "RPC//Run summary/AllHits/SummaryHistograms/ClusterSize_Layer3": {
+            "n_bins": 16,
+            "n_dim": 1,
+            "name": "RPCRunsummaryAllHitsSummaryHistogramsClusterSize_Layer3",
+            "normalize": true,
+            "shape": [
+                16
+            ]
+        },
+        "RPC//Run summary/AllHits/SummaryHistograms/ClusterSize_Layer4": {
+            "n_bins": 16,
+            "n_dim": 1,
+            "name": "RPCRunsummaryAllHitsSummaryHistogramsClusterSize_Layer4",
+            "normalize": true,
+            "shape": [
+                16
+            ]
+        },
+        "RPC//Run summary/AllHits/SummaryHistograms/ClusterSize_Layer5": {
+            "n_bins": 16,
+            "n_dim": 1,
+            "name": "RPCRunsummaryAllHitsSummaryHistogramsClusterSize_Layer5",
+            "normalize": true,
+            "shape": [
+                16
+            ]
+        },
+        "RPC//Run summary/AllHits/SummaryHistograms/ClusterSize_Layer6": {
+            "n_bins": 16,
+            "n_dim": 1,
+            "name": "RPCRunsummaryAllHitsSummaryHistogramsClusterSize_Layer6",
+            "normalize": true,
+            "shape": [
+                16
+            ]
+        },
+        "RPC//Run summary/AllHits/SummaryHistograms/ClusterSize_Ring2": {
+            "n_bins": 16,
+            "n_dim": 1,
+            "name": "RPCRunsummaryAllHitsSummaryHistogramsClusterSize_Ring2",
+            "normalize": true,
+            "shape": [
+                16
+            ]
+        },
+        "RPC//Run summary/AllHits/SummaryHistograms/ClusterSize_Ring3": {
+            "n_bins": 16,
+            "n_dim": 1,
+            "name": "RPCRunsummaryAllHitsSummaryHistogramsClusterSize_Ring3",
+            "normalize": true,
+            "shape": [
+                16
+            ]
+        }
+    },
+    "input_file": "apr28_rpc/SingleMuon.parquet",
+    "n_components": 2,
+    "n_histograms": 24,
+    "name": "pca",
+    "output_dir": "apr28_trained_rpc1718",
+    "output_file": "apr28_trained_rpc1718/SingleMuon.parquet",
+    "remove_low_stat": true,
+    "tag": "default_pca"
+}
