@@ -33,10 +33,12 @@ def process(chunk_index, chunk_size, config_dir,
     comparator_funcs = load_comparators(plugin_dir)
 
     for hp in histpairs:
-        try:
-            comparators = [(c, comparator_funcs[c]) for c in hp.comparators]
-        except KeyError as e:
-            raise error("Comparator {} was not found.".format(str(e)))
+        comparators = []
+        for c in hp.comparators:
+            try:
+                comparators.append((c, comparator_funcs[c]))
+            except:
+                raise error("Comparator {} was not found in {}/{}.".format(c, dqmSource, subsystem))
 
         for comp_name, comparator in comparators:
             result_id = identifier(hp, comp_name)
@@ -137,7 +139,7 @@ def compile_histpairs(chunk_index, chunk_size, config_dir,
                      ref_hist = ref_dir[h]
                  except Exception as e:
                      continue
-                 hPair = HistPair(hconf,
+                 hPair = HistPair(dqmSource, hconf,
                                   data_series, data_sample, data_run, str(h), data_hist,
                                   ref_series, ref_sample, ref_run, str(h), ref_hist)
                  histPairs.append(hPair)
@@ -151,7 +153,7 @@ def compile_histpairs(chunk_index, chunk_size, config_dir,
                             ref_hist = ref_dir[name[:-2]]
                         except Exception as e:
                             continue
-                        hPair = HistPair(hconf,
+                        hPair = HistPair(dqmSource, hconf,
                                          data_series, data_sample, data_run, str(name[:-2]), data_hist,
                                          ref_series, ref_sample, ref_run, str(name[:-2]), ref_hist)
                         histPairs.append(hPair)
@@ -184,10 +186,12 @@ def load_comparators(plugin_dir):
             modname = modname[:-3]
         try:
             mod = __import__("{}".format(modname))
+        except:
+            raise error("Failed to import {} from {}.".format(modname, plugin_dir))
+        try:
             new_comps = mod.comparators()
         except AttributeError:
-            raise error(
-                "Plugin {} does not have a comparators() function.".format(mod))
+            raise error("Plugin {} from {} does not have a comparators() function.".format(mod, plugin_dir))
         comparators.update(new_comps)
 
     return comparators

@@ -36,9 +36,9 @@ def ks(histpair, ks_cut=0.09, min_entries=10000, **kwargs):
     # Reject empty histograms
     is_good = data_hist_Entries != 0 and data_hist_Entries >= min_entries
 
-    ks = scipy.stats.kstest(ref_hist_norm, data_hist_norm)[0]
+    ks_out = scipy.stats.kstest(ref_hist_norm, data_hist_norm)[0]
 
-    is_outlier = is_good and ks > ks_cut
+    is_outlier = is_good and ks_out > ks_cut
 
 
     #Get bin centers from edges() stored by uproot
@@ -86,7 +86,7 @@ def ks(histpair, ks_cut=0.09, min_entries=10000, **kwargs):
     info = {
         'Data_Entries': str(data_hist_Entries),
         'Ref_Entries': str(ref_hist_Entries),
-        'KS_Val': ks
+        'KS_Val': ks_out
     }
 
     return PluginResults(
