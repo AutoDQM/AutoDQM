@@ -121,7 +121,7 @@ def autodqm_ml_pca(histpair, **kwargs):
     """
 
     # Check to see if a trained PCA matches this histpair
-    year = int(histpair.data_series[-4:])
+    year = histpair.data_series[-4:]
 
     if not "jar_dir" in histpair.config:
         show = False
