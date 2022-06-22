@@ -1,4 +1,3 @@
-
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 import uproot
@@ -24,8 +23,8 @@ def beta_binomial(histpair, pull_cap=40, chi2_cut=100, pull_cut=25, min_entries=
     ref_hist_raw = numpy.copy(ref_hist.values())
 
     ## num entries
-    data_hist_Entries = np.sum(data_hist_raw)
-    ref_hist_Entries = np.sum(ref_hist_raw)
+    data_hist_Entries = numpy.sum(data_hist_raw)
+    ref_hist_Entries = numpy.sum(ref_hist_raw)
 
     nRef = 1
 
@@ -33,18 +32,22 @@ def beta_binomial(histpair, pull_cap=40, chi2_cut=100, pull_cut=25, min_entries=
     is_good = data_hist_Entries > min_entries
 
     ## only filled bins used for chi2
-    nBinsUsed = np.count_nonzero(np.add(ref_list_raw.sum(axis=0), data_raw))
+    nBinsUsed = numpy.count_nonzero(numpy.add(ref_hist_raw.sum(axis=0), data_hist_raw))
+    nBins = data_hist.values().size
 
+    ## calculte pull and chi2
     if nBinsUsed > 0: 
-        pull_hist = pull(data_raw, ref_list_raw)
-        chi2 = np.square(pulls).sum()/nBinsUsed if nBinsUsed > 0 else 0
-        max_pull = maxPullNorm(np.amax(pulls), nBinsUsed)
+        pull_hist = pull(data_hist_raw, ref_hist_raw)
+        chi2 = numpy.square(pull_hist).sum()/nBinsUsed if nBinsUsed > 0 else 0
+        max_pull = maxPullNorm(numpy.amax(pull_hist), nBinsUsed)
     else:
-        pull_hist = np.zeros_like(data_raw)
+        pull_hist = numpy.zeros_like(data_hist_raw)
         chi2 = 0
         max_pull = 0
 
-    nBins = data_hist.values().size
+    ## define if plot anomalous
+    is_outlier = is_good and (chi2 > chi2_cut or abs(max_pull) > pull_cut)
+
 
     ## plotting
     # Setting empty bins to be blank
@@ -130,7 +133,24 @@ def pull(D_raw, R_raw):
     pull = Sigmas(prob)
     return pull
 
+def maxPullNorm(maxPull, nBinsUsed, cutoff=pow(10,-15)):
+    sign = numpy.sign(maxPull)
+    ## sf (survival function) better than 1-cdf for large pulls (no precision error)
+    probGood = stats.chi2.sf(numpy.power(min(abs(maxPull), 37), 2), 1)
 
+    ## Use binomial approximation for low probs (accurate within 1%)
+    if nBinsUsed * probGood < 0.01:
+        probGoodNorm = nBinsUsed * probGood
+    else:
+        probGoodNorm = 1 - numpy.power(1 - probGood, nBinsUsed)
+
+    ## Use logarithmic approximation for very low probs
+    if probGoodNorm < cutoff:
+        pullNorm = numpy.sqrt(2 * (numpy.log(2) - numpy.log(probGoodNorm) - 3)) * sign
+    else:
+        pullNorm = numpy.sqrt(stats.chi2.ppf(1-probGoodNorm, 1)) * sign
+
+    return pullNorm
 
 
 ## Mean expectation for number of expected data events
@@ -238,7 +258,7 @@ def ProbRel(Data, Ref, func, kurt=0):
 
 ## Negative log likelihood
 def NLL(prob):
-    nllprob = -1.0*numpy6.log(prob, where=(prob>0))
+    nllprob = -1.0*numpy.log(prob, where=(prob>0))
     nllprob[prob==0] = 999
     nllprob[prob < 0] == -999
 
