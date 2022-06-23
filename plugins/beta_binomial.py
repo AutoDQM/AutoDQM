@@ -6,6 +6,8 @@ from autodqm.plugin_results import PluginResults
 import scipy.stats as stats
 from scipy.special import gammaln
 import plotly.graph_objects as go
+from plugins.pullvals import normalize_rows
+
 
 def comparators():
     return { 
@@ -15,9 +17,6 @@ def comparators():
 def beta_binomial(histpair, pull_cap=40, chi2_cut=100, pull_cut=25, min_entries=10000, norm_type='all', **kwargs): 
 
     """beta_binomial works on both 1D and 2D"""
-
-    print(histpair.data_name)
-
 
     data_hist = histpair.data_hist
     ref_hist = histpair.ref_hist
@@ -72,7 +71,7 @@ def beta_binomial(histpair, pull_cap=40, chi2_cut=100, pull_cut=25, min_entries=
 
     ##--------- 1D Plotting --------------
     # Check that the hists are 1 dimensional
-    if "TH1" in str(type(data_hist)) and "TH1" not in str(type(ref_hist)):
+    if "TH1" in str(type(data_hist)) and "TH1" in str(type(ref_hist)):
         #Get bin centers from edges() stored by uproot
         bins = data_hist.axes[0].edges();
         if bins[0] < -999:
