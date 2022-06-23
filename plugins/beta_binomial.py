@@ -17,12 +17,17 @@ def comparators():
 def beta_binomial(histpair, pull_cap=40, chi2_cut=100, pull_cut=25, min_entries=10000, norm_type='all', **kwargs): 
 
     """beta_binomial works on both 1D and 2D"""
-
     data_hist = histpair.data_hist
     ref_hist = histpair.ref_hist
 
     data_hist_raw = numpy.copy(data_hist.values())
     ref_hist_raw = numpy.copy(ref_hist.values())
+
+
+    # print('---------------------------') 
+    # print(norm_type)
+    # print(histpair.data_name)
+    # print(data_hist.values)
 
     ## num entries
     data_hist_Entries = numpy.sum(data_hist_raw)
@@ -37,14 +42,10 @@ def beta_binomial(histpair, pull_cap=40, chi2_cut=100, pull_cut=25, min_entries=
     # Normalize data_hist (Note if col is selected numpy just transposes normalizes by rows then transposes again)
     data_hist_norm = numpy.copy(data_hist.values())
     ref_hist_norm = numpy.copy(ref_hist.values())
-    if norm_type == "row":
-        data_hist_norm = normalize_rows(data_hist_norm, ref_hist_norm)
-    elif norm_type == "col":
-        data_hist_norm = normalize_rows(numpy.transpose(data_hist_norm), numpy.transpose(ref_hist_norm))
-        data_hist_norm = numpy.transpose(data_hist_norm)
-    else:
-        if data_hist_Entries > 0:
-            data_hist_norm = data_hist_norm * ref_hist_Entries / data_hist_Entries
+
+    if data_hist_Entries > 0:
+        data_hist_norm = data_hist_norm * ref_hist_Entries / data_hist_Entries
+
 
     ## only filled bins used for chi2
     nBinsUsed = numpy.count_nonzero(numpy.add(ref_hist_raw.sum(axis=0), data_hist_raw))
@@ -71,7 +72,7 @@ def beta_binomial(histpair, pull_cap=40, chi2_cut=100, pull_cut=25, min_entries=
 
     ##--------- 1D Plotting --------------
     # Check that the hists are 1 dimensional
-    if "TH1" in str(type(data_hist)) and "TH1" in str(type(ref_hist)):
+    if ("TH1" in str(type(data_hist))) and ("TH1" in str(type(ref_hist))):
         #Get bin centers from edges() stored by uproot
         bins = data_hist.axes[0].edges();
         if bins[0] < -999:
