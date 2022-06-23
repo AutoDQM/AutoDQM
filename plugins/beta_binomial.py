@@ -23,12 +23,6 @@ def beta_binomial(histpair, pull_cap=40, chi2_cut=100, pull_cut=25, min_entries=
     data_hist_raw = numpy.copy(data_hist.values())
     ref_hist_raw = numpy.copy(ref_hist.values())
 
-
-    # print('---------------------------') 
-    # print(norm_type)
-    # print(histpair.data_name)
-    # print(data_hist.values)
-
     ## num entries
     data_hist_Entries = numpy.sum(data_hist_raw)
     ref_hist_Entries = numpy.sum(ref_hist_raw)
@@ -54,6 +48,7 @@ def beta_binomial(histpair, pull_cap=40, chi2_cut=100, pull_cut=25, min_entries=
     ## calculte pull and chi2
     if nBinsUsed > 0: 
         pull_hist = pull(data_hist_raw, ref_hist_raw)
+        pull_hist = pull_hist*numpy.sign(data_hist_norm-ref_hist_norm)
         chi2 = numpy.square(pull_hist).sum()/nBinsUsed if nBinsUsed > 0 else 0
         max_pull = maxPullNorm(numpy.amax(pull_hist), nBinsUsed)
     else:
