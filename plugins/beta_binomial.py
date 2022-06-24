@@ -14,14 +14,14 @@ def comparators():
         'beta_binomial' : beta_binomial
     }
 
-def beta_binomial(histpair, pull_cap=40, chi2_cut=100, pull_cut=25, min_entries=10000, norm_type='all', **kwargs): 
+def beta_binomial(histpair, pull_cap=30, chi2_cut=100, pull_cut=25, min_entries=10000, norm_type='all', **kwargs): 
 
     """beta_binomial works on both 1D and 2D"""
     data_hist = histpair.data_hist
     ref_hist = histpair.ref_hist
 
-    data_hist_raw = numpy.copy(data_hist.values())
-    ref_hist_raw = numpy.copy(ref_hist.values())
+    data_hist_raw = numpy.round(numpy.copy(data_hist.values()))
+    ref_hist_raw = numpy.round(numpy.copy(ref_hist.values()))
 
     ## num entries
     data_hist_Entries = numpy.sum(data_hist_raw)
@@ -44,6 +44,7 @@ def beta_binomial(histpair, pull_cap=40, chi2_cut=100, pull_cut=25, min_entries=
     ## only filled bins used for chi2
     nBinsUsed = numpy.count_nonzero(numpy.add(ref_hist_raw.sum(axis=0), data_hist_raw))
     nBins = data_hist.values().size
+
 
     ## calculte pull and chi2
     if nBinsUsed > 0: 
@@ -272,12 +273,18 @@ def LogGam(z):
 
 ## Predicted probability of observing Data / nData given a reference of Ref / nRef
 def Prob(Data, nData, Ref, nRef, func, kurt=0):
+    tol = 0.01
+    scaleTol = numpy.power(1 + numpy.power(Ref * tol**2, 2), -0.5)
+    intRef_tol = (scaleTol * Ref)
+    Ref_tol = Ref * scaleTol
+
     if func == 'Gaus1' or func == 'Gaus2':
         return stats.norm.pdf( Pull(Data, Ref, func) )
     if func == 'BetaB':
         ## https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.betabinom.html
         ## Note that n = nData, alpha = Ref+1, and beta = nRef-Ref+1, alpha+beta = nRef+2
-        return stats.betabinom.pmf(Data, nData, Ref+1, nRef-Ref+1)
+        #return stats.betabinom.pmf(Data, nData, Ref+1, nRef-Ref+1)
+        return stats.betabinom.pmf(Data, nData, Ref_tol + 1, intRef_tol - Ref_tol + 1)
     ## Expression for beta-binomial using definition in terms of gamma functions
     ## https://en.wikipedia.org/wiki/Beta-binomial_distribution#As_a_compound_distribution
     if func == 'Gamma':
@@ -311,13 +318,9 @@ def ProbRel(Data, Ref, func, kurt=0):
 
     ## Sanity check to not have relative likelihood > 1    
     ## make sure check for thisProb < maxProb*0.001 (account for floating point inaccuracies) and just set the ratio to 1 if that is the case
-    ratio = thisProb/maxProb
+    ratio = numpy.divide(thisProb, maxProb, out=numpy.zeros_like(thisProb), where=maxProb!=0)
     cond = thisProb > maxProb*0.001
     ratio[cond] = 1
-
-     #if any(cond.flatten()):
-     #   print(f'for ProbRel')
-     #   print(f'Data: {Data[cond]}\nnData: {nData}\nRef: {Ref[cond]}\nnRef: {nRef}')
 
     return ratio #thisProb / maxProb
 
