@@ -275,7 +275,7 @@ def LogGam(z):
 def Prob(Data, nData, Ref, nRef, func, kurt=0):
     tol = 0.01
     scaleTol = numpy.power(1 + numpy.power(Ref * tol**2, 2), -0.5)
-    intRef_tol = (scaleTol * Ref)
+    nRef_tol = (scaleTol * nRef)
     Ref_tol = Ref * scaleTol
 
     if func == 'Gaus1' or func == 'Gaus2':
@@ -284,7 +284,7 @@ def Prob(Data, nData, Ref, nRef, func, kurt=0):
         ## https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.betabinom.html
         ## Note that n = nData, alpha = Ref+1, and beta = nRef-Ref+1, alpha+beta = nRef+2
         #return stats.betabinom.pmf(Data, nData, Ref+1, nRef-Ref+1)
-        return stats.betabinom.pmf(Data, nData, Ref_tol + 1, intRef_tol - Ref_tol + 1)
+        return stats.betabinom.pmf(Data, nData, Ref_tol + 1, nRef_tol - Ref_tol + 1)
     ## Expression for beta-binomial using definition in terms of gamma functions
     ## https://en.wikipedia.org/wiki/Beta-binomial_distribution#As_a_compound_distribution
     if func == 'Gamma':
