@@ -180,10 +180,10 @@ def beta_binomial(histpair, pull_cap=30, chi2_cut=100, pull_cut=25, min_entries=
 
 
     info = {
-        'Chi_Squared': float(chi2),
-        'Max_Pull_Val': float(max_pull),
-        'Data_Entries': str(data_hist_Entries),
-        'Ref_Entries': str(ref_hist_Entries),
+        'Chi_Squared': float(round(chi2, 2)),
+        'Max_Pull_Val': float(round(max_pull,2)),
+        'Data_Entries': str(int(data_hist_Entries)),
+        'Ref_Entries': str(int(ref_hist_Entries)),
     }
 
     artifacts = [pull_hist, str(data_hist_Entries), str(ref_hist_Entries)]
