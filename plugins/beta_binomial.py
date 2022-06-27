@@ -61,8 +61,15 @@ def beta_binomial(histpair, pull_cap=30, chi2_cut=100, pull_cut=25, min_entries=
         max_pull = 0
 
     ## define if plot anomalous
-    is_outlier = is_good and (chi2 > chi2_cut or abs(max_pull) > pull_cut)
-
+    is_outlier = False
+    if data_hist_Entries >= min_entries:
+        if chi2 > chi2_cut:
+            is_outlier = True
+        if abs(max_pull) > pull_cut:
+            if not histpair.data_name.startswith('rpcHitPhi') and \
+               not histpair.data_name.startswith('rpcChamberPhi') and \
+               not histpair.data_name.startswith('rpcChamberTheta'):
+                is_outlier = True
 
     ## plotting
     # Setting empty bins to be blank
