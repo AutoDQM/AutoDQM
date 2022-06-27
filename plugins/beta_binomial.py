@@ -270,10 +270,6 @@ def Pull(Data, Ref, func):
     return (Data - Mean(Data, Ref, func)) / StdDev(Data, Ref, func)
 
 
-## Exact and approximate values for natural log of the Gamma function
-def LogGam(z):
-    return gammaln(z)
-
 ## Predicted probability of observing Data / nData given a reference of Ref / nRef
 def Prob(Data, nData, Ref, nRef, func, kurt=0):
     tol = 0.01
@@ -292,13 +288,13 @@ def Prob(Data, nData, Ref, nRef, func, kurt=0):
     ## https://en.wikipedia.org/wiki/Beta-binomial_distribution#As_a_compound_distribution
     if func == 'Gamma':
         ## Note that n = nData, alpha = Ref+1, and beta = nRef-Ref+1, alpha+beta = nRef+2
-        n_  = nData
+        n_  = numpy.zeros_like(Data) + nData
         k_  = Data
-        a_  = Ref+1
-        b_  = nRef-Ref+1
-        ab_ = nRef+2
-        logProb  = LogGam(n_+1) + LogGam(k_+a_) + LogGam(n_-k_+b_) + LogGam(ab_)
-        logProb -= ( LogGam(k_+1) + LogGam(n_-k_+1) + LogGam(n_+ab_) + LogGam(a_) + LogGam(b_) )
+        a_  = Ref_tol + 1
+        b_  = nRef_tol - Ref_tol + 1
+        ab_ = nRef_tol + 2
+        logProb  = gammaln(n_+1) + gammaln(k_+a_) + gammaln(n_-k_+b_) + gammaln(ab_)
+        logProb -= ( gammaln(k_+1) + gammaln(n_-k_+1) + gammaln(n_+ab_) + gammaln(a_) + gammaln(b_) )
         return numpy.exp(logProb)
 
     print('\nInside Prob, no valid func = %s. Quitting.\n' % func)
