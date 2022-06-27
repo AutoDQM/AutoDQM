@@ -66,7 +66,7 @@ def beta_binomial(histpair, pull_cap=30, chi2_cut=100, pull_cut=25, min_entries=
 
     ## plotting
     # Setting empty bins to be blank
-    pull_hist = numpy.where(pull_hist < -2*pull_cap, None, pull_hist)
+    pull_hist = numpy.where(numpy.add(ref_hist_raw, data_hist_raw) == 0, None, pull_hist)
 
 
     ##--------- 1D Plotting --------------
