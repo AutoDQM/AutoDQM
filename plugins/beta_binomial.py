@@ -278,8 +278,8 @@ def LogGam(z):
 def Prob(Data, nData, Ref, nRef, func, kurt=0):
     tol = 0.01
     scaleTol = numpy.power(1 + numpy.power(Ref * tol**2, 2), -0.5)
-    nRef_tol = (scaleTol * nRef)
-    Ref_tol = Ref * scaleTol
+    nRef_tol = numpy.round(scaleTol * nRef)
+    Ref_tol = numpy.round(Ref * scaleTol)
 
     if func == 'Gaus1' or func == 'Gaus2':
         return stats.norm.pdf( Pull(Data, Ref, func) )
