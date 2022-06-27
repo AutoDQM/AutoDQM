@@ -310,8 +310,8 @@ def ProbRel(Data, Ref, func, kurt=0):
     nData = Data.sum()
     nRef = Ref.sum()
     ## Find the most likely expected data value
-    exp_up = numpy.ceil(Mean(nData, Ref, 'Gaus1'))
-    exp_down = numpy.clip(numpy.floor(Mean(nData, Ref, 'Gaus1')), a_min=0, a_max=None) # make sure nothing goes below zero
+    exp_up = numpy.clip(numpy.ceil(Mean(Data, Ref, 'Gaus1')), a_min=None, a_max=nData) # make sure nothing goes above nData
+    exp_down = numpy.clip(numpy.floor(Mean(Data, Ref, 'Gaus1')), a_min=0, a_max=None) # make sure nothing goes below zero
 
     ## Find the maximum likelihood
     maxProb_up  = Prob(exp_up, nData, Ref, nRef,func, kurt)
