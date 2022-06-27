@@ -14,7 +14,7 @@ def comparators():
         'beta_binomial' : beta_binomial
     }
 
-def beta_binomial(histpair, pull_cap=30, chi2_cut=100, pull_cut=25, min_entries=10000, norm_type='all', **kwargs): 
+def beta_binomial(histpair, chi2_cut=25, pull_cut=10, min_entries=1, tol=0.01, norm_type='all', **kwargs): 
 
     """beta_binomial works on both 1D and 2D"""
     data_hist = histpair.data_hist
@@ -27,30 +27,21 @@ def beta_binomial(histpair, pull_cap=30, chi2_cut=100, pull_cut=25, min_entries=
     data_hist_Entries = numpy.sum(data_hist_raw)
     ref_hist_Entries = numpy.sum(ref_hist_raw)
 
-    nRef = 1
-
-    # Reject empty and low stat hist
-    is_good = data_hist_Entries > min_entries
-
-
-    # Normalize data_hist (Note if col is selected numpy just transposes normalizes by rows then transposes again)
-    data_hist_norm = numpy.copy(data_hist.values())
-    ref_hist_norm = numpy.copy(ref_hist.values())
-
+    ## normalize data_hist
+    data_hist_norm = numpy.copy(data_hist_raw)
     if data_hist_Entries > 0:
         data_hist_norm = data_hist_norm * ref_hist_Entries / data_hist_Entries
 
-
     ## only filled bins used for chi2
-    nBinsUsed = numpy.count_nonzero(numpy.add(ref_hist_raw.sum(axis=0), data_hist_raw))
+    nBinsUsed = numpy.count_nonzero(numpy.add(ref_hist_raw, data_hist_raw))
     nBins = data_hist.values().size
 
 
     ## calculte pull and chi2
-    if nBinsUsed > 0: 
-        pull_hist = pull(data_hist_raw, ref_hist_raw)
-        pull_hist = pull_hist*numpy.sign(data_hist_norm-ref_hist_norm)
-        chi2 = numpy.square(pull_hist).sum()/nBinsUsed if nBinsUsed > 0 else 0
+    if nBinsUsed > 0 and data_hist_Entries > 0 and ref_hist_Entries > 0:
+        pull_hist = pull(data_hist_raw, ref_hist_raw, tol)
+        pull_hist = pull_hist*numpy.sign(data_hist_norm-ref_hist_raw)
+        chi2 = numpy.square(pull_hist).sum()/nBinsUsed
         max_pull = maxPullNorm(numpy.amax(pull_hist), nBinsUsed)
         min_pull = maxPullNorm(numpy.amin(pull_hist), nBinsUsed)
         if abs(min_pull) > max_pull:
@@ -90,7 +81,7 @@ def beta_binomial(histpair, pull_cap=30, chi2_cut=100, pull_cut=25, min_entries=
             yAxisTitle = data_hist.axes[1]._bases[0]._members["fTitle"]
         else:
             yAxisTitle = ""
-        plotTitle = histpair.data_name + " KS Test  |  data:" + str(histpair.data_run) + " & ref:" + str(histpair.ref_run)
+        plotTitle = histpair.data_name + " Beta-Binomial tests  |  data:" + str(histpair.data_run) + " & ref:" + str(histpair.ref_run)
     
         #Plotly doesn't support #circ, #theta, #phi but it does support unicode
         xAxisTitle = xAxisTitle.replace("#circ", "\u00B0").replace("#theta","\u03B8").replace("#phi","\u03C6").replace("#eta","\u03B7")
@@ -101,7 +92,7 @@ def beta_binomial(histpair, pull_cap=30, chi2_cut=100, pull_cut=25, min_entries=
         #Plot histogram with previously declared axes and settings to look similar to PyRoot
         c = go.Figure()
         c.add_trace(go.Bar(name="data:"+str(histpair.data_run), x=bins, y=data_hist_norm, marker_color='white', marker=dict(line=dict(width=1,color='red'))))
-        c.add_trace(go.Bar(name="ref:"+str(histpair.ref_run), x=bins, y=ref_hist_norm, marker_color='rgb(204, 188, 172)', opacity=.9))
+        c.add_trace(go.Bar(name="ref:"+str(histpair.ref_run), x=bins, y=ref_hist_raw, marker_color='rgb(204, 188, 172)', opacity=.9))
         c['layout'].update(bargap=0)
         c['layout'].update(barmode='overlay')
         c['layout'].update(plot_bgcolor='white')
@@ -119,7 +110,7 @@ def beta_binomial(histpair, pull_cap=30, chi2_cut=100, pull_cut=25, min_entries=
         )
         ref_text = "ref:"+str(histpair.ref_run)
         data_text = "data:"+str(histpair.data_run)
-        #artifacts = [data_hist_norm, ref_hist_norm, data_text, ref_text]
+        #artifacts = [data_hist_norm, ref_hist_raw, data_text, ref_text]
     ## --------- end 1D plotting ---------
 
 
@@ -167,7 +158,7 @@ def beta_binomial(histpair, pull_cap=30, chi2_cut=100, pull_cut=25, min_entries=
         plotTitle = plotTitle.replace("#circ", "\u00B0").replace("#theta","\u03B8").replace("#phi","\u03C6").replace("#eta","\u03B7")
     
         #Plot pull-values using 2d heatmap will settings to look similar to old Pyroot version
-        c  = go.Figure(data=go.Heatmap(z=pull_hist, zmin=-pull_cap, zmax=pull_cap, colorscale=colors, x=xLabels, y=yLabels))
+        c  = go.Figure(data=go.Heatmap(z=pull_hist, zmin=-20., zmax=20., colorscale=colors, x=xLabels, y=yLabels))
         c['layout'].update(plot_bgcolor='white')
         c.update_xaxes(showline=True, linewidth=2, linecolor='black', mirror=True, showgrid=False, type=x_axis_type)
         c.update_yaxes(showline=True, linewidth=2, linecolor='black', mirror=True, showgrid=False, type=y_axis_type)
@@ -203,11 +194,10 @@ def beta_binomial(histpair, pull_cap=30, chi2_cut=100, pull_cut=25, min_entries=
         artifacts=artifacts)
 
 
-def pull(D_raw, R_raw):
-    nRef = 1
-    tol = 0.01
+def pull(D_raw, R_raw, tol=0.01):
     prob = numpy.zeros_like(D_raw)
-    prob = ProbRel(D_raw, R_raw, 'BetaB')
+    prob = ProbRel(D_raw, R_raw, 'BetaB', tol)
+    # prob = ProbRel(D_raw, R_raw, 'Gamma', tol)
     pull = Sigmas(prob)
     return pull
 
@@ -271,21 +261,20 @@ def StdDev(Data, Ref, func):
 
 
 ## Number of standard devations from the mean in any function
-def Pull(Data, Ref, func):
+def numStdDev(Data, Ref, func):
     nData = Data.sum()
     nRef = Ref.sum()
     return (Data - Mean(Data, Ref, func)) / StdDev(Data, Ref, func)
 
 
 ## Predicted probability of observing Data / nData given a reference of Ref / nRef
-def Prob(Data, nData, Ref, nRef, func, kurt=0):
-    tol = 0.01
+def Prob(Data, nData, Ref, nRef, func, tol=0.01):
     scaleTol = numpy.power(1 + numpy.power(Ref * tol**2, 2), -0.5)
     nRef_tol = numpy.round(scaleTol * nRef)
     Ref_tol = numpy.round(Ref * scaleTol)
 
     if func == 'Gaus1' or func == 'Gaus2':
-        return stats.norm.pdf( Pull(Data, Ref, func) )
+        return stats.norm.pdf( numStdDev(Data, Ref_tol, func) )
     if func == 'BetaB':
         ## https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.betabinom.html
         ## Note that n = nData, alpha = Ref+1, and beta = nRef-Ref+1, alpha+beta = nRef+2
@@ -309,7 +298,7 @@ def Prob(Data, nData, Ref, nRef, func, kurt=0):
 
 
 ## Predicted probability relative to the maximum probability (i.e. at the mean)
-def ProbRel(Data, Ref, func, kurt=0):
+def ProbRel(Data, Ref, func, tol=0.01):
     nData = Data.sum()
     nRef = Ref.sum()
     ## Find the most likely expected data value
@@ -317,10 +306,10 @@ def ProbRel(Data, Ref, func, kurt=0):
     exp_down = numpy.clip(numpy.floor(Mean(Data, Ref, 'Gaus1')), a_min=0, a_max=None) # make sure nothing goes below zero
 
     ## Find the maximum likelihood
-    maxProb_up  = Prob(exp_up, nData, Ref, nRef,func, kurt)
-    maxProb_down = Prob(exp_down, nData, Ref, nRef,func, kurt)
+    maxProb_up  = Prob(exp_up, nData, Ref, nRef,func, tol)
+    maxProb_down = Prob(exp_down, nData, Ref, nRef,func, tol)
     maxProb = numpy.maximum(maxProb_up, maxProb_down)
-    thisProb = Prob(Data, nData, Ref, nRef, func, kurt)
+    thisProb = Prob(Data, nData, Ref, nRef, func, tol)
 
     ## Sanity check to not have relative likelihood > 1
     ratio = numpy.divide(thisProb, maxProb, out=numpy.zeros_like(thisProb), where=maxProb!=0)
