@@ -15,7 +15,6 @@ def comparators():
     }
 
 def beta_binomial(histpair, pull_cap=30, chi2_cut=100, pull_cut=25, min_entries=10000, norm_type='all', **kwargs): 
-
     """beta_binomial works on both 1D and 2D"""
     data_hist = histpair.data_hist
     ref_hist = histpair.ref_hist
@@ -42,7 +41,7 @@ def beta_binomial(histpair, pull_cap=30, chi2_cut=100, pull_cut=25, min_entries=
 
 
     ## only filled bins used for chi2
-    nBinsUsed = numpy.count_nonzero(numpy.add(ref_hist_raw.sum(axis=0), data_hist_raw))
+    nBinsUsed = numpy.count_nonzero(numpy.add(ref_hist_raw, data_hist_raw))
     nBins = data_hist.values().size
 
 
@@ -63,7 +62,7 @@ def beta_binomial(histpair, pull_cap=30, chi2_cut=100, pull_cut=25, min_entries=
 
     ## plotting
     # Setting empty bins to be blank
-    pull_hist = numpy.where(pull_hist < -2*pull_cap, None, pull_hist)
+    pull_hist = numpy.where((data_hist_raw + ref_hist_raw) == 0, None, pull_hist)
 
 
     ##--------- 1D Plotting --------------
@@ -90,8 +89,9 @@ def beta_binomial(histpair, pull_cap=30, chi2_cut=100, pull_cut=25, min_entries=
     
         #Plot histogram with previously declared axes and settings to look similar to PyRoot
         c = go.Figure()
-        c.add_trace(go.Bar(name="data:"+str(histpair.data_run), x=bins, y=data_hist_norm, marker_color='white', marker=dict(line=dict(width=1,color='red'))))
-        c.add_trace(go.Bar(name="ref:"+str(histpair.ref_run), x=bins, y=ref_hist_norm, marker_color='rgb(204, 188, 172)', opacity=.9))
+        #c.add_trace(go.Bar(name="data:"+str(histpair.data_run), x=bins, y=data_hist_norm, marker_color='white', marker=dict(line=dict(width=1,color='red'))))
+        #c.add_trace(go.Bar(name="ref:"+str(histpair.ref_run), x=bins, y=ref_hist_norm, marker_color='rgb(204, 188, 172)', opacity=.9))
+        c.add_trace(go.Bar(name="pull", x=bins, y=pull_hist, marker_color='blue'))
         c['layout'].update(bargap=0)
         c['layout'].update(barmode='overlay')
         c['layout'].update(plot_bgcolor='white')
@@ -99,6 +99,7 @@ def beta_binomial(histpair, pull_cap=30, chi2_cut=100, pull_cut=25, min_entries=
         c.update_yaxes(showline=True, linewidth=2, linecolor='black', mirror=True, showgrid=False)
         c.update_layout(
             title=plotTitle , title_x=0.5,
+            yaxis_range=[-pull_cap, pull_cap],
             xaxis_title= xAxisTitle,
             yaxis_title= yAxisTitle,
             font=dict(
@@ -199,6 +200,7 @@ def pull(D_raw, R_raw):
     prob = numpy.zeros_like(D_raw)
     prob = ProbRel(D_raw, R_raw, 'BetaB')
     pull = Sigmas(prob)
+
     return pull
 
 def maxPullNorm(maxPull, nBinsUsed, cutoff=pow(10,-15)):
@@ -307,8 +309,8 @@ def ProbRel(Data, Ref, func, kurt=0):
     nData = Data.sum()
     nRef = Ref.sum()
     ## Find the most likely expected data value
-    exp_up = numpy.ceil(Mean(nData, Ref, 'Gaus1'))
-    exp_down = numpy.clip(numpy.floor(Mean(nData, Ref, 'Gaus1')), a_min=0, a_max=None) # make sure nothing goes below zero
+    exp_up = numpy.ceil(Mean(Data, Ref, 'Gaus1'))
+    exp_down = numpy.clip(numpy.floor(Mean(Data, Ref, 'Gaus1')), a_min=0, a_max=None) # make sure nothing goes below zero
 
     ## Find the maximum likelihood
     maxProb_up  = Prob(exp_up, nData, Ref, nRef,func, kurt)
@@ -317,10 +319,22 @@ def ProbRel(Data, Ref, func, kurt=0):
     thisProb = Prob(Data, nData, Ref, nRef, func, kurt)
 
     ## Sanity check to not have relative likelihood > 1    
-    ## make sure check for thisProb < maxProb*0.001 (account for floating point inaccuracies) and just set the ratio to 1 if that is the case
+    ## need 2 conditional checks. 1 is to straight up set any instance of thisProb > maxProb ==> 1 
+    ## another is to alert if thisprob > maxProb*1.01 (allow thisprob to be no more than 101% of maxprob to account for floating point error 
     ratio = numpy.divide(thisProb, maxProb, out=numpy.zeros_like(thisProb), where=maxProb!=0)
-    cond = thisProb > maxProb*0.001
+    cond = thisProb > maxProb
     ratio[cond] = 1
+        
+    cond = thisProb > maxProb*1.01
+
+    if False: #numpy.any(cond):
+        #print(f'for {Data[cond]}, {Ref[cond]}, thisProb > maxProb*1.01')
+        print('data: ', Data[cond])
+        print('ref: ', Ref[cond])
+        print('thisProb: ', thisProb[cond])
+        print('maxProb: ', maxProb[cond])
+        print('ratio: ', (thisProb/maxProb)[cond])
+        print('--------------------------')
 
     return ratio #thisProb / maxProb
 
@@ -329,7 +343,7 @@ def ProbRel(Data, Ref, func, kurt=0):
 def NLL(prob):
     nllprob = -1.0*numpy.log(prob, where=(prob>0))
     nllprob[prob==0] = 999
-    nllprob[prob < 0] == -999
+    nllprob[prob < 0] = -999
 
     return nllprob
 
