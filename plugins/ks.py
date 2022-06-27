@@ -14,7 +14,6 @@ def comparators():
 
 
 def ks(histpair, ks_cut=0.35, min_entries=10000, **kwargs):
-
     data_name = histpair.data_name
     ref_name = histpair.ref_name
 
@@ -86,7 +85,7 @@ def ks(histpair, ks_cut=0.35, min_entries=10000, **kwargs):
     info = {
         'Data_Entries': str(data_hist_Entries),
         'Ref_Entries': str(ref_hist_Entries),
-        'KS_Val': ks_out
+        'KS_Val': round(ks_out,2)
     }
 
     return PluginResults(

@@ -47,10 +47,12 @@ def beta_binomial(histpair, pull_cap=30, chi2_cut=100, pull_cut=25, min_entries=
 
     ## calculte pull and chi2
     if nBinsUsed > 0: 
-        pull_hist = pull(data_hist_raw, ref_hist_raw)
-        pull_hist = pull_hist*numpy.sign(data_hist_norm-ref_hist_norm)
-        chi2 = numpy.square(pull_hist).sum()/nBinsUsed if nBinsUsed > 0 else 0
+        pull_hist = pull(data_hist_raw, ref_hist_raw)* numpy.sign(data_hist_norm-ref_hist_norm)
         max_pull = maxPullNorm(numpy.amax(pull_hist), nBinsUsed)
+        min_pull = maxPullNorm(numpy.amin(pull_hist), nBinsUsed)
+        if abs(min_pull) > max_pull:
+            max_pull = min_pull
+        chi2 = numpy.square(pull_hist).sum()/nBinsUsed
     else:
         pull_hist = numpy.zeros_like(data_hist_raw)
         chi2 = 0
@@ -178,12 +180,11 @@ def beta_binomial(histpair, pull_cap=30, chi2_cut=100, pull_cut=25, min_entries=
 
 
     info = {
-        'Chi_Squared': float(chi2),
-        'Max_Pull_Val': float(max_pull),
-        'Data_Entries': str(data_hist_Entries),
-        'Ref_Entries': str(ref_hist_Entries),
+        'Chi_Squared': float(round(chi2, 2)),
+        'Max_Pull_Val': float(round(max_pull,2)),
+        'Data_Entries': str(int(data_hist_Entries)),
+        'Ref_Entries': str(int(ref_hist_Entries)),
     }
-
     artifacts = [pull_hist, str(data_hist_Entries), str(ref_hist_Entries)]
 
 
@@ -309,7 +310,7 @@ def ProbRel(Data, Ref, func, kurt=0):
     nData = Data.sum()
     nRef = Ref.sum()
     ## Find the most likely expected data value
-    exp_up = numpy.ceil(Mean(Data, Ref, 'Gaus1'))
+    exp_up = numpy.clip(numpy.ceil(Mean(Data, Ref, 'Gaus1')), a_min=None, a_max=nData) # make sure nothing goes above nData
     exp_down = numpy.clip(numpy.floor(Mean(Data, Ref, 'Gaus1')), a_min=0, a_max=None) # make sure nothing goes below zero
 
     ## Find the maximum likelihood
@@ -331,6 +332,8 @@ def ProbRel(Data, Ref, func, kurt=0):
         #print(f'for {Data[cond]}, {Ref[cond]}, thisProb > maxProb*1.01')
         print('data: ', Data[cond])
         print('ref: ', Ref[cond])
+        print('exp_up: ', exp_up[cond])
+        print('exp_down: ', exp_down[cond])
         print('thisProb: ', thisProb[cond])
         print('maxProb: ', maxProb[cond])
         print('ratio: ', (thisProb/maxProb)[cond])
