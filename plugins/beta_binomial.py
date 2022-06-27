@@ -319,13 +319,12 @@ def ProbRel(Data, Ref, func, kurt=0):
     maxProb = numpy.maximum(maxProb_up, maxProb_down)
     thisProb = Prob(Data, nData, Ref, nRef, func, kurt)
 
-    ## Sanity check to not have relative likelihood > 1    
-    ## make sure check for thisProb < maxProb*0.001 (account for floating point inaccuracies) and just set the ratio to 1 if that is the case
+    ## Sanity check to not have relative likelihood > 1
     ratio = numpy.divide(thisProb, maxProb, out=numpy.zeros_like(thisProb), where=maxProb!=0)
-    cond = thisProb > maxProb*0.001
+    cond = thisProb > maxProb
     ratio[cond] = 1
 
-    return ratio #thisProb / maxProb
+    return ratio
 
 
 ## Negative log likelihood
