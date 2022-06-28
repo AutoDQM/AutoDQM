@@ -215,11 +215,7 @@ def maxPullNorm(maxPull, nBinsUsed, cutoff=pow(10,-15)):
     else:
         probGoodNorm = 1 - numpy.power(1 - probGood, nBinsUsed)
 
-    ## Use logarithmic approximation for very low probs
-    if probGoodNorm < cutoff:
-        pullNorm = numpy.sqrt(2 * (numpy.log(2) - numpy.log(probGoodNorm) - 3)) * sign
-    else:
-        pullNorm = numpy.sqrt(stats.chi2.ppf(1-probGoodNorm, 1)) * sign
+    pullNorm = Sigmas(probGoodNorm)
 
     return pullNorm
 
@@ -353,4 +349,5 @@ def NLL(prob):
 
 ## Convert relative probability to number of standard deviations in normal distribution
 def Sigmas(probRel):
-    return numpy.sqrt(2.0*NLL(probRel))
+    probRef = numpy.maximum(probRel, 10E-300)
+    return numpy.sqrt((stats.chi2.isf(probRel,1)))
