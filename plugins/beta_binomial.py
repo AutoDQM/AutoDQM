@@ -203,11 +203,6 @@ def pull(D_raw, R_raw):
 
     pull = Sigmas(prob)
 
-    if numpy.isinf(pull.sum()):
-        print(prob[numpy.isinf(pull)])
-        print('------')
-
-
     return pull
 
 def maxPullNorm(maxPull, nBinsUsed, cutoff=pow(10,-15)):
