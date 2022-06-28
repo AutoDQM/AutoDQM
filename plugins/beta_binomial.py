@@ -200,7 +200,13 @@ def pull(D_raw, R_raw):
     tol = 0.01
     prob = numpy.zeros_like(D_raw)
     prob = ProbRel(D_raw, R_raw, 'BetaB')
+
     pull = Sigmas(prob)
+
+    if numpy.isinf(pull.sum()):
+        print(prob[numpy.isinf(pull)])
+        print('------')
+
 
     return pull
 
@@ -349,5 +355,5 @@ def NLL(prob):
 
 ## Convert relative probability to number of standard deviations in normal distribution
 def Sigmas(probRel):
-    probRef = numpy.maximum(probRel, 10E-300)
+    probRel = numpy.maximum(probRel, 10E-300)
     return numpy.sqrt((stats.chi2.isf(probRel,1)))
