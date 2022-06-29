@@ -145,8 +145,8 @@ def pullvals(histpair,
     )
 
     info = {
-        'Chi_Squared': float(chi2),
-        'Max_Pull_Val': float(max_pull),
+        'Chi_Squared': f"{chi2:.2f}", # 2 decimal points
+        'Max_Pull_Val': f"{max_pull:.2f}",
         'Data_Entries': str(data_hist_Entries),
         'Ref_Entries': str(ref_hist_Entries),
     }
