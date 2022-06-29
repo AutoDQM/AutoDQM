@@ -151,17 +151,6 @@ def pullvals(histpair,
         'Ref_Entries': str(ref_hist_Entries),
     }
 
-    #if histpair.data_name=='NonIsoEGsBxOcc':#numpy.isnan(max_pull):
-        #print(info)
-        # print(f'{new_pull=}')
-        # print(f'{chi2=}')
-        # print(f'{data_hist_norm=}')
-        # print(f'{ref_hist_norm=}')
-        # print(f'{data_hist_err=}')
-        # print(f'{ref_hist_err=}')
-        # print('----------------')
-
-
 
     artifacts = [pull_hist, str(data_hist_Entries), str(ref_hist_Entries)]
 
@@ -180,12 +169,6 @@ def pull(bin1, binerr1, bin2, binerr2):
         only divide where bin1+bin2 != 0, output zero where that happens
     '''
     return numpy.divide( (bin1 - bin2) , ((binerr1**2 + binerr2**2)**0.5), out=numpy.zeros_like(bin1), where=(binerr1+binerr2)!=0)
-# def pull(bin1, binerr1, bin2, binerr2):
-#     ''' Calculate the pull value between two bins.
-#         pull = (data - expected)/sqrt(sum of errors in quadrature))
-#         data = |bin1 - bin2|, expected = 0
-#     '''
-#     return (bin1 - bin2) / ((binerr1**2 + binerr2**2)**0.5)
 
 def normalize_rows(data_hist_norm, ref_hist_norm):
 
