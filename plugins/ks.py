@@ -13,7 +13,7 @@ def comparators():
     }
 
 
-def ks(histpair, ks_cut=0.09, min_entries=10000, **kwargs):
+def ks(histpair, ks_cut=0.35, min_entries=10000, **kwargs):
 
     data_name = histpair.data_name
     ref_name = histpair.ref_name
@@ -34,7 +34,7 @@ def ks(histpair, ks_cut=0.09, min_entries=10000, **kwargs):
         data_hist_norm = data_hist_norm * (ref_hist_Entries / data_hist_Entries)
 
     # Reject empty histograms
-    is_good = data_hist_Entries != 0 and data_hist_Entries >= min_entries
+    is_good = data_hist_Entries >= min_entries #data_hist_Entries != 0 and data_hist_Entries >= min_entries
 
     ks_out = scipy.stats.kstest(ref_hist_norm, data_hist_norm)[0]
 
@@ -84,9 +84,9 @@ def ks(histpair, ks_cut=0.09, min_entries=10000, **kwargs):
     artifacts = [data_hist_norm, ref_hist_norm, data_text, ref_text]
 
     info = {
+        'KS_Val': round(ks_out,2),
         'Data_Entries': str(data_hist_Entries),
-        'Ref_Entries': str(ref_hist_Entries),
-        'KS_Val': ks_out
+        'Ref_Entries': str(ref_hist_Entries)
     }
 
     return PluginResults(
