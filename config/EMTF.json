@@ -1,10 +1,12 @@
 {
     "hists": [
         {
-            "path": "CSCInput/csc*"
+            "path": "CSCInput/csc*",
+	    "comparators" : ["beta_binomial"]
         },
         {
-            "path": "RPCInput/rpc*"
+            "path": "RPCInput/rpc*",
+	    "comparators" : ["beta_binomial"]
         },
         {
             "path": "SelectedTracks/*"
