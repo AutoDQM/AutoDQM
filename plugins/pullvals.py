@@ -171,42 +171,8 @@ def pull(bin1, binerr1, bin2, binerr2):
     return numpy.divide( (bin1 - bin2) , ((binerr1**2 + binerr2**2)**0.5), out=numpy.zeros_like(bin1), where=(binerr1+binerr2)!=0)
 
 def normalize_rows(data_hist_norm, ref_hist_norm):
-
-    for y in range(0, ref_hist_norm.shape[1]):
-
-        # Stores sum of row elements
-        rrow = 0
-        frow = 0
-
-        # Sum over row elements
-        for x in range(0, ref_hist_norm.shape[0]):
-
-            # Bin data
-            rbin = ref_hist_norm[x,y]
-            fbin = data_hist_norm[x, y]
-
-            rrow += rbin
-            frow += fbin
-
-        # Scaling factors
-        # Prevent divide-by-zero error
-        if frow == 0:
-            frow = 1
-        if frow > 0:
-            sf = float(rrow) / frow
-        else:
-            sf = 1
-        # Prevent scaling everything to zero
-        if sf == 0:
-            sf = 1
-
-        # Normalization
-        for x in range(0, ref_hist_norm.shape[0]):
-            # Bin data
-            fbin = data_hist_norm[x, y]
-            fbin_err = (fbin)**(.5)
-
-            # Normalize bin
-
-            data_hist_norm[x, y] = (fbin * sf)
-    return data_hist_norm
+    ref_sum = ref_hist_norm.sum(axis=0)
+    data_sum = data_hist_norm.sum(axis=0)
+    sf = numpy.divide(ref_sum, data_sum, where=data_sum!=0, out=numpy.ones_like(data_sum))
+    
+    return data_hist_norm*sf
