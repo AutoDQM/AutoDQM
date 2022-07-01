@@ -27,12 +27,12 @@ class HistPair(object):
         self.ref_hist = ref_hist
 
         if self.dqmSource == 'Offline':
-            self.comparators = ['pull_values', 'ks_test', 'autodqm_ml_pca']
+            self.comparators = ['pull_values', 'ks_test', 'autodqm_ml_pca', 'beta_binomial']
         else:
             ## Currently ML PCA only trained with Offline data - AWB 2022.06.20
             ## If trained on Online in the future, need to update
             ## plugins/autodqm_ml_pca.py and models/autodqm_ml_pca/
-            self.comparators = ['pull_values', 'ks_test']
+            self.comparators = ['pull_values', 'ks_test', 'beta_binomial']
 
 
     def __eq__(self, other):
