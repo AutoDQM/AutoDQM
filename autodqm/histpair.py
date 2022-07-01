@@ -34,6 +34,8 @@ class HistPair(object):
             ## plugins/autodqm_ml_pca.py and models/autodqm_ml_pca/
             self.comparators = ['pull_values', 'ks_test', 'beta_binomial']
 
+        if not config['comparators'] is None:
+            self.comparators = config['comparators']
 
     def __eq__(self, other):
         return (isinstance(other, type(self))

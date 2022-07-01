@@ -91,6 +91,7 @@ def compile_histpairs(chunk_index, chunk_size, config_dir,
     # Histogram details
     conf_list = config["hists"]
     main_gdir = config["main_gdir"]
+    def_comparators = config['comparators'] if 'comparators' in config.keys() else None
 
     # ROOT files
     data_file = uproot.open(data_path)
@@ -102,6 +103,8 @@ def compile_histpairs(chunk_index, chunk_size, config_dir,
     missing_ref_dirs  = []
 
     for hconf in conf_list:
+        # Set comparators if there are none
+        if not 'comparators' in hconf.keys(): hconf['comparators'] = def_comparators
         # Get name of hist in root file
         h = str(hconf["path"].split("/")[-1])
         # Get parent directory of hist
