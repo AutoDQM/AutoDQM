@@ -75,6 +75,13 @@ def beta_binomial(histpair, pull_cap=30, chi2_cut=100, pull_cut=25, min_entries=
         if bins[0] < -999:
             bins[0]=2*bins[1]-bins[2]
     
+
+        #Truncate empty space on high end of histograms with large axes
+        if data_hist_Entries > 0 and ref_hist_Entries > 0 and len(bins) > 15:
+            last_bin = max( [15, max(numpy.nonzero(data_hist_norm)[0]), max(numpy.nonzero(ref_hist_raw)[0])] )
+            if last_bin+2 < len(bins):
+                bins = bins[:(last_bin+2)]
+
         #Get Titles for histogram, X-axis, Y-axis (Note data_hist.axes will have length > 1 if y-axis title is declared even with 1d plot)
         xAxisTitle = data_hist.axes[0]._bases[0]._members["fTitle"]
         if(len(data_hist.axes) > 1):
@@ -93,7 +100,8 @@ def beta_binomial(histpair, pull_cap=30, chi2_cut=100, pull_cut=25, min_entries=
         c = go.Figure()
         #c.add_trace(go.Bar(name="data:"+str(histpair.data_run), x=bins, y=data_hist_norm, marker_color='white', marker=dict(line=dict(width=1,color='red'))))
         #c.add_trace(go.Bar(name="ref:"+str(histpair.ref_run), x=bins, y=ref_hist_norm, marker_color='rgb(204, 188, 172)', opacity=.9))
-        c.add_trace(go.Bar(name="pull", x=bins, y=pull_hist, marker_color='blue'))
+        c.add_trace(go.Bar(name="data:"+str(histpair.data_run), x=bins, y=data_hist_norm, marker_color='red'))
+        c.add_trace(go.Bar(name="ref:"+str(histpair.ref_run), x=bins, y=ref_hist_raw, marker_color='blue', opacity=.5))
         c['layout'].update(bargap=0)
         c['layout'].update(barmode='overlay')
         c['layout'].update(plot_bgcolor='white')
@@ -101,7 +109,6 @@ def beta_binomial(histpair, pull_cap=30, chi2_cut=100, pull_cut=25, min_entries=
         c.update_yaxes(showline=True, linewidth=2, linecolor='black', mirror=True, showgrid=False)
         c.update_layout(
             title=plotTitle , title_x=0.5,
-            yaxis_range=[-pull_cap, pull_cap],
             xaxis_title= xAxisTitle,
             yaxis_title= yAxisTitle,
             font=dict(
