@@ -53,14 +53,8 @@ def beta_binomial(histpair, chi2_cut=25, pull_cut=10, min_entries=1, tol=0.01, n
 
     ## define if plot anomalous
     is_outlier = False
-    if data_hist_Entries >= min_entries:
-        if chi2 > chi2_cut:
-            is_outlier = True
-        if abs(max_pull) > pull_cut:
-            if not histpair.data_name.startswith('rpcHitPhi') and \
-               not histpair.data_name.startswith('rpcChamberPhi') and \
-               not histpair.data_name.startswith('rpcChamberTheta'):
-                is_outlier = True
+    if data_hist_Entries >= min_entries and (chi2 > chi2_cut or abs(max_pull) > pull_cut:
+        is_outlier = True
 
     ## plotting
     # Setting empty bins to be blank
@@ -71,9 +65,15 @@ def beta_binomial(histpair, chi2_cut=25, pull_cut=10, min_entries=1, tol=0.01, n
     # Check that the hists are 1 dimensional
     if ("TH1" in str(type(data_hist))) and ("TH1" in str(type(ref_hist))):
         #Get bin centers from edges() stored by uproot
-        bins = data_hist.axes[0].edges();
+        bins = data_hist.axes[0].edges()
         if bins[0] < -999:
             bins[0]=2*bins[1]-bins[2]
+
+        #Truncate empty space on high end of histograms with large axes
+        if data_hist_Entries > 0 and ref_hist_Entries > 0 and len(bins) > 15:
+            last_bin = max( [15, max(numpy.nonzero(data_hist_norm)[0]), max(numpy.nonzero(ref_hist_raw)[0])] )
+            if last_bin+2 < len(bins):
+                bins = bins[:(last_bin+2)]
     
         #Get Titles for histogram, X-axis, Y-axis (Note data_hist.axes will have length > 1 if y-axis title is declared even with 1d plot)
         xAxisTitle = data_hist.axes[0]._bases[0]._members["fTitle"]
@@ -91,8 +91,8 @@ def beta_binomial(histpair, chi2_cut=25, pull_cut=10, min_entries=1, tol=0.01, n
     
         #Plot histogram with previously declared axes and settings to look similar to PyRoot
         c = go.Figure()
-        c.add_trace(go.Bar(name="data:"+str(histpair.data_run), x=bins, y=data_hist_norm, marker_color='white', marker=dict(line=dict(width=1,color='red'))))
-        c.add_trace(go.Bar(name="ref:"+str(histpair.ref_run), x=bins, y=ref_hist_raw, marker_color='rgb(204, 188, 172)', opacity=.9))
+        c.add_trace(go.Bar(name="data:"+str(histpair.data_run), x=bins, y=data_hist_norm, marker_color='red'))
+        c.add_trace(go.Bar(name="ref:"+str(histpair.ref_run), x=bins, y=ref_hist_raw, marker_color='blue', opacity=.5))
         c['layout'].update(bargap=0)
         c['layout'].update(barmode='overlay')
         c['layout'].update(plot_bgcolor='white')
@@ -158,7 +158,7 @@ def beta_binomial(histpair, chi2_cut=25, pull_cut=10, min_entries=1, tol=0.01, n
         plotTitle = plotTitle.replace("#circ", "\u00B0").replace("#theta","\u03B8").replace("#phi","\u03C6").replace("#eta","\u03B7")
     
         #Plot pull-values using 2d heatmap will settings to look similar to old Pyroot version
-        c  = go.Figure(data=go.Heatmap(z=pull_hist, zmin=-20., zmax=20., colorscale=colors, x=xLabels, y=yLabels))
+        c = go.Figure(data=go.Heatmap(z=pull_hist, zmin=-20., zmax=20., colorscale=colors, x=xLabels, y=yLabels))
         c['layout'].update(plot_bgcolor='white')
         c.update_xaxes(showline=True, linewidth=2, linecolor='black', mirror=True, showgrid=False, type=x_axis_type)
         c.update_yaxes(showline=True, linewidth=2, linecolor='black', mirror=True, showgrid=False, type=y_axis_type)
@@ -186,7 +186,6 @@ def beta_binomial(histpair, chi2_cut=25, pull_cut=10, min_entries=1, tol=0.01, n
 
     artifacts = [pull_hist, str(data_hist_Entries), str(ref_hist_Entries)]
 
-
     return PluginResults(
         c,
         show=bool(is_outlier),
@@ -212,11 +211,7 @@ def maxPullNorm(maxPull, nBinsUsed, cutoff=pow(10,-15)):
     else:
         probGoodNorm = 1 - numpy.power(1 - probGood, nBinsUsed)
 
-    ## Use logarithmic approximation for very low probs
-    if probGoodNorm < cutoff:
-        pullNorm = numpy.sqrt(2 * (numpy.log(2) - numpy.log(probGoodNorm) - 3)) * sign
-    else:
-        pullNorm = numpy.sqrt(stats.chi2.ppf(1-probGoodNorm, 1)) * sign
+    pullNorm = Sigmas(probGoodNorm) * sign
 
     return pullNorm
 
@@ -319,15 +314,10 @@ def ProbRel(Data, Ref, func, tol=0.01):
     return ratio
 
 
-## Negative log likelihood
-def NLL(prob):
-    nllprob = -1.0*numpy.log(prob, where=(prob>0))
-    nllprob[prob==0] = 999
-    nllprob[prob < 0] == -999
-
-    return nllprob
-
-
 ## Convert relative probability to number of standard deviations in normal distribution
 def Sigmas(probRel):
-    return numpy.sqrt(2.0*NLL(probRel))
+    ## chi2.isf function fails for probRel < 10^-323, so cap at 10^-300 (37 sigma)
+    probRel = numpy.maximum(probRel, pow(10, -300))
+    return numpy.sqrt(stats.chi2.isf(probRel, 1))
+    ## For very low prob, can use logarithmic approximation:
+    ## chi2.isf(prob, 1) = 2 * (numpy.log(2) - numpy.log(prob) - 3)
