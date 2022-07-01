@@ -3,10 +3,10 @@
   "hists": [
 
     {
-      "path": "L1TStage2CaloLayer1/ecalOccRecdEtWgt"
+      "path": "L1TStage2CaloLayer1/ecalOccupancy"
     },
     {
-      "path": "L1TStage2CaloLayer1/hcalOccRecdEtWgt"
+      "path": "L1TStage2CaloLayer1/hcalOccupancy"
     },
     {
       "path": "L1TStage2uGMT/ugmtMuonBX"
@@ -57,37 +57,37 @@
       "path": "L1TStage2CaloLayer2/NonIsolated-Tau/TausBxOcc"
     },
     {
-      "path": "L1TStage2CaloLayer2/shifter/CenJetsEtEtaPhi_shift"
+      "path": "L1TStage2CaloLayer2/Central-Jets/CenJetsOcc"
     },
     {
       "path": "L1TStage2CaloLayer2/Central-Jets/CenJetsRank"
     },
     {
-      "path": "L1TStage2CaloLayer2/shifter/ForJetsEtEtaPhi_shift"
+      "path": "L1TStage2CaloLayer2/Forward-Jets/ForJetsOcc"
     },
     {
       "path": "L1TStage2CaloLayer2/Forward-Jets/ForJetsRank"
     },
     {
-      "path": "L1TStage2CaloLayer2/shifter/IsoEGsEtEtaPhi_shift"
+      "path": "L1TStage2CaloLayer2/Isolated-EG/IsoEGsOcc"
     },
     {
       "path": "L1TStage2CaloLayer2/Isolated-EG/IsoEGsRank"
     },
     {
-      "path": "L1TStage2CaloLayer2/shifter/NonIsoEGsEtEtaPhi_shift"
+      "path": "L1TStage2CaloLayer2/NonIsolated-EG/NonIsoEGsOcc"
     },
     {
       "path": "L1TStage2CaloLayer2/NonIsolated-EG/NonIsoEGsRank"
     },
     {
-      "path": "L1TStage2CaloLayer2/shifter/IsoTausEtEtaPhi_shift"
+      "path": "L1TStage2CaloLayer2/Isolated-Tau/IsoTausOcc"
     },
     {
       "path": "L1TStage2CaloLayer2/Isolated-Tau/IsoTausRank"
     },
     {
-      "path": "L1TStage2CaloLayer2/shifter/TausEtEtaPhi_shift"
+      "path": "L1TStage2CaloLayer2/NonIsolated-Tau/TausOcc"
     },
     {
       "path": "L1TStage2CaloLayer2/NonIsolated-Tau/TausRank"
