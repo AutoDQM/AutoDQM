@@ -11,7 +11,7 @@
         },
         {
             "norm_type": "row",
-            "path": "Timing/cscLCTTiming*",
+            "path": "Timing/cscLCTTimingBX*",
             "xlabels": [
                 "1",
                 "2",
