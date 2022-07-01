@@ -53,7 +53,7 @@ def beta_binomial(histpair, chi2_cut=25, pull_cut=10, min_entries=1, tol=0.01, n
 
     ## define if plot anomalous
     is_outlier = False
-    if data_hist_Entries >= min_entries and (chi2 > chi2_cut or abs(max_pull) > pull_cut:
+    if data_hist_Entries >= min_entries and (chi2 > chi2_cut or abs(max_pull) > pull_cut):
         is_outlier = True
 
     ## plotting
