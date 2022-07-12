@@ -2,11 +2,11 @@
     "hists": [
         {
             "path": "CSCInput/csc*",
-	    "comparators" : ["beta_binomial"]
+	    "comparators" : ["ks_test", "pull_values"]
         },
         {
             "path": "RPCInput/rpc*",
-	    "comparators" : ["beta_binomial"]
+	    "comparators" : ["ks_test", "pull_values"]
         },
         {
             "path": "SelectedTracks/*"
