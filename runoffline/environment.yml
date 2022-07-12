@@ -17,5 +17,6 @@ dependencies:
   - tqdm
   - uproot
   - urllib3
+  - python
 
 
