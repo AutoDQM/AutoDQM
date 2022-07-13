@@ -9,7 +9,6 @@ dependencies:
   - lxml
   - numpy
   - plotly
-  - python
   - python-kaleido
   - requests
   - requests-futures
@@ -18,3 +17,6 @@ dependencies:
   - tqdm
   - uproot
   - urllib3
+  - python
+
+

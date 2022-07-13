@@ -14,7 +14,6 @@ def comparators():
 
 
 def ks(histpair, ks_cut=0.35, min_entries=10000, **kwargs):
-
     data_name = histpair.data_name
     ref_name = histpair.ref_name
 

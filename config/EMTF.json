@@ -1,17 +1,19 @@
 {
     "hists": [
         {
-            "path": "CSCInput/csc*"
+            "path": "CSCInput/csc*",
+	    "comparators" : ["ks_test", "pull_values"]
         },
         {
-            "path": "RPCInput/rpc*"
+            "path": "RPCInput/rpc*",
+	    "comparators" : ["ks_test", "pull_values"]
         },
         {
             "path": "SelectedTracks/*"
         },
         {
             "norm_type": "row",
-            "path": "Timing/cscLCTTiming*",
+            "path": "Timing/cscLCTTimingBX*",
             "xlabels": [
                 "1",
                 "2",

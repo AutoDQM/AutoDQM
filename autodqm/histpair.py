@@ -9,7 +9,7 @@ class HistPair(object):
 
     def __init__(self, dqmSource, config,
                  data_series, data_sample, data_run, data_name, data_hist,
-                 ref_series, ref_sample, ref_run, ref_name, ref_hist):
+                 ref_series, ref_sample, ref_run, ref_name, ref_hist, comparators='all'):
 
         self.dqmSource = dqmSource
         self.config = config
@@ -27,13 +27,14 @@ class HistPair(object):
         self.ref_hist = ref_hist
 
         if self.dqmSource == 'Offline':
-            self.comparators = ['pull_values', 'ks_test', 'autodqm_ml_pca']
+            self.comparators = ['pull_values', 'ks_test', 'autodqm_ml_pca', 'beta_binomial']
         else:
             ## Currently ML PCA only trained with Offline data - AWB 2022.06.20
             ## If trained on Online in the future, need to update
             ## plugins/autodqm_ml_pca.py and models/autodqm_ml_pca/
-            self.comparators = ['pull_values', 'ks_test']
-
+            self.comparators = ['pull_values', 'ks_test', 'beta_binomial']
+        if comparators != 'all':
+            self.comparators = comparators
 
     def __eq__(self, other):
         return (isinstance(other, type(self))
