@@ -11,6 +11,10 @@ export default class InputForm extends Component {
     return api.queryUrl(query);
   };
 
+  handleDqmSourceChange = change => {
+    this.props.onChange({dqmSource: change.value});
+  };
+
   handleSubsystemChange = change => {
     this.props.onChange({subsystem: change.value});
   };
@@ -29,12 +33,26 @@ export default class InputForm extends Component {
 
   render() {
     const q = this.props.query;
-    const data = {series: q.dataSeries, sample: q.dataSample, run: q.dataRun};
-    const ref = {series: q.refSeries, sample: q.refSample, run: q.refRun};
+    const data = {dqmSource: q.dqmSource, subsystem: q.subsystem, series: q.dataSeries, sample: q.dataSample, run: q.dataRun};
+    const ref = {dqmSource: q.dqmSource, subsystem: q.subsystem, series: q.refSeries, sample: q.refSample, run: q.refRun};
 
     return (
       <React.Fragment>
         <Row className="mt-3">
+          <Col>
+            <Row>
+              <Col>
+                <h3>Source</h3>
+              </Col>
+              <Col/>
+            </Row>
+            <ApiSelect
+              placeholder="Select DQM source..."
+              type="get_dqmSources"
+              value={option(q.dqmSource)}
+              onChange={this.handleDqmSourceChange}
+            />
+          </Col>
           <Col>
             <Row>
               <Col>
@@ -61,7 +79,7 @@ export default class InputForm extends Component {
             <RunSelectForm {...data} onChange={this.handleDataChange} />
           </Col>
           <Col md="6">
-            <h3>Ref Run</h3>
+            <h3>Reference Run</h3>
             <RunSelectForm {...ref} onChange={this.handleRefChange} />
           </Col>
         </Row>
@@ -92,6 +110,7 @@ function RunSelectForm(props) {
       <ApiSelect
         placeholder="Select series..."
         type="get_series"
+        dqmSource={props.dqmSource}
         value={option(props.series)}
         onChange={c => props.onChange('series', c)}
       />
@@ -99,6 +118,7 @@ function RunSelectForm(props) {
       <ApiSelect
         placeholder="Select sample..."
         type="get_samples"
+        dqmSource={props.dqmSource}
         series={props.series}
         value={option(props.sample)}
         onChange={c => props.onChange('sample', c)}
@@ -107,6 +127,8 @@ function RunSelectForm(props) {
       <ApiSelect
         placeholder="Select run..."
         type="get_runs"
+        dqmSource={props.dqmSource}
+        subsystem={props.subsystem}
         series={props.series}
         sample={props.sample}
         value={option(props.run)}

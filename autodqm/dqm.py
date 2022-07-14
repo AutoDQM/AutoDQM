@@ -7,13 +7,14 @@ import json
 import lxml.html
 import os
 import requests
+from autodqm import cfg
 from collections import namedtuple
 from requests_futures.sessions import FuturesSession
 
 TIMEOUT = 5
-
+VERBOSE = 0
 BASE_URL = 'https://cmsweb.cern.ch'
-DQM_URL = 'https://cmsweb.cern.ch/dqm/offline/data/browse/ROOT/OfflineData/'
+DQM_URL = 'https://cmsweb.cern.ch/dqm/offline/data/browse/ROOT/'
 CA_URL = 'https://cafiles.cern.ch/cafiles/certificates/CERN%20Root%20Certification%20Authority%202.crt'
 
 # The following are appended to the db dir
@@ -22,6 +23,9 @@ CA_PATH = 'CERN_Root_CA.crt'
 
 StreamProg = namedtuple('StreamProg', ('cur', 'total', 'path'))
 DQMRow = namedtuple('DQMRow', ('name', 'full_name', 'url', 'size', 'date'))
+
+main_config = cfg.get_main(os.environ['ADQM_CONFIG'])
+OnlineMap = main_config["OnlineDataMap"]
 
 
 class DQMSession(FuturesSession):
@@ -41,11 +45,13 @@ class DQMSession(FuturesSession):
         if not os.path.exists(self.verify):
             _get_cern_ca(self.verify)
 
-    def fetch_run(self, series, sample, run):
+    def fetch_run(self, dqmSource, subsystem, series, sample, run):
         """Fetch and cache a run data file.
-
         Returns the path to the downloaded file."""
-        dl = self.stream_run(series, sample, run)
+        if VERBOSE: print('\ndqm.py fetch_run(dqmSource = %s, subsystem = %s, series = %s, sample = %s, run = %s)' %
+                          (dqmSource, subsystem, series, sample, run))
+        
+        dl = self.stream_run(dqmSource, subsystem, series, sample, run)
 
         # Get the path from the first yield
         path = next(dl).path
@@ -53,66 +59,116 @@ class DQMSession(FuturesSession):
         # Finish the download
         for _ in dl:
             pass
+        if VERBOSE: print('  * path = %s' % path)
         return path
 
-    def stream_run(self, series, sample, run, chunk_size=4096):
+    def stream_run(self, dqmSource, subsystem, series, sample, run, chunk_size=4096):
         """Stream and cache a run data file.
+        Returns a generator that yields StreamProg tuples corresponding to the download progress."""
+        if VERBOSE: print('\ndqm.py stream_run(dqmSource = %s, subsystem = %s, series = %s, sample = %s, run = %s, chunk_size = %d)' %
+                          (dqmSource, subsystem, series, sample, run, chunk_size))
 
-        Returns a generator that yields StreamProg tuples corresponding to the
-        download progress."""
-        run_path = self._run_path(series, sample, run)
+        run_path = self._run_path(dqmSource, subsystem, series, sample, run)
         run_dir = os.path.dirname(run_path)
 
         if not os.path.exists(run_path):
             _try_makedirs(run_dir)
 
-            runs = self.fetch_run_list(series, sample)
-            run_info = next(r for r in runs if r.name == run)
+            runs = self.fetch_run_list(dqmSource, subsystem, series, sample, run)
+
+            isOnline = (series.startswith('000') and series.endswith('xxxx'))
+            if isOnline:  ## Use cmsweb.cern.ch/dqm/offline/data/browse/ROOT/OnlineData/
+                if not subsystem in OnlineMap.keys():
+                    raise error("dqm.py stream_run: {} not in OnlineMap".format(subsystem))
+                DQM_dir = OnlineMap[subsystem]
+                run_info = next(r for r in runs if r.name == run and DQM_dir+'_R000' in r.full_name)
+            else:                   ## Use cmsweb.cern.ch/dqm/offline/data/browse/ROOT/OfflineData/
+                run_info = next(r for r in runs if r.name == run)
 
             for prog in self._stream_file(
                     run_info.url, run_path, chunk_size=chunk_size):
                 yield prog
 
         size = os.path.getsize(run_path)
+        if VERBOSE: print('  * run_path = %s, size = %d' % (run_path, size))
         yield StreamProg(size, size, run_path)
 
-    def fetch_series_list(self):
-        """Return DQMRows corresponding to the series available on DQM Offline."""
-        return _resolve(self._fetch_dqm_rows(DQM_URL)).data
+    def fetch_series_list(self, dqmSource):
+        """Return DQMRows corresponding to the series available on DQM Online or Offline."""
+        if VERBOSE: print('\ndqm.py fetch_series_list(%s)' % dqmSource)
 
-    def fetch_sample_list(self, series):
-        """Return DQMRows corresponding to the samples available under the given
-        series."""
-        series_rows = self.fetch_series_list()
+        if dqmSource == "Online":
+            series_list = []
+            for series in _resolve(self._fetch_dqm_rows(DQM_URL+'OnlineData/original/')).data:
+                if series.name.startswith('000') and series.name.endswith('xxxx'):
+                    series_list.append(series)
+            return series_list
+        elif dqmSource == "Offline":
+            return _resolve(self._fetch_dqm_rows(DQM_URL+'OfflineData/')).data
+        else:
+            raise error("dqm.py fetch_series_list dqmSource = {}, not Onilne or Offline!".format(dqmSource))
+
+    def fetch_sample_list(self, dqmSource, series):
+        """Return DQMRows corresponding to the samples available under the given series."""
+        if VERBOSE: print('\ndqm.py fetch_sample_list(dqmSource = %s, series = %s)' % (dqmSource, series))
+
+        series_rows = self.fetch_series_list(dqmSource)
         url = next((r.url for r in series_rows if r.name == series))
         return _resolve(self._fetch_dqm_rows(url)).data
 
-    def fetch_run_list(self, series, sample):
-        """Return DQMRows corresponding to the runs available under the given
-        series and sample."""
-        sample_rows = self.fetch_sample_list(series)
-        sample_url = next((r.url for r in sample_rows if r.name == sample))
+    def fetch_run_list(self, dqmSource, subsystem, series, sample, selRun=None):
+        """Return DQMRows corresponding to the runs available under the given series and sample."""
+        if VERBOSE: print('\ndqm.py fetch_run_list(dqmSource = %s, subsystem = %s, series = %s, sample = %s, selRun = %s)' %
+                          (dqmSource, subsystem, series, sample, selRun))
+        if selRun and len(str(selRun)) != 6:
+            raise error("dqm.py fetch_run_list selRun = {}, not 6 digits!".format(selRun))
 
-        # Get all run directories for this sample
-        macrorun_rows = _resolve(self._fetch_dqm_rows(sample_url)).data
+        ## Get list of samples within a series
+        ## For OfflineData, primary datasets within Run2018, Run2017, etc.
+        ## For OnlineData/original, list of run ranges by first 2 digits of run
+        sample_rows = self.fetch_sample_list(dqmSource, series)
+
+        isOnline = (series.startswith('000') and series.endswith('xxxx'))
+        if isOnline:
+            macrorun_rows = sample_rows
+        else:  ## Use cmsweb.cern.ch/dqm/offline/data/browse/ROOT/OfflineData/
+            sample_url = next((r.url for r in sample_rows if r.name == sample))
+            # Get all run directories for this sample
+            macrorun_rows = _resolve(self._fetch_dqm_rows(sample_url)).data
+
+        ## If fetch_run_list is called with a run number, return only selected rows
+        macrorun_rows_sel = []
+        for mr in macrorun_rows:
+            if isOnline and mr.name != sample: continue
+            if (not selRun) or (mr.name == '000'+str(selRun)[0:4]+'xx'):
+                macrorun_rows_sel.append(mr)
 
         # Determine which run directories are cached
         run_rows = []
         to_req = []
-        for mr in macrorun_rows:
+        for mr in macrorun_rows_sel:
             rows = self._get_cache(mr)
-            if rows:
+            ## If selecting a single run, the cache will not contain a full list of runs
+            if rows and not selRun:
                 run_rows += rows
             else:
                 to_req.append(mr)
 
-        # Request uncached directories from the servers
+        ## Select rows from these directories based on run number and sample (for OnlineData)
         futures = [(mr, self._fetch_dqm_rows(mr.url)) for mr in to_req]
         for mr, fut in futures:
             rows = _resolve(fut).data
-            run_rows += rows
+            for row in rows:
+                if selRun and row.name != selRun: continue
+                if not subsystem in OnlineMap.keys():
+                    raise error("dqm.py fetch_run_list: {} not in OnlineMap".format(subsystem))
+                DQM_dir = OnlineMap[subsystem]
+                if isOnline and not (DQM_dir+'_R000' in row.full_name): continue
+                run_rows.append(row)
             self._write_cache(mr, rows)
 
+        if VERBOSE: print('  * len(run_rows) = %d' % len(run_rows))
+        if VERBOSE + (len(run_rows) < 20) >= 2: print(run_rows)
         return run_rows
 
     def _get_cache(self, parent_row):
@@ -139,7 +195,6 @@ class DQMSession(FuturesSession):
 
     def _fetch_dqm_rows(self, url, timeout=TIMEOUT):
         """Return a future of DQMRows of a DQM page at url.
-
         Access the array of DQMRows at _resolve(self._fetch_dqm_rows(...)).data"""
 
         # Callback to process dqm responses
@@ -174,14 +229,21 @@ class DQMSession(FuturesSession):
             os.remove(dest)
             raise
 
-    def _run_path(self, series, sample, run):
+    def _run_path(self, dqmSource, subsystem, series, sample, run):
         """Return the path to the specified run data file in the cached db."""
-        return "{}/{}.root".format(os.path.join(self.db, series, sample), run)
+        if dqmSource == "Online":
+            return "{}/{}.root".format(os.path.join(self.db, dqmSource, series, sample, OnlineMap[subsystem]), run)
+        elif dqmSource == "Offline":
+            return "{}/{}.root".format(os.path.join(self.db, dqmSource, series, sample), run)
+        else:
+            raise error("dqm.py _run_path dqmSource = {}, not Onilne or Offline!".format(dqmSource))
+        
 
 
 def _parse_dqm_page(content):
-    """Return the contents of a DQM series, sample, or macrorun page as a list
-    of DQMRows."""
+    """Return the contents of a DQM series, sample, or macrorun page as a list of DQMRows."""
+    if VERBOSE >= 2: print('\ndqm.py _parse_dqm_page(content = %s)' % content)
+
     dqm_rows = []
     tree = lxml.html.fromstring(content)
     tree.make_links_absolute(BASE_URL)
@@ -202,14 +264,20 @@ def _parse_dqm_page(content):
 
 
 def _parse_run_full_name(full_name):
-    """Return the simplified form of a full DQM run name.
+    """Return the simplified form of a full DQM run name."""
+    if VERBOSE >= 2: print('\ndqm.py _parse_run_full_name(full_name = %s)' % full_name)
 
-    example:
-    DQM_V0001_R000316293__ZeroBias__Run2018A-PromptReco-v2__DQMIO.root
-    => 316293
-    """
-    name = full_name.split('_')[2][1:]
-    return str(int(name))
+    if full_name.split('_')[2].startswith('R000'):  ## Format for OfflineData
+        """example: DQM_V0001_R000316293__ZeroBias__Run2018A-PromptReco-v2__DQMIO.root => 316293"""
+        name = full_name.split('_')[2][1:]
+        return str(int(name))
+    elif full_name.split('_')[3].startswith('R000'):  ## Format for OnlineData
+        """example: DQM_V0001_SiStrip_R000351871.root => 351871"""
+        name = full_name.split('_')[3][1:].replace('.root','')
+        return str(int(name))
+    else:
+        raise error("dqm.py _parse_run_full_name({}), failed to parse run number!".format(full_name))
+        return 'NULL'
 
 
 def _get_cern_ca(path):

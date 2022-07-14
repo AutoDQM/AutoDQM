@@ -1,84 +1,76 @@
 {
-  "main_gdir": "DQMData/Run {0}/CSC/Run summary/CSCOfflineMonitor/",
-  "run_reg": "csc",
-  "hists": [{
-      "norm_type": "row",
-      "path": "Occupancy/hORecHits"
-    },
-    {
-      "norm_type": "row",
-      "path": "Occupancy/hOSegments"
-    },
-    {
-      "norm_type": "row",
-      "path": "Occupancy/hOStrips"
-    },
-    {
-      "norm_type": "row",
-      "path": "Occupancy/hOWires"
-    },
-    {
-      "path": "recHits/hRHGlobal*"
-    },
-    {
-      "always_show": true,
-      "comparators": ["pca", "ks_test"],
-      "jar_dir": "CSC",
-      "path": "recHits/hRHnrechits"
-    },
-    {
-      "comparators": ["pca", "ks_test"],
-      "jar_dir": "CSC",
-      "path": "Digis/hWireTBin_*"
-    },
-    {
-      "always_show": true,
-      "path": "Digis/hStripNFired"
-    },
-    {
-      "always_show": true,
-      "path": "Digis/hWirenGroupsTotal"
-    },
-    {
-      "path": "Segments/hSnhits*"
-    },
-    {
-      "always_show": true,
-      "comparators": ["pca", "ks_test"],
-      "jar_dir": "CSC",
-      "path": "Segments/hSnSegments"
-    },
-    {
-      "comparators": ["pca", "ks_test"],
-      "jar_dir": "CSC",
-      "always_show": true,
-      "comparators": ["pca", "ks_test"],
-      "jar_dir": "CSC",
-      "path": "Segments/hSnhits"
-    },
-    {
-      "comparators": ["pca", "ks_test"],
-      "jar_dir": "CSC",
-      "path": "Segments/hSTimeCombined*"
-    },
-    {
-      "path": "Segments/hSTimeDiff*"
-    },
-    {
-      "path": "Segments/hSTimeVsZ"
-    },
-    {
-      "path": "Segments/hSChiSq*"
-    },
-    {
-      "comparators": ["pca", "ks_test"],
-      "jar_dir": "CSC",
-      "path": "Segments/hSGlobalPhi"
-    },
-    {
-      "comparators": ["pca", "ks_test"],
-      "jar_dir": "CSC",
-      "path": "Segments/hSGlobalTheta"
-    }
-  ]
+    "hists": [
+        {
+            "norm_type": "row",
+            "path": "Occupancy/hORecHits"
+        },
+        {
+            "norm_type": "row",
+            "path": "Occupancy/hOSegments"
+        },
+        {
+            "norm_type": "row",
+            "path": "Occupancy/hOStrips"
+        },
+        {
+            "norm_type": "row",
+            "path": "Occupancy/hOWires"
+        },
+        {
+            "path": "recHits/hRHGlobal*"
+        },
+        {
+            "always_show": true,
+            "jar_dir": "CSC",
+            "path": "recHits/hRHnrechits"
+        },
+        {
+            "jar_dir": "CSC",
+            "path": "Digis/hWireTBin_*"
+        },
+        {
+            "always_show": true,
+            "path": "Digis/hStripNFired"
+        },
+        {
+            "always_show": true,
+            "path": "Digis/hWirenGroupsTotal"
+        },
+        {
+            "path": "Segments/hSnhits*"
+        },
+        {
+            "always_show": true,
+            "jar_dir": "CSC",
+            "path": "Segments/hSnSegments"
+        },
+        {
+            "always_show": true,
+            "jar_dir": "CSC",
+            "path": "Segments/hSnhits"
+        },
+        {
+            "jar_dir": "CSC",
+            "path": "Segments/hSTimeCombined*"
+        },
+        {
+            "path": "Segments/hSTimeDiff*"
+        },
+        {
+            "path": "Segments/hSTimeVsZ"
+        },
+        {
+            "path": "Segments/hSChiSq*"
+        },
+        {
+            "jar_dir": "CSC",
+            "path": "Segments/hSGlobalPhi"
+        },
+        {
+            "jar_dir": "CSC",
+            "path": "Segments/hSGlobalTheta"
+        }
+    ],
+    "main_gdir": "DQMData/Run {0}/CSC/Run summary/CSCOfflineMonitor/",
+    "run_reg": "csc"
 }

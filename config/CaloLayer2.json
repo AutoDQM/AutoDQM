@@ -1,21 +1,28 @@
 {
-  "main_gdir": "DQMData/Run {0}/L1T/Run summary/L1TStage2CaloLayer2/",
-  "hists": [{
-      "norm_type": "col",
-      "path": "Central-Jets/*"
-    }, {
-      "norm_type": "col",
-      "path": "Forward-Jets/*"
-    }, {
-      "path": "Isolated-EG/*"
-    }, {
-      "path": "Isolated-Tau/*"
-    }, {
-      "path": "NonIsolated-EG/*"
-    }, {
-      "path": "NonIsolated-Tau/*"
-    }, {
-      "path": "Energy-Sums/*"
-    }
-  ]
+    "hists": [
+        {
+            "norm_type": "col",
+            "path": "Central-Jets/*"
+        },
+        {
+            "norm_type": "col",
+            "path": "Forward-Jets/*"
+        },
+        {
+            "path": "Isolated-EG/*"
+        },
+        {
+            "path": "Isolated-Tau/*"
+        },
+        {
+            "path": "NonIsolated-EG/*"
+        },
+        {
+            "path": "NonIsolated-Tau/*"
+        },
+        {
+            "path": "Energy-Sums/*"
+        }
+    ],
+    "main_gdir": "DQMData/Run {0}/L1T/Run summary/L1TStage2CaloLayer2/"
 }

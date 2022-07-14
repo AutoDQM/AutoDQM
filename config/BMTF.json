@@ -1,6 +1,8 @@
 {
-  "main_gdir": "DQMData/Run {0}/L1T/Run summary/L1TStage2BMTF/",
-  "hists": [{
-    "path": "bmtf_*"
-  }]
+    "hists": [
+        {
+            "path": "bmtf_*"
+        }
+    ],
+    "main_gdir": "DQMData/Run {0}/L1T/Run summary/L1TStage2BMTF/"
 }

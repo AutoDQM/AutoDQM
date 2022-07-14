@@ -29,5 +29,15 @@ def get_subsystem(cfg_dir, subsystem):
         return json.load(f)
 
 
+def get_main(cfg_dir):
+    """Return the dict-based main configuration of from cfg_dir."""
+    path = os.path.join(cfg_dir, MAIN_CFG)
+    if not os.path.exists(path):
+        raise error("Main config '{0}' not found.".format(MAIN_CFG))
+
+    with open(os.path.join(cfg_dir, MAIN_CFG)) as f:
+        return json.load(f)
+
+
 class error(Exception):
     pass

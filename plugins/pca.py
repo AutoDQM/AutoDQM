@@ -21,20 +21,25 @@ def comparators():
     }
 
 def pca(histpair,
-        sse_percentile=5, exp_var=0.95, norm_type='all', min_entries=100000,
+        sse_percentile=5, exp_var=0.95, norm_type='all', min_entries=10000,
         **kwargs):
 
     data_name = histpair.data_name
     data_hist = histpair.data_hist.values(flow=False)
     jar_dir = histpair.config["jar_dir"]
 
-    data_year = int(histpair.data_series[-4:])
+    # If series is Run2016, 2017, 2018, etc. look for .pkl file for trained PCA
+    try:    data_year = int(histpair.data_series[-4:])
+    # Otherwise assume there is no .pkl file
+    except: data_year = 'NONE'
     possible_pickles = glob.glob("/var/www/cgi-bin/models/pca/{0}/{1}/*_{2}.pkl".format(jar_dir,data_year, data_name))
+    # TODO: Path to .pkl file is ambiguous (should probably depend on 'Sample' as well),
+    # TODO: and only works for OfflineData, not OnlineData.  Should be fixed! - AWB 2022.06.04
     if len(possible_pickles) != 1:
         return None
     pca_pickle = pickle.load(open(possible_pickles[0], "rb"))
 
-    #Decalre data_hist_Entries
+    # Declare data_hist_Entries
     data_hist_Entries = np.sum(data_hist)
 
 
