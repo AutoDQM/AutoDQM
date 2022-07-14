@@ -16,6 +16,7 @@ def comparators():
 def pullvals(histpair,
              pull_cap=25, chi2_cut=500, pull_cut=20, min_entries=10000, norm_type='all',
              **kwargs):
+
     """Can handle poisson driven TH2s or generic TProfile2Ds"""
     data_hist = histpair.data_hist
     ref_hist = histpair.ref_hist
@@ -145,22 +146,11 @@ def pullvals(histpair,
     )
 
     info = {
-        'Chi_Squared': float(chi2),
-        'Max_Pull_Val': float(max_pull),
+        'Chi_Squared': f"{chi2:.2f}", # 2 decimal points
+        'Max_Pull_Val': f"{max_pull:.2f}",
         'Data_Entries': str(data_hist_Entries),
         'Ref_Entries': str(ref_hist_Entries),
     }
-
-    #if histpair.data_name=='NonIsoEGsBxOcc':#numpy.isnan(max_pull):
-        #print(info)
-        # print(f'{new_pull=}')
-        # print(f'{chi2=}')
-        # print(f'{data_hist_norm=}')
-        # print(f'{ref_hist_norm=}')
-        # print(f'{data_hist_err=}')
-        # print(f'{ref_hist_err=}')
-        # print('----------------')
-
 
 
     artifacts = [pull_hist, str(data_hist_Entries), str(ref_hist_Entries)]
@@ -180,50 +170,10 @@ def pull(bin1, binerr1, bin2, binerr2):
         only divide where bin1+bin2 != 0, output zero where that happens
     '''
     return numpy.divide( (bin1 - bin2) , ((binerr1**2 + binerr2**2)**0.5), out=numpy.zeros_like(bin1), where=(binerr1+binerr2)!=0)
-# def pull(bin1, binerr1, bin2, binerr2):
-#     ''' Calculate the pull value between two bins.
-#         pull = (data - expected)/sqrt(sum of errors in quadrature))
-#         data = |bin1 - bin2|, expected = 0
-#     '''
-#     return (bin1 - bin2) / ((binerr1**2 + binerr2**2)**0.5)
 
 def normalize_rows(data_hist_norm, ref_hist_norm):
-
-    for y in range(0, ref_hist_norm.shape[1]):
-
-        # Stores sum of row elements
-        rrow = 0
-        frow = 0
-
-        # Sum over row elements
-        for x in range(0, ref_hist_norm.shape[0]):
-
-            # Bin data
-            rbin = ref_hist_norm[x,y]
-            fbin = data_hist_norm[x, y]
-
-            rrow += rbin
-            frow += fbin
-
-        # Scaling factors
-        # Prevent divide-by-zero error
-        if frow == 0:
-            frow = 1
-        if frow > 0:
-            sf = float(rrow) / frow
-        else:
-            sf = 1
-        # Prevent scaling everything to zero
-        if sf == 0:
-            sf = 1
-
-        # Normalization
-        for x in range(0, ref_hist_norm.shape[0]):
-            # Bin data
-            fbin = data_hist_norm[x, y]
-            fbin_err = (fbin)**(.5)
-
-            # Normalize bin
-
-            data_hist_norm[x, y] = (fbin * sf)
-    return data_hist_norm
+    ref_sum = ref_hist_norm.sum(axis=0)
+    data_sum = data_hist_norm.sum(axis=0)
+    sf = numpy.divide(ref_sum, data_sum, where=data_sum!=0, out=numpy.ones_like(data_sum))
+    
+    return data_hist_norm*sf
