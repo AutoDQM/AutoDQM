@@ -1,6 +1,8 @@
 {
   "main_gdir": "DQMData/Run {0}/L1T/Run summary/",
 
+  "description": "L1T Online DQM plots found in Shift workspace",
+
   "comparators": ["beta_binomial"],
 
   "hists": [

@@ -6,7 +6,7 @@
     "EMTF": "L1T",
     "OMTF": "L1T",
     "uGMT": "L1T",
-    "L1T_online": "L1T",
+    "L1T_shift": "L1T",
     "CSC": "CSC",
     "RPC": "RPC",
     "DT": "DT"

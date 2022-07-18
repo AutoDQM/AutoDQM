@@ -8,14 +8,12 @@ from scipy.special import gammaln
 import plotly.graph_objects as go
 from plugins.pullvals import normalize_rows
 
-
 def comparators():
     return { 
         'beta_binomial' : beta_binomial
     }
 
-def beta_binomial(histpair, chi2_cut=25, pull_cut=10, min_entries=1, tol=0.01, norm_type='all', **kwargs): 
-
+def beta_binomial(histpair, pull_cap=15, chi2_cut=100, pull_cut=10, min_entries=1, tol=0.01, norm_type='all', **kwargs):
     """beta_binomial works on both 1D and 2D"""
     data_hist = histpair.data_hist
     ref_hist = histpair.ref_hist
@@ -27,39 +25,33 @@ def beta_binomial(histpair, chi2_cut=25, pull_cut=10, min_entries=1, tol=0.01, n
     data_hist_Entries = numpy.sum(data_hist_raw)
     ref_hist_Entries = numpy.sum(ref_hist_raw)
 
-    ## normalize data_hist
-    data_hist_norm = numpy.copy(data_hist_raw)
-    if data_hist_Entries > 0:
-        data_hist_norm = data_hist_norm * ref_hist_Entries / data_hist_Entries
+    ## does not run beta_binomial if data or ref is 0
+    if data_hist_Entries <= 0 or ref_hist_Entries <= 0:
+        return None
+
+    # Normalize data_hist (Note if col is selected numpy just transposes normalizes by rows then transposes again)
+    data_hist_norm = numpy.copy(data_hist.values())
+    data_hist_norm = data_hist_norm * ref_hist_Entries / data_hist_Entries
 
     ## only filled bins used for chi2
     nBinsUsed = numpy.count_nonzero(numpy.add(ref_hist_raw, data_hist_raw))
     nBins = data_hist.values().size
 
-
     ## calculte pull and chi2
-    if nBinsUsed > 0 and data_hist_Entries > 0 and ref_hist_Entries > 0:
-        pull_hist = pull(data_hist_raw, ref_hist_raw, tol)
-        pull_hist = pull_hist*numpy.sign(data_hist_norm-ref_hist_raw)
-        chi2 = numpy.square(pull_hist).sum()/nBinsUsed
-        max_pull = maxPullNorm(numpy.amax(pull_hist), nBinsUsed)
-        min_pull = maxPullNorm(numpy.amin(pull_hist), nBinsUsed)
-        if abs(min_pull) > max_pull:
-            max_pull = min_pull
-    else:
-        pull_hist = numpy.zeros_like(data_hist_raw)
-        chi2 = 0
-        max_pull = 0
+    pull_hist = pull(data_hist_raw, ref_hist_raw, tol)
+    pull_hist = pull_hist*numpy.sign(data_hist_norm-ref_hist_raw)
+    chi2 = numpy.square(pull_hist).sum()/nBinsUsed
+    max_pull = maxPullNorm(numpy.amax(pull_hist), nBinsUsed)
+    min_pull = maxPullNorm(numpy.amin(pull_hist), nBinsUsed)
+    if abs(min_pull) > max_pull:
+        max_pull = min_pull
 
     ## define if plot anomalous
-    is_outlier = False
-    if data_hist_Entries >= min_entries and (chi2 > chi2_cut or abs(max_pull) > pull_cut):
-        is_outlier = True
+    is_outlier = data_hist_Entries >= min_entries and (chi2 > chi2_cut or abs(max_pull) > pull_cut)
 
     ## plotting
     # Setting empty bins to be blank
     pull_hist = numpy.where(numpy.add(ref_hist_raw, data_hist_raw) == 0, None, pull_hist)
-
 
     ##--------- 1D Plotting --------------
     # Check that the hists are 1 dimensional
@@ -71,17 +63,17 @@ def beta_binomial(histpair, chi2_cut=25, pull_cut=10, min_entries=1, tol=0.01, n
 
         #Truncate empty space on high end of histograms with large axes
         if data_hist_Entries > 0 and ref_hist_Entries > 0 and len(bins) > 15:
-            last_bin = max( [15, max(numpy.nonzero(data_hist_norm)[0]), max(numpy.nonzero(ref_hist_raw)[0])] )
+            last_bin = max( [15, max(numpy.nonzero(data_hist_raw)[0]), max(numpy.nonzero(ref_hist_raw)[0])] )
             if last_bin+2 < len(bins):
                 bins = bins[:(last_bin+2)]
-    
+
         #Get Titles for histogram, X-axis, Y-axis (Note data_hist.axes will have length > 1 if y-axis title is declared even with 1d plot)
         xAxisTitle = data_hist.axes[0]._bases[0]._members["fTitle"]
         if(len(data_hist.axes) > 1):
             yAxisTitle = data_hist.axes[1]._bases[0]._members["fTitle"]
         else:
             yAxisTitle = ""
-        plotTitle = histpair.data_name + " Beta-Binomial tests  |  data:" + str(histpair.data_run) + " & ref:" + str(histpair.ref_run)
+        plotTitle = histpair.data_name + " beta-binomial  |  data:" + str(histpair.data_run) + " & ref:" + str(histpair.ref_run)
     
         #Plotly doesn't support #circ, #theta, #phi but it does support unicode
         xAxisTitle = xAxisTitle.replace("#circ", "\u00B0").replace("#theta","\u03B8").replace("#phi","\u03C6").replace("#eta","\u03B7")
@@ -93,9 +85,8 @@ def beta_binomial(histpair, chi2_cut=25, pull_cut=10, min_entries=1, tol=0.01, n
         c = go.Figure()
         c.add_trace(go.Bar(name="data:"+str(histpair.data_run), x=bins, y=data_hist_norm, marker_color='red'))
         c.add_trace(go.Bar(name="ref:"+str(histpair.ref_run), x=bins, y=ref_hist_raw, marker_color='blue', opacity=.5))
-        c['layout'].update(bargap=0)
-        c['layout'].update(barmode='overlay')
-        c['layout'].update(plot_bgcolor='white')
+        c.update_traces(marker_line_width=0)
+        c.update_layout(bargap=0, bargroupgap=0, barmode='overlay', plot_bgcolor='white')
         c.update_xaxes(showline=True, linewidth=2, linecolor='black', mirror=True, showgrid=False)
         c.update_yaxes(showline=True, linewidth=2, linecolor='black', mirror=True, showgrid=False)
         c.update_layout(
@@ -110,7 +101,7 @@ def beta_binomial(histpair, chi2_cut=25, pull_cut=10, min_entries=1, tol=0.01, n
         )
         ref_text = "ref:"+str(histpair.ref_run)
         data_text = "data:"+str(histpair.data_run)
-        #artifacts = [data_hist_norm, ref_hist_raw, data_text, ref_text]
+
     ## --------- end 1D plotting ---------
 
 
@@ -150,7 +141,7 @@ def beta_binomial(histpair, chi2_cut=25, pull_cut=10, min_entries=1, tol=0.01, n
         #Getting Plot Titles for histogram, x-axis and y-axis
         xAxisTitle = data_hist.axes[0]._bases[0]._members["fTitle"]
         yAxisTitle = data_hist.axes[1]._bases[0]._members["fTitle"]
-        plotTitle = histpair.data_name + " Pull Values  |  data:" + str(histpair.data_run) + " & ref:" + str(histpair.ref_run)
+        plotTitle = histpair.data_name + " beta-binomial  |  data:" + str(histpair.data_run) + " & ref:" + str(histpair.ref_run)
     
         #Plotly doesn't support #circ, #theta, #phi but does support unicode
         xAxisTitle = xAxisTitle.replace("#circ", "\u00B0").replace("#theta","\u03B8").replace("#phi","\u03C6").replace("#eta","\u03B7")
@@ -158,7 +149,7 @@ def beta_binomial(histpair, chi2_cut=25, pull_cut=10, min_entries=1, tol=0.01, n
         plotTitle = plotTitle.replace("#circ", "\u00B0").replace("#theta","\u03B8").replace("#phi","\u03C6").replace("#eta","\u03B7")
     
         #Plot pull-values using 2d heatmap will settings to look similar to old Pyroot version
-        c = go.Figure(data=go.Heatmap(z=pull_hist, zmin=-20., zmax=20., colorscale=colors, x=xLabels, y=yLabels))
+        c = go.Figure(data=go.Heatmap(z=pull_hist, zmin=-pull_cap, zmax=pull_cap, colorscale=colors, x=xLabels, y=yLabels))
         c['layout'].update(plot_bgcolor='white')
         c.update_xaxes(showline=True, linewidth=2, linecolor='black', mirror=True, showgrid=False, type=x_axis_type)
         c.update_yaxes(showline=True, linewidth=2, linecolor='black', mirror=True, showgrid=False, type=y_axis_type)
@@ -173,8 +164,6 @@ def beta_binomial(histpair, chi2_cut=25, pull_cut=10, min_entries=1, tol=0.01, n
             )
         )
     ##----- end 2D plotting --------
-
-
 
 
     info = {
@@ -196,8 +185,8 @@ def beta_binomial(histpair, chi2_cut=25, pull_cut=10, min_entries=1, tol=0.01, n
 def pull(D_raw, R_raw, tol=0.01):
     prob = numpy.zeros_like(D_raw)
     prob = ProbRel(D_raw, R_raw, 'BetaB', tol)
-    # prob = ProbRel(D_raw, R_raw, 'Gamma', tol)
     pull = Sigmas(prob)
+
     return pull
 
 def maxPullNorm(maxPull, nBinsUsed, cutoff=pow(10,-15)):
