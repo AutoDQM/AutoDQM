@@ -119,6 +119,8 @@ class RunSwitch extends Component {
         <Col xs="4" className="p-0">
           <ApiSelect
             type="get_runs"
+            dqmSource={this.props.dqmSource}
+            subsystem={this.props.subsystem}
             series={this.props.dataSeries}
             sample={this.props.dataSample}
             onChange={c => this.switchRun(c.value)}
