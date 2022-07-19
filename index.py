@@ -24,7 +24,7 @@ def handle_request(req):
     try:
         load_vars()
         if req['type'] == "fetch_run":
-            data = fetch_run(req['dqmSource'], req['subsystem'], req['series'], req['sample'], req['run'])
+            data = fetch_runs(req['dqmSource'], req['subsystem'], req['series'], req['sample'], req['run'])
         elif req['type'] == "process":
             data = process(int(req['chunk_index']),
                            int(req['chunk_size']),
@@ -69,9 +69,10 @@ def handle_request(req):
         return res
 
 
-def fetch_run(dqmSource, subsystem, series, sample, run):
+def fetch_runs(dqmSource, subsystem, series, sample, runs):
     with make_dqm() as dqm:
-        dqm.fetch_run(dqmSource, subsystem, series, sample, run)
+        for run in runs.split('_'):
+            dqm.fetch_run(dqmSource, subsystem, series, sample, run)
     return {}
 
 
@@ -83,7 +84,11 @@ def process(chunk_index, chunk_size,
     with make_dqm() as dqm:
         # Get root file paths
         data_path = dqm.fetch_run(dqmSource, subsystem, data_series, data_sample, data_run)
-        ref_path = dqm.fetch_run(dqmSource, subsystem, ref_series, ref_sample, ref_run)
+        ref_runs = []
+        ref_paths = []
+        for one_ref_run in ref_run.split('_'):
+            ref_runs.append( one_ref_run )
+            ref_paths.append( dqm.fetch_run(dqmSource, subsystem, ref_series, ref_sample, one_ref_run) )
 
     # Get config and results/plugins directories
     results_dir = os.path.join(VARS['PUBLIC'], 'results')
@@ -97,7 +102,7 @@ def process(chunk_index, chunk_size,
                                     data_series, data_sample,
                                     data_run, data_path,
                                     ref_series, ref_sample,
-                                    ref_run, ref_path,
+                                    ref_runs, ref_paths,
                                     output_dir=results_dir,
                                     plugin_dir=plugin_dir)
 

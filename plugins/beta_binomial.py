@@ -16,7 +16,7 @@ def comparators():
 def beta_binomial(histpair, pull_cap=15, chi2_cut=100, pull_cut=10, min_entries=1, tol=0.01, norm_type='all', **kwargs):
     """beta_binomial works on both 1D and 2D"""
     data_hist = histpair.data_hist
-    ref_hist = histpair.ref_hist
+    ref_hist = histpair.ref_hists[0]
 
     data_hist_raw = numpy.round(numpy.copy(data_hist.values()))
     ref_hist_raw = numpy.round(numpy.copy(ref_hist.values()))
@@ -73,7 +73,7 @@ def beta_binomial(histpair, pull_cap=15, chi2_cut=100, pull_cut=10, min_entries=
             yAxisTitle = data_hist.axes[1]._bases[0]._members["fTitle"]
         else:
             yAxisTitle = ""
-        plotTitle = histpair.data_name + " beta-binomial  |  data:" + str(histpair.data_run) + " & ref:" + str(histpair.ref_run)
+        plotTitle = histpair.data_name + " beta-binomial  |  data:" + str(histpair.data_run) + " & ref:" + str(histpair.ref_runs[0])
     
         #Plotly doesn't support #circ, #theta, #phi but it does support unicode
         xAxisTitle = xAxisTitle.replace("#circ", "\u00B0").replace("#theta","\u03B8").replace("#phi","\u03C6").replace("#eta","\u03B7")
@@ -84,7 +84,7 @@ def beta_binomial(histpair, pull_cap=15, chi2_cut=100, pull_cut=10, min_entries=
         #Plot histogram with previously declared axes and settings to look similar to PyRoot
         c = go.Figure()
         c.add_trace(go.Bar(name="data:"+str(histpair.data_run), x=bins, y=data_hist_norm, marker_color='red'))
-        c.add_trace(go.Bar(name="ref:"+str(histpair.ref_run), x=bins, y=ref_hist_raw, marker_color='blue', opacity=.5))
+        c.add_trace(go.Bar(name="ref:"+str(histpair.ref_runs[0]), x=bins, y=ref_hist_raw, marker_color='blue', opacity=.5))
         c.update_traces(marker_line_width=0)
         c.update_layout(bargap=0, bargroupgap=0, barmode='overlay', plot_bgcolor='white')
         c.update_xaxes(showline=True, linewidth=2, linecolor='black', mirror=True, showgrid=False)
@@ -99,7 +99,7 @@ def beta_binomial(histpair, pull_cap=15, chi2_cut=100, pull_cut=10, min_entries=
                 color="black"
             )
         )
-        ref_text = "ref:"+str(histpair.ref_run)
+        ref_text = "ref:"+str(histpair.ref_runs[0])
         data_text = "data:"+str(histpair.data_run)
 
     ## --------- end 1D plotting ---------
@@ -141,7 +141,7 @@ def beta_binomial(histpair, pull_cap=15, chi2_cut=100, pull_cut=10, min_entries=
         #Getting Plot Titles for histogram, x-axis and y-axis
         xAxisTitle = data_hist.axes[0]._bases[0]._members["fTitle"]
         yAxisTitle = data_hist.axes[1]._bases[0]._members["fTitle"]
-        plotTitle = histpair.data_name + " beta-binomial  |  data:" + str(histpair.data_run) + " & ref:" + str(histpair.ref_run)
+        plotTitle = histpair.data_name + " beta-binomial  |  data:" + str(histpair.data_run) + " & ref:" + str(histpair.ref_runs[0])
     
         #Plotly doesn't support #circ, #theta, #phi but does support unicode
         xAxisTitle = xAxisTitle.replace("#circ", "\u00B0").replace("#theta","\u03B8").replace("#phi","\u03C6").replace("#eta","\u03B7")
