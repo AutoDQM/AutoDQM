@@ -13,7 +13,7 @@ def comparators():
         'beta_binomial' : beta_binomial
     }
 
-def beta_binomial(histpair, pull_cap=15, chi2_cut=100, pull_cut=10, min_entries=10000, norm_type='all', **kwargs): 
+def beta_binomial(histpair, pull_cap=15, chi2_cut=100, pull_cut=10, min_entries=1, tol=0.01, norm_type='all', **kwargs):
     """beta_binomial works on both 1D and 2D"""
     data_hist = histpair.data_hist
     ref_hist = histpair.ref_hist
@@ -21,66 +21,49 @@ def beta_binomial(histpair, pull_cap=15, chi2_cut=100, pull_cut=10, min_entries=
     data_hist_raw = numpy.round(numpy.copy(data_hist.values()))
     ref_hist_raw = numpy.round(numpy.copy(ref_hist.values()))
 
-    ## does not run beta_binomial if data or ref is 0
-    if (data_hist_raw.sum() <= 0) or (ref_hist_raw.sum() <= 0):
-        return None
-
     ## num entries
     data_hist_Entries = numpy.sum(data_hist_raw)
     ref_hist_Entries = numpy.sum(ref_hist_raw)
 
-    nRef = 1
-
-    # Reject empty and low stat hist
-    is_good = data_hist_Entries > min_entries
-
+    ## does not run beta_binomial if data or ref is 0
+    if data_hist_Entries <= 0 or ref_hist_Entries <= 0:
+        return None
 
     # Normalize data_hist (Note if col is selected numpy just transposes normalizes by rows then transposes again)
     data_hist_norm = numpy.copy(data_hist.values())
-    ref_hist_norm = numpy.copy(ref_hist.values())
-
-    if data_hist_Entries > 0:
-        data_hist_norm = data_hist_norm * ref_hist_Entries / data_hist_Entries
-
+    data_hist_norm = data_hist_norm * ref_hist_Entries / data_hist_Entries
 
     ## only filled bins used for chi2
     nBinsUsed = numpy.count_nonzero(numpy.add(ref_hist_raw, data_hist_raw))
     nBins = data_hist.values().size
 
-
     ## calculte pull and chi2
-    if nBinsUsed > 0: 
-        pull_hist = pull(data_hist_raw, ref_hist_raw)* numpy.sign(data_hist_norm-ref_hist_norm)
-        max_pull = maxPullNorm(numpy.amax(pull_hist), nBinsUsed)
-        min_pull = maxPullNorm(numpy.amin(pull_hist), nBinsUsed)
-        if abs(min_pull) > max_pull:
-            max_pull = min_pull
-        chi2 = numpy.square(pull_hist).sum()/nBinsUsed
-    else:
-        pull_hist = numpy.zeros_like(data_hist_raw)
-        chi2 = 0
-        max_pull = 0
+    pull_hist = pull(data_hist_raw, ref_hist_raw, tol)
+    pull_hist = pull_hist*numpy.sign(data_hist_norm-ref_hist_raw)
+    chi2 = numpy.square(pull_hist).sum()/nBinsUsed
+    max_pull = maxPullNorm(numpy.amax(pull_hist), nBinsUsed)
+    min_pull = maxPullNorm(numpy.amin(pull_hist), nBinsUsed)
+    if abs(min_pull) > max_pull:
+        max_pull = min_pull
 
     ## define if plot anomalous
-    is_outlier = is_good and (chi2 > chi2_cut or abs(max_pull) > pull_cut)
-
+    is_outlier = data_hist_Entries >= min_entries and (chi2 > chi2_cut or abs(max_pull) > pull_cut)
 
     ## plotting
     # Setting empty bins to be blank
-    pull_hist = numpy.where((data_hist_raw + ref_hist_raw) == 0, None, pull_hist)
-    
+    pull_hist = numpy.where(numpy.add(ref_hist_raw, data_hist_raw) == 0, None, pull_hist)
+
     ##--------- 1D Plotting --------------
     # Check that the hists are 1 dimensional
     if ("TH1" in str(type(data_hist))) and ("TH1" in str(type(ref_hist))):
         #Get bin centers from edges() stored by uproot
-        bins = data_hist.axes[0].edges();
+        bins = data_hist.axes[0].edges()
         if bins[0] < -999:
             bins[0]=2*bins[1]-bins[2]
-    
 
         #Truncate empty space on high end of histograms with large axes
         if data_hist_Entries > 0 and ref_hist_Entries > 0 and len(bins) > 15:
-            last_bin = max( [15, max(numpy.nonzero(data_hist_norm)[0]), max(numpy.nonzero(ref_hist_raw)[0])] )
+            last_bin = max( [15, max(numpy.nonzero(data_hist_raw)[0]), max(numpy.nonzero(ref_hist_raw)[0])] )
             if last_bin+2 < len(bins):
                 bins = bins[:(last_bin+2)]
 
@@ -100,13 +83,10 @@ def beta_binomial(histpair, pull_cap=15, chi2_cut=100, pull_cut=10, min_entries=
     
         #Plot histogram with previously declared axes and settings to look similar to PyRoot
         c = go.Figure()
-        #c.add_trace(go.Bar(name="data:"+str(histpair.data_run), x=bins, y=data_hist_norm, marker_color='white', marker=dict(line=dict(width=1,color='red'))))
-        #c.add_trace(go.Bar(name="ref:"+str(histpair.ref_run), x=bins, y=ref_hist_norm, marker_color='rgb(204, 188, 172)', opacity=.9))
         c.add_trace(go.Bar(name="data:"+str(histpair.data_run), x=bins, y=data_hist_norm, marker_color='red'))
         c.add_trace(go.Bar(name="ref:"+str(histpair.ref_run), x=bins, y=ref_hist_raw, marker_color='blue', opacity=.5))
-        c['layout'].update(bargap=0)
-        c['layout'].update(barmode='overlay')
-        c['layout'].update(plot_bgcolor='white')
+        c.update_traces(marker_line_width=0)
+        c.update_layout(bargap=0, bargroupgap=0, barmode='overlay', plot_bgcolor='white')
         c.update_xaxes(showline=True, linewidth=2, linecolor='black', mirror=True, showgrid=False)
         c.update_yaxes(showline=True, linewidth=2, linecolor='black', mirror=True, showgrid=False)
         c.update_layout(
@@ -121,7 +101,7 @@ def beta_binomial(histpair, pull_cap=15, chi2_cut=100, pull_cut=10, min_entries=
         )
         ref_text = "ref:"+str(histpair.ref_run)
         data_text = "data:"+str(histpair.data_run)
-        #artifacts = [data_hist_norm, ref_hist_norm, data_text, ref_text]
+
     ## --------- end 1D plotting ---------
 
 
@@ -169,7 +149,7 @@ def beta_binomial(histpair, pull_cap=15, chi2_cut=100, pull_cut=10, min_entries=
         plotTitle = plotTitle.replace("#circ", "\u00B0").replace("#theta","\u03B8").replace("#phi","\u03C6").replace("#eta","\u03B7")
     
         #Plot pull-values using 2d heatmap will settings to look similar to old Pyroot version
-        c  = go.Figure(data=go.Heatmap(z=pull_hist, zmin=-pull_cap, zmax=pull_cap, colorscale=colors, x=xLabels, y=yLabels))
+        c = go.Figure(data=go.Heatmap(z=pull_hist, zmin=-pull_cap, zmax=pull_cap, colorscale=colors, x=xLabels, y=yLabels))
         c['layout'].update(plot_bgcolor='white')
         c.update_xaxes(showline=True, linewidth=2, linecolor='black', mirror=True, showgrid=False, type=x_axis_type)
         c.update_yaxes(showline=True, linewidth=2, linecolor='black', mirror=True, showgrid=False, type=y_axis_type)
@@ -192,8 +172,8 @@ def beta_binomial(histpair, pull_cap=15, chi2_cut=100, pull_cut=10, min_entries=
         'Data_Entries': str(int(data_hist_Entries)),
         'Ref_Entries': str(int(ref_hist_Entries)),
     }
-    artifacts = [pull_hist, str(data_hist_Entries), str(ref_hist_Entries)]
 
+    artifacts = [pull_hist, str(data_hist_Entries), str(ref_hist_Entries)]
 
     return PluginResults(
         c,
@@ -202,12 +182,9 @@ def beta_binomial(histpair, pull_cap=15, chi2_cut=100, pull_cut=10, min_entries=
         artifacts=artifacts)
 
 
-def pull(D_raw, R_raw):
-    nRef = 1
-    tol = 0.01
+def pull(D_raw, R_raw, tol=0.01):
     prob = numpy.zeros_like(D_raw)
-    prob = ProbRel(D_raw, R_raw, 'BetaB')
-
+    prob = ProbRel(D_raw, R_raw, 'BetaB', tol)
     pull = Sigmas(prob)
 
     return pull
@@ -223,7 +200,7 @@ def maxPullNorm(maxPull, nBinsUsed, cutoff=pow(10,-15)):
     else:
         probGoodNorm = 1 - numpy.power(1 - probGood, nBinsUsed)
 
-    pullNorm = Sigmas(probGoodNorm)
+    pullNorm = Sigmas(probGoodNorm) * sign
 
     return pullNorm
 
@@ -268,25 +245,20 @@ def StdDev(Data, Ref, func):
 
 
 ## Number of standard devations from the mean in any function
-def Pull(Data, Ref, func):
+def numStdDev(Data, Ref, func):
     nData = Data.sum()
     nRef = Ref.sum()
     return (Data - Mean(Data, Ref, func)) / StdDev(Data, Ref, func)
 
 
-## Exact and approximate values for natural log of the Gamma function
-def LogGam(z):
-    return gammaln(z)
-
 ## Predicted probability of observing Data / nData given a reference of Ref / nRef
-def Prob(Data, nData, Ref, nRef, func, kurt=0):
-    tol = 0.01
+def Prob(Data, nData, Ref, nRef, func, tol=0.01):
     scaleTol = numpy.power(1 + numpy.power(Ref * tol**2, 2), -0.5)
-    nRef_tol = (scaleTol * nRef)
-    Ref_tol = Ref * scaleTol
+    nRef_tol = numpy.round(scaleTol * nRef)
+    Ref_tol = numpy.round(Ref * scaleTol)
 
     if func == 'Gaus1' or func == 'Gaus2':
-        return stats.norm.pdf( Pull(Data, Ref, func) )
+        return stats.norm.pdf( numStdDev(Data, Ref_tol, func) )
     if func == 'BetaB':
         ## https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.betabinom.html
         ## Note that n = nData, alpha = Ref+1, and beta = nRef-Ref+1, alpha+beta = nRef+2
@@ -296,13 +268,13 @@ def Prob(Data, nData, Ref, nRef, func, kurt=0):
     ## https://en.wikipedia.org/wiki/Beta-binomial_distribution#As_a_compound_distribution
     if func == 'Gamma':
         ## Note that n = nData, alpha = Ref+1, and beta = nRef-Ref+1, alpha+beta = nRef+2
-        n_  = nData
+        n_  = numpy.zeros_like(Data) + nData
         k_  = Data
-        a_  = Ref+1
-        b_  = nRef-Ref+1
-        ab_ = nRef+2
-        logProb  = LogGam(n_+1) + LogGam(k_+a_) + LogGam(n_-k_+b_) + LogGam(ab_)
-        logProb -= ( LogGam(k_+1) + LogGam(n_-k_+1) + LogGam(n_+ab_) + LogGam(a_) + LogGam(b_) )
+        a_  = Ref_tol + 1
+        b_  = nRef_tol - Ref_tol + 1
+        ab_ = nRef_tol + 2
+        logProb  = gammaln(n_+1) + gammaln(k_+a_) + gammaln(n_-k_+b_) + gammaln(ab_)
+        logProb -= ( gammaln(k_+1) + gammaln(n_-k_+1) + gammaln(n_+ab_) + gammaln(a_) + gammaln(b_) )
         return numpy.exp(logProb)
 
     print('\nInside Prob, no valid func = %s. Quitting.\n' % func)
@@ -310,7 +282,7 @@ def Prob(Data, nData, Ref, nRef, func, kurt=0):
 
 
 ## Predicted probability relative to the maximum probability (i.e. at the mean)
-def ProbRel(Data, Ref, func, kurt=0):
+def ProbRel(Data, Ref, func, tol=0.01):
     nData = Data.sum()
     nRef = Ref.sum()
     ## Find the most likely expected data value
@@ -318,44 +290,23 @@ def ProbRel(Data, Ref, func, kurt=0):
     exp_down = numpy.clip(numpy.floor(Mean(Data, Ref, 'Gaus1')), a_min=0, a_max=None) # make sure nothing goes below zero
 
     ## Find the maximum likelihood
-    maxProb_up  = Prob(exp_up, nData, Ref, nRef,func, kurt)
-    maxProb_down = Prob(exp_down, nData, Ref, nRef,func, kurt)
+    maxProb_up  = Prob(exp_up, nData, Ref, nRef,func, tol)
+    maxProb_down = Prob(exp_down, nData, Ref, nRef,func, tol)
     maxProb = numpy.maximum(maxProb_up, maxProb_down)
-    thisProb = Prob(Data, nData, Ref, nRef, func, kurt)
+    thisProb = Prob(Data, nData, Ref, nRef, func, tol)
 
-    ## Sanity check to not have relative likelihood > 1    
-    ## need 2 conditional checks. 1 is to straight up set any instance of thisProb > maxProb ==> 1 
-    ## another is to alert if thisprob > maxProb*1.01 (allow thisprob to be no more than 101% of maxprob to account for floating point error 
+    ## Sanity check to not have relative likelihood > 1
     ratio = numpy.divide(thisProb, maxProb, out=numpy.zeros_like(thisProb), where=maxProb!=0)
     cond = thisProb > maxProb
     ratio[cond] = 1
         
-    cond = thisProb > maxProb*1.01
-
-    if False: #numpy.any(cond):
-        #print(f'for {Data[cond]}, {Ref[cond]}, thisProb > maxProb*1.01')
-        print('data: ', Data[cond])
-        print('ref: ', Ref[cond])
-        print('exp_up: ', exp_up[cond])
-        print('exp_down: ', exp_down[cond])
-        print('thisProb: ', thisProb[cond])
-        print('maxProb: ', maxProb[cond])
-        print('ratio: ', (thisProb/maxProb)[cond])
-        print('--------------------------')
-
-    return ratio #thisProb / maxProb
-
-
-## Negative log likelihood
-def NLL(prob):
-    nllprob = -1.0*numpy.log(prob, where=(prob>0))
-    nllprob[prob==0] = 999
-    nllprob[prob < 0] = -999
-
-    return nllprob
+    return ratio
 
 
 ## Convert relative probability to number of standard deviations in normal distribution
 def Sigmas(probRel):
-    probRel = numpy.maximum(probRel, 10E-300)
-    return numpy.sqrt((stats.chi2.isf(probRel,1)))
+    ## chi2.isf function fails for probRel < 10^-323, so cap at 10^-300 (37 sigma)
+    probRel = numpy.maximum(probRel, pow(10, -300))
+    return numpy.sqrt(stats.chi2.isf(probRel, 1))
+    ## For very low prob, can use logarithmic approximation:
+    ## chi2.isf(prob, 1) = 2 * (numpy.log(2) - numpy.log(prob) - 3)
