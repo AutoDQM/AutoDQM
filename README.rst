@@ -144,21 +144,64 @@ If you're using a CC7 image, you may want to disable autoupdate:
 Using AutoDQM Offline
 ---------------------
 
-The ``./run-offline.py`` script can retrieve run data files and process
-them without needing a web server. Run ``./run-offline.py --help`` for
+The ``runoffline/run-offline.py`` script can retrieve run data files and process
+them without needing a web server. Run ``runoffline/run-offline.py --help`` for
 all the options.
 
-1. Supply certificate files to the environment variables below.
-   Alternatively, the default uses the files produced when running
-   voms-proxy-init, so that may work instead.
-2. Use ``./run-offline.py`` to process data with AutoDQM
+``run-offline.py`` requires some packages (listed in ``runoffline/environment.yml``) to run. This environment can be created using conda. If you don't already have a conda installation, you can run: 
 
-Environment Variables
+.. code:: sh
+
+    curl -O -L https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
+    bash Miniconda3-latest-Linux-x86_64.sh -b
+
+Then to activate conda:
+
+.. code:: sh
+
+   source ~/.bashrc 
+   
+To create the environment, go into the ``runoffline`` directory, then run:
+
+.. code:: sh
+
+    conda env create -f environment.yml
+    
+The conda environment can then be activated with 
+
+.. code:: sh
+  
+    conda activate autodqm 
+    
+
+``run-offline.py`` requires some environment variables to be set in order to run. ``setenvvar.sh`` has all the required environment variables for running the script. It assumes that you cloned AutoDQM into your ``/root/`` directory and that your cert and key lives in ``/root/.globus`` directory. If that is not the case, you can edit the ``setenvvar.sh`` file to match your setup. To set the environment variables, run: 
+
+.. code:: sh 
+  
+    source setenvvar.sh 
+    
+You don't need to make the directories defined by ``ADQM_OUT``, ``ADQM_TMP``, ``ADQM_DB`` prior to running ``run-offline.py`` as these will be created the first time you run the script if they do not exist.
+
+Now inside ``runoffline`` directory, you can use ``run-offline.py`` to process data with AutoDQM! 
+
+Example command: 
+
+.. code:: sh
+    
+    ./run-offline.py Offline EMTF Run2018 SingleMuon 320920 320917
+
+This analyzes EMTF plots, using Run2018 series, SingleMuon sample (both data and reference), comparing run 320920 (data) and run 320917 (reference). 
+
+
+
+Descriptions of the Environment Variables
 ---------------------
 
 -  ``ADQM_CONFIG`` location of the configuration file to use
 -  ``ADQM_DB`` location to store downloaded root files from offline DQM
 -  ``ADQM_TMP`` location to store generated temporary pdfs, pngs, etc
+-  ``ADQM_OUT`` location to store the result of AutoDQM
+-  ``ADQM_PLUGINS`` location of thep plugins folder
 -  ``ADQM_SSLCERT`` location of CMS VO authorized public key certificate
    to use in querying offline DQM
 -  ``ADQM_SSLKEY`` location of CMS VO authorized private ky to use in

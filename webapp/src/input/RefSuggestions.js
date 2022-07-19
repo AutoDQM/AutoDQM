@@ -29,6 +29,7 @@ export default class RefSuggestions extends Component {
 
   componentDidUpdate = prevProps => {
     if (
+      this.props.dqmSource !== prevProps.dqmSource ||
       this.props.subsystem !== prevProps.subsystem ||
       this.props.series !== prevProps.series ||
       this.props.sample !== prevProps.sample ||
@@ -39,13 +40,13 @@ export default class RefSuggestions extends Component {
   };
 
   loadRefs = () => {
-    let {subsystem, series, sample, run} = this.props;
+    let {dqmSource, subsystem, series, sample, run} = this.props;
 
-    if (!subsystem || !series || !sample || !run) {
+    if (!dqmSource || !subsystem || !series || !sample || !run) {
       this.state.refReq && this.state.refReq.cancel();
       this.setState({refReq: null, refCands: []});
     } else {
-      let r = api.getReferences(subsystem, series, sample, run);
+      let r = api.getReferences(dqmSource, subsystem, series, sample, run);
       this.setState({refReq: r});
 
       r.then(res => {

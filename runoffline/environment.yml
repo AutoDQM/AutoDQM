@@ -1,0 +1,22 @@
+name: autodqm
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - certifi
+  - chardet
+  - idna
+  - lxml
+  - numpy
+  - plotly
+  - python-kaleido
+  - requests
+  - requests-futures
+  - scikit-learn
+  - scipy
+  - tqdm
+  - uproot
+  - urllib3
+  - python
+
+
