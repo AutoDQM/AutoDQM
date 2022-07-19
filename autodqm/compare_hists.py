@@ -110,12 +110,6 @@ def compile_histpairs(chunk_index, chunk_size, config_dir,
         # Get parent directory of hist
         gdir = str(hconf["path"].split(h)[0])
         
-        # Get comparator list if exist
-        if "comparators" in hconf:
-            comps = hconf["comparators"]
-        else:
-            comps = "all"
-
         data_dirname = "{0}{1}".format(main_gdir.format(data_run), gdir)
         ref_dirname = "{0}{1}".format(main_gdir.format(ref_run), gdir)
         
@@ -150,8 +144,7 @@ def compile_histpairs(chunk_index, chunk_size, config_dir,
                      continue
                  hPair = HistPair(dqmSource, hconf,
                                   data_series, data_sample, data_run, str(h), data_hist,
-                                  ref_series, ref_sample, ref_run, str(h), ref_hist,
-                                  comps)
+                                  ref_series, ref_sample, ref_run, str(h), ref_hist)
                  histPairs.append(hPair)
         else:
             # Check entire directory for files matching wildcard (Throw out wildcards with / in them as they are not plottable)
@@ -165,8 +158,7 @@ def compile_histpairs(chunk_index, chunk_size, config_dir,
                             continue
                         hPair = HistPair(dqmSource, hconf,
                                          data_series, data_sample, data_run, str(name[:-2]), data_hist,
-                                         ref_series, ref_sample, ref_run, str(name[:-2]), ref_hist,
-                                         comps)
+                                         ref_series, ref_sample, ref_run, str(name[:-2]), ref_hist)
                         histPairs.append(hPair)
 
     ## TODO: "raise warning" is not an actual function, but need some way to alert
