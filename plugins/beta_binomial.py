@@ -13,13 +13,19 @@ def comparators():
         'beta_binomial' : beta_binomial
     }
 
+
 def beta_binomial(histpair, pull_cap=15, chi2_cut=100, pull_cut=10, min_entries=1, tol=0.01, norm_type='all', **kwargs):
+
     """beta_binomial works on both 1D and 2D"""
     data_hist = histpair.data_hist
     ref_hist = histpair.ref_hist
 
     data_hist_raw = numpy.round(numpy.copy(data_hist.values()))
     ref_hist_raw = numpy.round(numpy.copy(ref_hist.values()))
+
+    ## does not run beta_binomial if data or ref is 0
+    if (data_hist_raw.sum() <= 0) or (ref_hist_raw.sum() <= 0):
+        return None
 
     ## num entries
     data_hist_Entries = numpy.sum(data_hist_raw)
@@ -52,6 +58,7 @@ def beta_binomial(histpair, pull_cap=15, chi2_cut=100, pull_cut=10, min_entries=
     ## plotting
     # Setting empty bins to be blank
     pull_hist = numpy.where(numpy.add(ref_hist_raw, data_hist_raw) == 0, None, pull_hist)
+
 
     ##--------- 1D Plotting --------------
     # Check that the hists are 1 dimensional
@@ -172,7 +179,6 @@ def beta_binomial(histpair, pull_cap=15, chi2_cut=100, pull_cut=10, min_entries=
         'Data_Entries': str(int(data_hist_Entries)),
         'Ref_Entries': str(int(ref_hist_Entries)),
     }
-
     artifacts = [pull_hist, str(data_hist_Entries), str(ref_hist_Entries)]
 
     return PluginResults(
@@ -299,6 +305,19 @@ def ProbRel(Data, Ref, func, tol=0.01):
     ratio = numpy.divide(thisProb, maxProb, out=numpy.zeros_like(thisProb), where=maxProb!=0)
     cond = thisProb > maxProb
     ratio[cond] = 1
+        
+    cond = thisProb > maxProb*1.01
+
+    if False: #numpy.any(cond):
+        #print(f'for {Data[cond]}, {Ref[cond]}, thisProb > maxProb*1.01')
+        print('data: ', Data[cond])
+        print('ref: ', Ref[cond])
+        print('exp_up: ', exp_up[cond])
+        print('exp_down: ', exp_down[cond])
+        print('thisProb: ', thisProb[cond])
+        print('maxProb: ', maxProb[cond])
+        print('ratio: ', (thisProb/maxProb)[cond])
+        print('--------------------------')
 
     return ratio
 

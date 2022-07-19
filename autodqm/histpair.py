@@ -9,7 +9,7 @@ class HistPair(object):
 
     def __init__(self, dqmSource, config,
                  data_series, data_sample, data_run, data_name, data_hist,
-                 ref_series, ref_sample, ref_run, ref_name, ref_hist):
+                 ref_series, ref_sample, ref_run, ref_name, ref_hist, comparators='all'):
 
         self.dqmSource = dqmSource
         self.config = config
@@ -36,6 +36,7 @@ class HistPair(object):
 
         if not config['comparators'] is None:
             self.comparators = config['comparators']
+
 
     def __eq__(self, other):
         return (isinstance(other, type(self))
