@@ -9,11 +9,11 @@ import plotly.graph_objects as go
 from plugins.pullvals import normalize_rows
 
 def comparators():
-    return { 
+    return {
         'beta_binomial' : beta_binomial
     }
 
-def beta_binomial(histpair, pull_cap=15, chi2_cut=100, pull_cut=10, min_entries=10000, norm_type='all', **kwargs): 
+def beta_binomial(histpair, pull_cap=15, chi2_cut=100, pull_cut=10, min_entries=10000, norm_type='all', **kwargs):
     """beta_binomial works on both 1D and 2D"""
     data_hist = histpair.data_hist
     ref_hist = histpair.ref_hist
@@ -49,7 +49,7 @@ def beta_binomial(histpair, pull_cap=15, chi2_cut=100, pull_cut=10, min_entries=
 
 
     ## calculte pull and chi2
-    if nBinsUsed > 0: 
+    if nBinsUsed > 0:
         pull_hist = pull(data_hist_raw, ref_hist_raw)* numpy.sign(data_hist_norm-ref_hist_norm)
         max_pull = maxPullNorm(numpy.amax(pull_hist), nBinsUsed)
         min_pull = maxPullNorm(numpy.amin(pull_hist), nBinsUsed)
@@ -68,7 +68,7 @@ def beta_binomial(histpair, pull_cap=15, chi2_cut=100, pull_cut=10, min_entries=
     ## plotting
     # Setting empty bins to be blank
     pull_hist = numpy.where((data_hist_raw + ref_hist_raw) == 0, None, pull_hist)
-    
+
     ##--------- 1D Plotting --------------
     # Check that the hists are 1 dimensional
     if ("TH1" in str(type(data_hist))) and ("TH1" in str(type(ref_hist))):
@@ -76,7 +76,7 @@ def beta_binomial(histpair, pull_cap=15, chi2_cut=100, pull_cut=10, min_entries=
         bins = data_hist.axes[0].edges();
         if bins[0] < -999:
             bins[0]=2*bins[1]-bins[2]
-    
+
 
         #Truncate empty space on high end of histograms with large axes
         if data_hist_Entries > 0 and ref_hist_Entries > 0 and len(bins) > 15:
@@ -91,13 +91,13 @@ def beta_binomial(histpair, pull_cap=15, chi2_cut=100, pull_cut=10, min_entries=
         else:
             yAxisTitle = ""
         plotTitle = histpair.data_name + " beta-binomial  |  data:" + str(histpair.data_run) + " & ref:" + str(histpair.ref_run)
-    
+
         #Plotly doesn't support #circ, #theta, #phi but it does support unicode
         xAxisTitle = xAxisTitle.replace("#circ", "\u00B0").replace("#theta","\u03B8").replace("#phi","\u03C6").replace("#eta","\u03B7")
         yAxisTitle = yAxisTitle.replace("#circ", "\u00B0").replace("#theta","\u03B8").replace("#phi","\u03C6").replace("#eta","\u03B7")
         plotTitle = plotTitle.replace("#circ", "\u00B0").replace("#theta","\u03B8").replace("#phi","\u03C6").replace("#eta","\u03B7")
-    
-    
+
+
         #Plot histogram with previously declared axes and settings to look similar to PyRoot
         c = go.Figure()
         #c.add_trace(go.Bar(name="data:"+str(histpair.data_run), x=bins, y=data_hist_norm, marker_color='white', marker=dict(line=dict(width=1,color='red'))))
@@ -129,7 +129,7 @@ def beta_binomial(histpair, pull_cap=15, chi2_cut=100, pull_cut=10, min_entries=
     # Check that the hists are 2 dimensional
     if ( (       "TH2" in str(type(data_hist)) and       "TH2" in str(type(ref_hist)) ) or
          ("TProfile2D" in str(type(data_hist)) and "TProfile2" in str(type(ref_hist)) ) ):
-        
+
         colors = ['rgb(26, 42, 198)', 'rgb(118, 167, 231)', 'rgb(215, 226, 194)', 'rgb(212, 190, 109)', 'rgb(188, 76, 38)']
         #Getting Plot labels for x-axis and y-axis as well as type (linear or categorical)
         xLabels = None
@@ -142,32 +142,32 @@ def beta_binomial(histpair, pull_cap=15, chi2_cut=100, pull_cut=10, min_entries=
            x_axis_type = 'category'
         else:
            xLabels = [str(data_hist.axes[0]._members["fXmin"] + x * (data_hist.axes[0]._members["fXmax"]-data_hist.axes[0]._members["fXmin"])/data_hist.axes[0]._members["fNbins"]) for x in range(0,data_hist.axes[0]._members["fNbins"]+1)]
-    
+
         if data_hist.axes[1].labels():
            yLabels = [str(x) for x in data_hist.axes[1].labels()]
            y_axis_type = 'category'
         else:
            yLabels = [str(data_hist.axes[1]._members["fXmin"] + x * (data_hist.axes[1]._members["fXmax"]-data_hist.axes[1]._members["fXmin"])/data_hist.axes[1]._members["fNbins"]) for x in range(0,data_hist.axes[1]._members["fNbins"]+1)]
-    
+
         if("xlabels" in histpair.config.keys()):
             xLabels=histpair.config["xlabels"]
             x_axis_type = 'category'
         if("ylabels" in histpair.config.keys()):
             yLabels=histpair.config["ylabels"]
             y_axis_type = 'category'
-    
+
         pull_hist = numpy.transpose(pull_hist)
-    
+
         #Getting Plot Titles for histogram, x-axis and y-axis
         xAxisTitle = data_hist.axes[0]._bases[0]._members["fTitle"]
         yAxisTitle = data_hist.axes[1]._bases[0]._members["fTitle"]
         plotTitle = histpair.data_name + " beta-binomial  |  data:" + str(histpair.data_run) + " & ref:" + str(histpair.ref_run)
-    
+
         #Plotly doesn't support #circ, #theta, #phi but does support unicode
         xAxisTitle = xAxisTitle.replace("#circ", "\u00B0").replace("#theta","\u03B8").replace("#phi","\u03C6").replace("#eta","\u03B7")
         yAxisTitle = yAxisTitle.replace("#circ", "\u00B0").replace("#theta","\u03B8").replace("#phi","\u03C6").replace("#eta","\u03B7")
         plotTitle = plotTitle.replace("#circ", "\u00B0").replace("#theta","\u03B8").replace("#phi","\u03C6").replace("#eta","\u03B7")
-    
+
         #Plot pull-values using 2d heatmap will settings to look similar to old Pyroot version
         c  = go.Figure(data=go.Heatmap(z=pull_hist, zmin=-pull_cap, zmax=pull_cap, colorscale=colors, x=xLabels, y=yLabels))
         c['layout'].update(plot_bgcolor='white')
@@ -184,6 +184,10 @@ def beta_binomial(histpair, pull_cap=15, chi2_cut=100, pull_cut=10, min_entries=
             )
         )
     ##----- end 2D plotting --------
+
+    ## write csv files for analysis
+    with open("csv/beta_binomial.csv", "a") as myfile:
+        myfile.write(f'{histpair.data_name},{max_pull},{chi2},{histpair.ref_run},{histpair.data_run}\n')
 
 
     info = {
@@ -259,7 +263,7 @@ def StdDev(Data, Ref, func):
         output[mask] = (1.0*nData*numpy.sqrt( clipped/numpy.square(nRef) + (nData - Mean(nData, Ref, nRef, func))/numpy.square(nData) ))
     elif (func == 'BetaB') or (func == 'Gamma'):
         output = 1.0*numpy.sqrt( nData*(Ref+1)*(nRef-Ref+1)*(nRef+2+nData) / (numpy.power(nRef+2, 2)*(nRef+3)) )
-        
+
     else:
         print('\nInside StdDev, no valid func = %s. Quitting.\n' % func)
         sys.exit()
@@ -323,13 +327,13 @@ def ProbRel(Data, Ref, func, kurt=0):
     maxProb = numpy.maximum(maxProb_up, maxProb_down)
     thisProb = Prob(Data, nData, Ref, nRef, func, kurt)
 
-    ## Sanity check to not have relative likelihood > 1    
-    ## need 2 conditional checks. 1 is to straight up set any instance of thisProb > maxProb ==> 1 
-    ## another is to alert if thisprob > maxProb*1.01 (allow thisprob to be no more than 101% of maxprob to account for floating point error 
+    ## Sanity check to not have relative likelihood > 1
+    ## need 2 conditional checks. 1 is to straight up set any instance of thisProb > maxProb ==> 1
+    ## another is to alert if thisprob > maxProb*1.01 (allow thisprob to be no more than 101% of maxprob to account for floating point error
     ratio = numpy.divide(thisProb, maxProb, out=numpy.zeros_like(thisProb), where=maxProb!=0)
     cond = thisProb > maxProb
     ratio[cond] = 1
-        
+
     cond = thisProb > maxProb*1.01
 
     if False: #numpy.any(cond):

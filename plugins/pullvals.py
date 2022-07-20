@@ -53,7 +53,7 @@ def pullvals(histpair,
         if data_hist_Entries > 0:
             data_hist_norm = data_hist_norm * ref_hist_Entries / data_hist_Entries
 
-    #Calculate asymmetric error bars 
+    #Calculate asymmetric error bars
     data_hist_errs = numpy.nan_to_num(abs(numpy.array(scipy.stats.chi2.interval(0.6827, 2 * data_hist_norm)) / 2 - 1 - data_hist_norm))
     ref_hist_errs = numpy.nan_to_num(abs(numpy.array(scipy.stats.chi2.interval(0.6827, 2 * ref_hist_norm)) / 2 - 1 - ref_hist_norm))
 
@@ -70,21 +70,21 @@ def pullvals(histpair,
         ref_hist_err[mask] = ref_hist_errs[0, :, :][mask]
         new_pull = pull(data_hist_norm, data_hist_err, ref_hist_norm, ref_hist_err)
         max_pull = numpy.abs(new_pull).max()
-        
+
         ## compute chi2
         chi2 = (new_pull*new_pull).sum()/nBins
 
 
     # Clamp the displayed value
-    fill_val = numpy.clip(new_pull, -pull_cap, pull_cap)   
+    fill_val = numpy.clip(new_pull, -pull_cap, pull_cap)
 
     # If the input bins were explicitly empty, make this bin white by
     # setting it out of range
     mask = data_hist_norm + ref_hist_norm == 0
     fill_val[mask] = -999
 
-    # Fill Pull Histogram            
-    pull_hist = fill_val 
+    # Fill Pull Histogram
+    pull_hist = fill_val
 
     is_outlier = is_good and (chi2 > chi2_cut or abs(max_pull) > pull_cut)
 
@@ -145,6 +145,13 @@ def pullvals(histpair,
         )
     )
 
+
+    ## write csv files for analysis
+    with open("csv/pullvals.csv", "a") as myfile:
+        myfile.write(f'{histpair.data_name},{max_pull},{chi2},{histpair.ref_run},{histpair.data_run}\n')
+
+
+
     info = {
         'Chi_Squared': f"{chi2:.2f}", # 2 decimal points
         'Max_Pull_Val': f"{max_pull:.2f}",
@@ -166,7 +173,7 @@ def pull(bin1, binerr1, bin2, binerr2):
     ''' Calculate the pull value between two bins.
         pull = (data - expected)/sqrt(sum of errors in quadrature))
         data = |bin1 - bin2|, expected = 0
-        
+
         only divide where bin1+bin2 != 0, output zero where that happens
     '''
     return numpy.divide( (bin1 - bin2) , ((binerr1**2 + binerr2**2)**0.5), out=numpy.zeros_like(bin1), where=(binerr1+binerr2)!=0)
@@ -175,5 +182,5 @@ def normalize_rows(data_hist_norm, ref_hist_norm):
     ref_sum = ref_hist_norm.sum(axis=0)
     data_sum = data_hist_norm.sum(axis=0)
     sf = numpy.divide(ref_sum, data_sum, where=data_sum!=0, out=numpy.ones_like(data_sum))
-    
+
     return data_hist_norm*sf
