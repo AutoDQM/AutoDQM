@@ -149,7 +149,7 @@ def compile_histpairs(chunk_index, chunk_size, config_dir,
         else:
             # Check entire directory for files matching wildcard (Throw out wildcards with / in them as they are not plottable)
             for name in data_keys:
-                if h.split("*")[0] in str(name) and name in ref_keys and not "<" in str(name):
+                if h.split("*")[0] in str(name) and all([ name in ref_keys for ref_keys in ref_keyss ]) and not "<" in str(name):
                     if("/" not in name[:-2]):
                         try:
                             data_hist = data_dir[name[:-2]]
