@@ -83,6 +83,8 @@ class DQMSession(FuturesSession):
                 DQM_dir = OnlineMap[subsystem]
                 run_info = next(r for r in runs if r.name == run and DQM_dir+'_R000' in r.full_name)
             else:                   ## Use cmsweb.cern.ch/dqm/offline/data/browse/ROOT/OfflineData/
+                ## FIXME: If files from multiple processings of the same dataset are available,
+                ## just picks whichever one happens to be first in the list! - AWB 2022.06.28
                 run_info = next(r for r in runs if r.name == run)
 
             for prog in self._stream_file(
@@ -143,7 +145,7 @@ class DQMSession(FuturesSession):
             if (not selRun) or (mr.name == '000'+str(selRun)[0:4]+'xx'):
                 macrorun_rows_sel.append(mr)
 
-        # Determine which run directories are cached
+        ## Determine which run directories are cached
         run_rows = []
         to_req = []
         for mr in macrorun_rows_sel:
@@ -160,10 +162,11 @@ class DQMSession(FuturesSession):
             rows = _resolve(fut).data
             for row in rows:
                 if selRun and row.name != selRun: continue
-                if not subsystem in OnlineMap.keys():
-                    raise error("dqm.py fetch_run_list: {} not in OnlineMap".format(subsystem))
-                DQM_dir = OnlineMap[subsystem]
-                if isOnline and not (DQM_dir+'_R000' in row.full_name): continue
+                if isOnline:
+                    if not subsystem in OnlineMap.keys():
+                        raise error("dqm.py fetch_run_list: {} not in OnlineMap".format(subsystem))
+                    DQM_dir = OnlineMap[subsystem]
+                    if not (DQM_dir+'_R000' in row.full_name): continue
                 run_rows.append(row)
             self._write_cache(mr, rows)
 
