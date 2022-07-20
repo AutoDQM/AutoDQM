@@ -198,17 +198,14 @@ def beta_binomial(histpair, pull_cap=15, chi2_cut=100, pull_cut=10, min_entries=
 
 def pull(D_raw, R_list_raw, tol=0.01):
     nRef = len(R_list_raw)
-    # prob = numpy.zeros_like(D_raw)
     probs = []
 
     for R_raw in R_list_raw:
         ## Compute per-bin probabilities with beta-binomial function
-        # prob = numpy.add(prob, ProbRel(D_raw, R_raw, 'BetaB', tol))
         ## Protect against zero values with a floor at 10^-300 (37 sigma)
         probs.append( numpy.maximum(ProbRel(D_raw, R_raw, 'BetaB', tol), pow(10, -300)) )
 
     ## Per-bin probability is the per-bin average over all ref hists
-    # prob = prob * (1.0 / nRef)
     prob = numpy.array(probs).sum(axis=0) / nRef
     pull = Sigmas(prob)
 
