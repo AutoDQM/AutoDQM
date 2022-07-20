@@ -51,6 +51,7 @@ export default class ApiSelect extends Component {
 
   loadOptions = () => {
 
+
     const {type, dqmSource, subsystem, series, sample, onError, onLoad} = this.props;
     let req;
     if (type === 'get_runs' && dqmSource && subsystem && series && sample) {
