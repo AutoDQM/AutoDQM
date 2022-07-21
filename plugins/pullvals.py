@@ -151,7 +151,6 @@ def pullvals(histpair,
         myfile.write(f'{histpair.data_name},{max_pull},{chi2},{histpair.ref_run},{histpair.data_run}\n')
 
 
-
     info = {
         'Chi_Squared': f"{chi2:.2f}", # 2 decimal points
         'Max_Pull_Val': f"{max_pull:.2f}",

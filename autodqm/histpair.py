@@ -9,7 +9,7 @@ class HistPair(object):
 
     def __init__(self, dqmSource, config,
                  data_series, data_sample, data_run, data_name, data_hist,
-                 ref_series, ref_sample, ref_run, ref_name, ref_hist, comparators='all'):
+                 ref_series, ref_sample, ref_run, ref_name, ref_hist):
 
         self.dqmSource = dqmSource
         self.config = config
@@ -33,8 +33,10 @@ class HistPair(object):
             ## If trained on Online in the future, need to update
             ## plugins/autodqm_ml_pca.py and models/autodqm_ml_pca/
             self.comparators = ['pull_values', 'ks_test', 'beta_binomial']
-        if comparators != 'all':
-            self.comparators = comparators
+
+        if not config['comparators'] is None:
+            self.comparators = config['comparators']
+
 
     def __eq__(self, other):
         return (isinstance(other, type(self))
