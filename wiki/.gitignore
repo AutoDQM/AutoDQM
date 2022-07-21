@@ -1,0 +1,17 @@
+<<<<<<< HEAD
+.DS_Store
+images/.DS_Store
+=======
+
+# Editor artifacts
+*.swp
+
+# Compile artifacts
+*.pyc
+
+# run-offline.py defaults
+offline/
+db/
+tmp/
+
+>>>>>>> e71bd125a76bdf85471eec183c838847657ee4cf
