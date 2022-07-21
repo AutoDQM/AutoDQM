@@ -77,7 +77,7 @@ def process(chunk_index, chunk_size, config_dir,
             else:
                 with open(json_path) as jf:
                     info = json.load(jf)
-
+            
             hist_outputs.append(info)
 
     return hist_outputs
@@ -98,7 +98,7 @@ def compile_histpairs(chunk_index, chunk_size, config_dir,
     ref_file = uproot.open(ref_path)
 
     histPairs = []
-
+    
     missing_data_dirs = []
     missing_ref_dirs  = []
 
@@ -109,10 +109,10 @@ def compile_histpairs(chunk_index, chunk_size, config_dir,
         h = str(hconf["path"].split("/")[-1])
         # Get parent directory of hist
         gdir = str(hconf["path"].split(h)[0])
-
+        
         data_dirname = "{0}{1}".format(main_gdir.format(data_run), gdir)
         ref_dirname = "{0}{1}".format(main_gdir.format(ref_run), gdir)
-
+        
         try:
             data_dir = data_file[data_dirname[:-1]]
         except:
@@ -123,8 +123,6 @@ def compile_histpairs(chunk_index, chunk_size, config_dir,
         except:
             missing_ref_dirs.append(ref_dirname)
             continue
-
-        print(data_dir)
 
         if not data_dir:
             raise error("Subsystem dir {0} not found in data root file".format(data_dirname))
@@ -175,7 +173,7 @@ def compile_histpairs(chunk_index, chunk_size, config_dir,
     #         raise warning("{0}".format(missing_ref_dirs))
 
     #Return histpairs that match the chunk_index <<CAN BE IMPROVED IN THE FUTURE TO BE MORE EFFICIENT>>
-    return histPairs[min(chunk_index, len(histPairs)):min(chunk_index+chunk_size, len(histPairs))]
+    return histPairs[min(chunk_index, len(histPairs)):min(chunk_index+chunk_size, len(histPairs))] 
 
 def load_comparators(plugin_dir):
     """Load comparators from each python module in ADQM_PLUGINS."""

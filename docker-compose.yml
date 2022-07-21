@@ -1,0 +1,23 @@
+version: '3.6'
+services:
+  web:
+    build: .
+    image: autodqm:latest
+    ports:
+      - "8083:8083"
+    environment:
+      - ADQM_SSLCERT=/run/secrets/cmsvo-cert.pem
+      - ADQM_SSLKEY=/run/secrets/cmsvo-cert.key
+    volumes:
+      - adqm-db:/db
+      - .:/code
+    secrets:
+      - cmsvo-cert.pem
+      - cmsvo-cert.key
+volumes:
+  adqm-db:
+secrets:
+  cmsvo-cert.pem:
+    external: true
+  cmsvo-cert.key:
+    external: true
