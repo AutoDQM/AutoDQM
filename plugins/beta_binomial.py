@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 import uproot
-import numpy
+import numpy as np
 from autodqm.plugin_results import PluginResults
 import scipy.stats as stats
 from scipy.special import gammaln
@@ -18,43 +18,43 @@ def beta_binomial(histpair, pull_cap=15, chi2_cut=10, pull_cut=10, min_entries=1
     data_hist = histpair.data_hist
     ref_hists = []
     for rh in histpair.ref_hists:
-        if numpy.round(rh.values()).sum() > 0 and rh.values().size == data_hist.values().size:
+        if np.round(rh.values()).sum() > 0 and rh.values().size == data_hist.values().size:
             ref_hists.append(rh)
 
     ## Observed that float64 is necessary for betabinom to preserve precision with arrays as input.
     ## (Not needed for single values.)  Deep magic that we do not undertand - AWB 2022.08.02
-    data_hist_raw = numpy.round(numpy.copy(numpy.float64(data_hist.values())))
-    ref_hists_raw = numpy.round(numpy.array([numpy.copy(numpy.float64(rh.values())) for rh in ref_hists]))
+    data_hist_raw = np.round(np.copy(np.float64(data_hist.values())))
+    ref_hists_raw = np.round(np.array([np.copy(np.float64(rh.values())) for rh in ref_hists]))
     nRef = len(ref_hists_raw)
 
     ## does not run beta_binomial if data or ref is 0
-    if numpy.sum(data_hist_raw) <= 0 or nRef == 0:
+    if np.sum(data_hist_raw) <= 0 or nRef == 0:
         return None
 
     ## summed ref_hist
     ref_hist_sum = ref_hists_raw.sum(axis=0)
 
     ## num entries
-    data_hist_Entries = numpy.sum(data_hist_raw)
-    ref_hist_Entries = [numpy.sum(rh) for rh in ref_hists_raw]
-    ref_hist_Entries_avg = numpy.round(numpy.sum(ref_hist_Entries) / nRef)
+    data_hist_Entries = np.sum(data_hist_raw)
+    ref_hist_Entries = [np.sum(rh) for rh in ref_hists_raw]
+    ref_hist_Entries_avg = np.round(np.sum(ref_hist_Entries) / nRef)
 
     # ## normalized ref_hist
-    # ref_hist_norm = numpy.zeros_like(ref_hist_sum)
+    # ref_hist_norm = np.zeros_like(ref_hist_sum)
     # for ref_hist_raw in ref_hists_raw:
-    #     ref_hist_norm = numpy.add(ref_hist_norm, (ref_hist_raw / numpy.sum(ref_hist_raw)))
+    #     ref_hist_norm = np.add(ref_hist_norm, (ref_hist_raw / np.sum(ref_hist_raw)))
     # ref_hist_norm = ref_hist_norm * data_hist_Entries / nRef
 
     ## only filled bins used for chi2
-    nBinsUsed = numpy.count_nonzero(numpy.add(ref_hist_sum, data_hist_raw))
+    nBinsUsed = np.count_nonzero(np.add(ref_hist_sum, data_hist_raw))
     nBins = data_hist.values().size
 
     ## calculte pull and chi2, and get probability-weighted reference histogram
     [pull_hist, ref_hist_prob_wgt] = pull(data_hist_raw, ref_hists_raw, tol)
-    pull_hist = pull_hist*numpy.sign(data_hist_raw-ref_hist_prob_wgt)
-    chi2 = numpy.square(pull_hist).sum()/nBinsUsed
-    max_pull = maxPullNorm(numpy.amax(pull_hist), nBinsUsed)
-    min_pull = maxPullNorm(numpy.amin(pull_hist), nBinsUsed)
+    pull_hist = pull_hist*np.sign(data_hist_raw-ref_hist_prob_wgt)
+    chi2 = np.square(pull_hist).sum()/nBinsUsed
+    max_pull = maxPullNorm(np.amax(pull_hist), nBinsUsed)
+    min_pull = maxPullNorm(np.amin(pull_hist), nBinsUsed)
     if abs(min_pull) > max_pull:
         max_pull = min_pull
 
@@ -63,7 +63,7 @@ def beta_binomial(histpair, pull_cap=15, chi2_cut=10, pull_cut=10, min_entries=1
 
     ## plotting
     # Setting empty bins to be blank
-    pull_hist = numpy.where(numpy.add(ref_hist_sum, data_hist_raw) == 0, None, pull_hist)
+    pull_hist = np.where(np.add(ref_hist_sum, data_hist_raw) == 0, None, pull_hist)
 
     if nRef == 1:
         ref_runs_str = histpair.ref_runs[0]
@@ -82,7 +82,7 @@ def beta_binomial(histpair, pull_cap=15, chi2_cut=10, pull_cut=10, min_entries=1
 
         #Truncate empty space on high end of histograms with large axes
         if data_hist_Entries > 0 and ref_hist_Entries_avg > 0 and len(bins) > 15:
-            last_bin = max( [15, max(numpy.nonzero(data_hist_raw)[0]), max(numpy.nonzero(ref_hist_sum)[0])] )
+            last_bin = max( [15, max(np.nonzero(data_hist_raw)[0]), max(np.nonzero(ref_hist_sum)[0])] )
             if last_bin+2 < len(bins):
                 bins = bins[:(last_bin+2)]
 
@@ -155,7 +155,7 @@ def beta_binomial(histpair, pull_cap=15, chi2_cut=10, pull_cut=10, min_entries=1
             yLabels=histpair.config["ylabels"]
             y_axis_type = 'category'
     
-        pull_hist = numpy.transpose(pull_hist)
+        pull_hist = np.transpose(pull_hist)
     
         #Getting Plot Titles for histogram, x-axis and y-axis
         xAxisTitle = data_hist.axes[0]._bases[0]._members["fTitle"]
@@ -212,41 +212,41 @@ def pull(D_raw, R_list_raw, tol=0.01):
     for R_raw in R_list_raw:
         ## Compute per-bin probabilities with beta-binomial function
         ## Protect against zero values with a floor at 10^-300 (37 sigma)
-        probs.append( numpy.maximum(ProbRel(D_raw, R_raw, 'BetaB', tol), pow(10, -300)) )
+        probs.append( np.maximum(ProbRel(D_raw, R_raw, 'BetaB', tol), pow(10, -300)) )
 
     ## Per-bin probability is the per-bin average over all ref hists
-    prob = numpy.array(probs).sum(axis=0) / nRef
+    prob = np.array(probs).sum(axis=0) / nRef
     pull = Sigmas(prob)
 
     ## Reference histogram weighted by per-bin probabilities
-    R_prob_wgt_avg = numpy.zeros_like(D_raw)
+    R_prob_wgt_avg = np.zeros_like(D_raw)
 
     for iR in range(len(R_list_raw)):
         R_raw = R_list_raw[iR]
         ## Get reference hist normalized to 1
-        R_prob_wgt = R_raw / numpy.sum(R_raw)
+        R_prob_wgt = R_raw / np.sum(R_raw)
         ## Compute per-bin probabilities relative to sum of probabilites
-        prob_rel = numpy.divide(probs[iR], numpy.array(probs).sum(axis=0))
+        prob_rel = np.divide(probs[iR], np.array(probs).sum(axis=0))
         ## Scale normalized reference by per-bin relative probabilities
-        R_prob_wgt = numpy.multiply(R_prob_wgt, prob_rel)
+        R_prob_wgt = np.multiply(R_prob_wgt, prob_rel)
         ## Add into average probability-weighted distribution
-        R_prob_wgt_avg = numpy.add(R_prob_wgt_avg, R_prob_wgt)
+        R_prob_wgt_avg = np.add(R_prob_wgt_avg, R_prob_wgt)
 
     ## Normalize to data
-    R_prob_wgt_avg = R_prob_wgt_avg * numpy.sum(D_raw)
+    R_prob_wgt_avg = R_prob_wgt_avg * np.sum(D_raw)
 
     return [pull, R_prob_wgt_avg]
 
 def maxPullNorm(maxPull, nBinsUsed, cutoff=pow(10,-15)):
-    sign = numpy.sign(maxPull)
+    sign = np.sign(maxPull)
     ## sf (survival function) better than 1-cdf for large pulls (no precision error)
-    probGood = stats.chi2.sf(numpy.power(min(abs(maxPull), 37), 2), 1)
+    probGood = stats.chi2.sf(np.power(min(abs(maxPull), 37), 2), 1)
 
     ## Use binomial approximation for low probs (accurate within 1%)
     if nBinsUsed * probGood < 0.01:
         probGoodNorm = nBinsUsed * probGood
     else:
-        probGoodNorm = 1 - numpy.power(1 - probGood, nBinsUsed)
+        probGoodNorm = 1 - np.power(1 - probGood, nBinsUsed)
 
     pullNorm = Sigmas(probGoodNorm) * sign
 
@@ -274,16 +274,16 @@ def StdDev(Data, Ref, func):
     if func == 'Gaus1':
         ## whole array is calculated using the (Ref <= 0.5*nRef) formula, then the ones where the
         ## conditions are actually failed is replaced using mask with the (Ref > 0.5*nRef) formula
-        output = 1.0*nData*numpy.sqrt(numpy.clip(Ref, a_min=1, a_max=None))/nRef
-        output[mask] = (1.0*nData*numpy.sqrt(numpy.clip(nRef-Ref, a_min=1, a_max=None)))[mask]/nRef
+        output = 1.0*nData*np.sqrt(np.clip(Ref, a_min=1, a_max=None))/nRef
+        output[mask] = (1.0*nData*np.sqrt(np.clip(nRef-Ref, a_min=1, a_max=None)))[mask]/nRef
     elif func == 'Gaus2':
         ## instead of calculating max(Ref, 1), set the whole array to have a lower limit of 1
-        clipped = numpy.clip(Ref, a_min=1, a_max=None)
-        output = 1.0*nData*numpy.sqrt( clipped/numpy.square(nRef) + Mean(nData, Ref, nRef, func)/numpy.square(nData) )
-        clipped = numpy.clip(nRef-Ref, a_min=1, a_max=None)
-        output[mask] = (1.0*nData*numpy.sqrt( clipped/numpy.square(nRef) + (nData - Mean(nData, Ref, nRef, func))/numpy.square(nData) ))
+        clipped = np.clip(Ref, a_min=1, a_max=None)
+        output = 1.0*nData*np.sqrt( clipped/np.square(nRef) + Mean(nData, Ref, nRef, func)/np.square(nData) )
+        clipped = np.clip(nRef-Ref, a_min=1, a_max=None)
+        output[mask] = (1.0*nData*np.sqrt( clipped/np.square(nRef) + (nData - Mean(nData, Ref, nRef, func))/np.square(nData) ))
     elif (func == 'BetaB') or (func == 'Gamma'):
-        output = 1.0*numpy.sqrt( nData*(Ref+1)*(nRef-Ref+1)*(nRef+2+nData) / (numpy.power(nRef+2, 2)*(nRef+3)) )
+        output = 1.0*np.sqrt( nData*(Ref+1)*(nRef-Ref+1)*(nRef+2+nData) / (np.power(nRef+2, 2)*(nRef+3)) )
         
     else:
         print('\nInside StdDev, no valid func = %s. Quitting.\n' % func)
@@ -301,10 +301,10 @@ def numStdDev(Data, Ref, func):
 
 ## Predicted probability of observing Data / nData given a reference of Ref / nRef
 def Prob(Data, nData, Ref, nRef, func, tol=0.01):
-    scaleTol = numpy.power(1 + numpy.power(Ref * tol**2, 2), -0.5)
-    nRef_tol = numpy.round(scaleTol * nRef)
-    Ref_tol = numpy.round(Ref * scaleTol)
-    nData_arr = numpy.zeros_like(Data) + numpy.float64(nData)
+    scaleTol = np.power(1 + np.power(Ref * tol**2, 2), -0.5)
+    nRef_tol = np.round(scaleTol * nRef)
+    Ref_tol = np.round(Ref * scaleTol)
+    nData_arr = np.zeros_like(Data) + np.float64(nData)
 
     if func == 'Gaus1' or func == 'Gaus2':
         return stats.norm.pdf( numStdDev(Data, Ref_tol, func) )
@@ -323,7 +323,7 @@ def Prob(Data, nData, Ref, nRef, func, tol=0.01):
         ab_ = nRef_tol + 2
         logProb  = gammaln(n_+1) + gammaln(k_+a_) + gammaln(n_-k_+b_) + gammaln(ab_)
         logProb -= ( gammaln(k_+1) + gammaln(n_-k_+1) + gammaln(n_+ab_) + gammaln(a_) + gammaln(b_) )
-        return numpy.exp(logProb)
+        return np.exp(logProb)
 
     print('\nInside Prob, no valid func = %s. Quitting.\n' % func)
     sys.exit()
@@ -334,17 +334,17 @@ def ProbRel(Data, Ref, func, tol=0.01):
     nData = Data.sum()
     nRef = Ref.sum()
     ## Find the most likely expected data value
-    exp_up = numpy.clip(numpy.ceil(Mean(Data, Ref, 'Gaus1')), a_min=None, a_max=nData) # make sure nothing goes above nData
-    exp_down = numpy.clip(numpy.floor(Mean(Data, Ref, 'Gaus1')), a_min=0, a_max=None) # make sure nothing goes below zero
+    exp_up = np.clip(np.ceil(Mean(Data, Ref, 'Gaus1')), a_min=None, a_max=nData) # make sure nothing goes above nData
+    exp_down = np.clip(np.floor(Mean(Data, Ref, 'Gaus1')), a_min=0, a_max=None) # make sure nothing goes below zero
 
     ## Find the maximum likelihood
     maxProb_up  = Prob(exp_up, nData, Ref, nRef,func, tol)
     maxProb_down = Prob(exp_down, nData, Ref, nRef,func, tol)
-    maxProb = numpy.maximum(maxProb_up, maxProb_down)
+    maxProb = np.maximum(maxProb_up, maxProb_down)
     thisProb = Prob(Data, nData, Ref, nRef, func, tol)
 
     ## Sanity check to not have relative likelihood > 1
-    ratio = numpy.divide(thisProb, maxProb, out=numpy.zeros_like(thisProb), where=maxProb!=0)
+    ratio = np.divide(thisProb, maxProb, out=np.zeros_like(thisProb), where=maxProb!=0)
     cond = thisProb > maxProb
     ratio[cond] = 1
         
@@ -354,7 +354,7 @@ def ProbRel(Data, Ref, func, tol=0.01):
 ## Convert relative probability to number of standard deviations in normal distribution
 def Sigmas(probRel):
     ## chi2.isf function fails for probRel < 10^-323, so cap at 10^-300 (37 sigma)
-    probRel = numpy.maximum(probRel, pow(10, -300))
-    return numpy.sqrt(stats.chi2.isf(probRel, 1))
+    probRel = np.maximum(probRel, pow(10, -300))
+    return np.sqrt(stats.chi2.isf(probRel, 1))
     ## For very low prob, can use logarithmic approximation:
-    ## chi2.isf(prob, 1) = 2 * (numpy.log(2) - numpy.log(prob) - 3)
+    ## chi2.isf(prob, 1) = 2 * (np.log(2) - np.log(prob) - 3)
