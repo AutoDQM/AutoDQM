@@ -21,8 +21,10 @@ def beta_binomial(histpair, pull_cap=15, chi2_cut=10, pull_cut=10, min_entries=1
         if numpy.round(rh.values()).sum() > 0 and rh.values().size == data_hist.values().size:
             ref_hists.append(rh)
 
-    data_hist_raw = numpy.round(numpy.copy(data_hist.values()))
-    ref_hists_raw = numpy.round(numpy.array([numpy.copy(rh.values()) for rh in ref_hists]))
+    ## Observed that float64 is necessary for betabinom to preserve precision with arrays as input.
+    ## (Not needed for single values.)  Deep magic that we do not undertand - AWB 2022.08.02
+    data_hist_raw = numpy.round(numpy.copy(numpy.float64(data_hist.values())))
+    ref_hists_raw = numpy.round(numpy.array([numpy.copy(numpy.float64(rh.values())) for rh in ref_hists]))
     nRef = len(ref_hists_raw)
 
     ## does not run beta_binomial if data or ref is 0
@@ -302,19 +304,19 @@ def Prob(Data, nData, Ref, nRef, func, tol=0.01):
     scaleTol = numpy.power(1 + numpy.power(Ref * tol**2, 2), -0.5)
     nRef_tol = numpy.round(scaleTol * nRef)
     Ref_tol = numpy.round(Ref * scaleTol)
+    nData_arr = numpy.zeros_like(Data) + numpy.float64(nData)
 
     if func == 'Gaus1' or func == 'Gaus2':
         return stats.norm.pdf( numStdDev(Data, Ref_tol, func) )
     if func == 'BetaB':
         ## https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.betabinom.html
         ## Note that n = nData, alpha = Ref+1, and beta = nRef-Ref+1, alpha+beta = nRef+2
-        #return stats.betabinom.pmf(Data, nData, Ref+1, nRef-Ref+1)
-        return stats.betabinom.pmf(Data, nData, Ref_tol + 1, nRef_tol - Ref_tol + 1)
+        return stats.betabinom.pmf(Data, nData_arr, Ref_tol + 1, nRef_tol - Ref_tol + 1)
     ## Expression for beta-binomial using definition in terms of gamma functions
     ## https://en.wikipedia.org/wiki/Beta-binomial_distribution#As_a_compound_distribution
     if func == 'Gamma':
         ## Note that n = nData, alpha = Ref+1, and beta = nRef-Ref+1, alpha+beta = nRef+2
-        n_  = numpy.zeros_like(Data) + nData
+        n_  = nData_arr
         k_  = Data
         a_  = Ref_tol + 1
         b_  = nRef_tol - Ref_tol + 1
