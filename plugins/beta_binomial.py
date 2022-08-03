@@ -6,6 +6,7 @@ from autodqm.plugin_results import PluginResults
 import scipy.stats as stats
 from scipy.special import gammaln
 import plotly.graph_objects as go
+from plotly.subplots import make_subplots
 from plugins.pullvals import normalize_rows
 
 def comparators():
@@ -15,17 +16,38 @@ def comparators():
 
 def beta_binomial(histpair, pull_cap=15, chi2_cut=10, pull_cut=10, min_entries=1, tol=0.01, norm_type='all', **kwargs):
     """beta_binomial works on both 1D and 2D"""
-    data_hist = histpair.data_hist
-    ref_hists = []
+    data_hist_orig = histpair.data_hist
+    ref_hists_orig = []
     for rh in histpair.ref_hists:
-        if np.round(rh.values()).sum() > 0 and rh.values().size == data_hist.values().size:
-            ref_hists.append(rh)
+        if np.round(rh.values()).sum() > 0 and rh.values().size == data_hist_orig.values().size:
+            ref_hists_orig.append(rh)
 
     ## Observed that float64 is necessary for betabinom to preserve precision with arrays as input.
     ## (Not needed for single values.)  Deep magic that we do not undertand - AWB 2022.08.02
-    data_hist_raw = np.round(np.copy(np.float64(data_hist.values())))
-    ref_hists_raw = np.round(np.array([np.copy(np.float64(rh.values())) for rh in ref_hists]))
+    data_hist_raw = np.round(np.copy(np.float64(data_hist_orig.values())))
+    ref_hists_raw = np.round(np.array([np.copy(np.float64(rh.values())) for rh in ref_hists_orig]))
     nRef = len(ref_hists_raw)
+
+    ## Get bin centers from edges() stored by uproot
+    x_bins = data_hist_orig.axes[0].edges()
+    ## Adjust x-axis range if option set in config file
+    if data_hist_raw.ndim == 1:
+        if 'xmin' in histpair.config.keys() and histpair.config['xmin'] < x_bins[-2]:
+            while x_bins[0] < histpair.config['xmin']:
+                x_bins = np.delete(x_bins, 0)
+                data_hist_raw = np.delete(data_hist_raw, 0)
+                ref_hists_tmp = []
+                for ii in range(len(ref_hists_raw)):
+                    ref_hists_tmp.append(np.delete(ref_hists_raw[ii], 0))
+                ref_hists_raw = np.array(ref_hists_tmp)
+        if 'xmax' in histpair.config.keys() and histpair.config['xmax'] > x_bins[1]:
+            while x_bins[-1] > histpair.config['xmax']:
+                x_bins = np.delete(x_bins, -1)
+                data_hist_raw = np.delete(data_hist_raw, -1)
+                ref_hists_tmp = []
+                for ii in range(len(ref_hists_raw)):
+                    ref_hists_tmp.append(np.delete(ref_hists_raw[ii], -1))
+                ref_hists_raw = np.array(ref_hists_tmp)
 
     ## does not run beta_binomial if data or ref is 0
     if np.sum(data_hist_raw) <= 0 or nRef == 0:
@@ -33,6 +55,23 @@ def beta_binomial(histpair, pull_cap=15, chi2_cut=10, pull_cut=10, min_entries=1
 
     ## summed ref_hist
     ref_hist_sum = ref_hists_raw.sum(axis=0)
+
+    ## Delete trailing and bins of 1D plots which are all zeros
+    if data_hist_raw.ndim == 1:
+        while len(ref_hist_sum) > 30 and ref_hist_sum[-1] + ref_hist_sum[-2] + data_hist_raw[-1] + data_hist_raw[-2] == 0:
+            data_hist_raw = np.delete(data_hist_raw, -1)
+            ref_hist_sum = np.delete(ref_hist_sum, -1)
+            ref_hists_tmp = []
+            for ii in range(len(ref_hists_raw)):
+                ref_hists_tmp.append(np.delete(ref_hists_raw[ii], -1))
+            ref_hists_raw = np.array(ref_hists_tmp)
+        while len(ref_hist_sum) > 30 and ref_hist_sum[0] + ref_hist_sum[1] + data_hist_raw[0] + data_hist_raw[1] == 0:
+            data_hist_raw = np.delete(data_hist_raw, 0)
+            ref_hist_sum = np.delete(ref_hist_sum, 0)
+            ref_hists_tmp = []
+            for ii in range(len(ref_hists_raw)):
+                ref_hists_tmp.append(np.delete(ref_hists_raw[ii], 0))
+            ref_hists_raw = np.array(ref_hists_tmp)
 
     ## num entries
     data_hist_Entries = np.sum(data_hist_raw)
@@ -47,7 +86,7 @@ def beta_binomial(histpair, pull_cap=15, chi2_cut=10, pull_cut=10, min_entries=1
 
     ## only filled bins used for chi2
     nBinsUsed = np.count_nonzero(np.add(ref_hist_sum, data_hist_raw))
-    nBins = data_hist.values().size
+    nBins = data_hist_raw.size
 
     ## calculte pull and chi2, and get probability-weighted reference histogram
     [pull_hist, ref_hist_prob_wgt] = pull(data_hist_raw, ref_hists_raw, tol)
@@ -62,8 +101,13 @@ def beta_binomial(histpair, pull_cap=15, chi2_cut=10, pull_cut=10, min_entries=1
     is_outlier = data_hist_Entries >= min_entries and (chi2 > chi2_cut or abs(max_pull) > pull_cut)
 
     ## plotting
-    # Setting empty bins to be blank
-    pull_hist = np.where(np.add(ref_hist_sum, data_hist_raw) == 0, None, pull_hist)
+    # For 1D histograms, set pulls larger than pull_cap to pull_cap
+    if data_hist_raw.ndim == 1:
+        pull_hist = np.where(pull_hist >  pull_cap,  pull_cap, pull_hist)
+        pull_hist = np.where(pull_hist < -pull_cap, -pull_cap, pull_hist)
+    # For 2D histograms, set empty bins to be blank
+    if data_hist_raw.ndim == 2:
+        pull_hist = np.where(np.add(ref_hist_sum, data_hist_raw) == 0, None, pull_hist)
 
     if nRef == 1:
         ref_runs_str = histpair.ref_runs[0]
@@ -73,23 +117,21 @@ def beta_binomial(histpair, pull_cap=15, chi2_cut=10, pull_cut=10, min_entries=1
         ref_runs_str += ' (' + str(nRef) + ')'
 
     ##--------- 1D Plotting --------------
-    # Check that the hists are 1 dimensional
-    if ("TH1" in str(type(data_hist))) and ("TH1" in str(type(ref_hists[0]))):
-        #Get bin centers from edges() stored by uproot
-        bins = data_hist.axes[0].edges()
-        if bins[0] < -999:
-            bins[0]=2*bins[1]-bins[2]
+    #Check that the hists are 1 dimensional
+    if ("TH1" in str(type(data_hist_orig))) and ("TH1" in str(type(ref_hists_orig[0]))):
+        if x_bins[0] < -999:
+            x_bins[0]=2*x_bins[1]-x_bins[2]
 
         #Truncate empty space on high end of histograms with large axes
-        if data_hist_Entries > 0 and ref_hist_Entries_avg > 0 and len(bins) > 15:
+        if data_hist_Entries > 0 and ref_hist_Entries_avg > 0 and len(x_bins) > 15:
             last_bin = max( [15, max(np.nonzero(data_hist_raw)[0]), max(np.nonzero(ref_hist_sum)[0])] )
-            if last_bin+2 < len(bins):
-                bins = bins[:(last_bin+2)]
+            if last_bin+2 < len(x_bins):
+                x_bins = x_bins[:(last_bin+2)]
 
-        #Get Titles for histogram, X-axis, Y-axis (Note data_hist.axes will have length > 1 if y-axis title is declared even with 1d plot)
-        xAxisTitle = data_hist.axes[0]._bases[0]._members["fTitle"]
-        if(len(data_hist.axes) > 1):
-            yAxisTitle = data_hist.axes[1]._bases[0]._members["fTitle"]
+        #Get Titles for histogram, X-axis, Y-axis (Note data_hist_orig.axes will have length > 1 if y-axis title is declared even with 1d plot)
+        xAxisTitle = data_hist_orig.axes[0]._bases[0]._members["fTitle"]
+        if(len(data_hist_orig.axes) > 1):
+            yAxisTitle = data_hist_orig.axes[1]._bases[0]._members["fTitle"]
         else:
             yAxisTitle = ""
         plotTitle = histpair.data_name + " beta-binomial  |  data:" + str(histpair.data_run) + " & ref:" + ref_runs_str
@@ -99,19 +141,41 @@ def beta_binomial(histpair, pull_cap=15, chi2_cut=10, pull_cut=10, min_entries=1
         yAxisTitle = yAxisTitle.replace("#circ", "\u00B0").replace("#theta","\u03B8").replace("#phi","\u03C6").replace("#eta","\u03B7")
         plotTitle = plotTitle.replace("#circ", "\u00B0").replace("#theta","\u03B8").replace("#phi","\u03C6").replace("#eta","\u03B7")
     
+        #For some 1D plots, use a log scale x- or y-axis
+        set_logx = (x_bins[1] > 0 and 'opts' in histpair.config.keys() and 'logx' in histpair.config['opts'] and len(x_bins) > 30)
+        set_logy = ('opts' in histpair.config.keys() and 'logy' in histpair.config['opts'])
+        if set_logx:
+            if x_bins[0] <= 0:
+                #If 1st bin is not positive, adjust to be 10% lower than 2nd bin (relative to last bin)
+                x_bins[0] = pow(10, 1.1*np.log10(x_bins[1]) - 0.1*np.log10(x_bins[-1]))
+            xAxisTitle = 'log10' + xAxisTitle
+        if set_logy:
+            yAxisTitle = 'log10' + yAxisTitle
     
         #Plot histogram with previously declared axes and settings to look similar to PyRoot
-        c = go.Figure()
-        c.add_trace(go.Bar(name="data:"+str(histpair.data_run), x=bins, y=data_hist_raw, marker_color='red'))
-        c.add_trace(go.Bar(name="ref:"+ref_runs_str, x=bins, y=ref_hist_prob_wgt, marker_color='blue', opacity=.5))
-        c.update_traces(marker_line_width=0)
-        c.update_layout(bargap=0, bargroupgap=0, barmode='overlay', plot_bgcolor='white')
-        c.update_xaxes(showline=True, linewidth=2, linecolor='black', mirror=True, showgrid=False)
-        c.update_yaxes(showline=True, linewidth=2, linecolor='black', mirror=True, showgrid=False)
+        c = make_subplots(specs=[[{"secondary_y": True}]])
+
+        c.add_trace( go.Bar(name="data:"+str(histpair.data_run), x=x_bins, y=data_hist_raw, marker_color='red',
+                            marker_line_color='red', marker_line_width=1) )
+        c.add_trace( go.Scatter(name="ref:"+ref_runs_str, x=x_bins, y=ref_hist_prob_wgt, marker_color='blue',
+                                mode='markers', marker_size=(10 / np.log10(len(x_bins)))), secondary_y=False)
+        c.add_trace( go.Scatter(name="Pull", x=x_bins, y=pull_hist, marker_color='green',
+                                mode='markers', marker_size=[abs(p) for p in pull_hist],
+                                marker_symbol='x', marker_line_width=0), secondary_y=True)
+
+        c.update_layout(bargap=0, bargroupgap=0, barmode='overlay', plot_bgcolor='white', legend_itemsizing='constant')
+        c.update_xaxes(showline=True, linewidth=2, linecolor='black', mirror=True, showgrid=False, title_text=xAxisTitle)
+        c.update_yaxes(showline=True, linewidth=2, linecolor='black', mirror=True, showgrid=False, title_text=yAxisTitle, secondary_y=False)
+        c.update_yaxes(showline=False, showgrid=False, title_text="Pull", range=[-pull_cap*1.05, pull_cap*1.05], secondary_y=True)
+        if set_logx:
+            c.update_xaxes(type="log")
+        if set_logy:
+            c.update_yaxes(type="log", secondary_y=False)
+
         c.update_layout(
             title=plotTitle , title_x=0.5,
-            xaxis_title= xAxisTitle,
-            yaxis_title= yAxisTitle,
+            # xaxis_title= xAxisTitle,
+            # yaxis_title= yAxisTitle,
             font=dict(
                 family="Times New Roman",
                 size=9,
@@ -126,8 +190,8 @@ def beta_binomial(histpair, pull_cap=15, chi2_cut=10, pull_cut=10, min_entries=1
 
     ##---------- 2d Plotting --------------
     # Check that the hists are 2 dimensional
-    if ( (       "TH2" in str(type(data_hist)) and       "TH2" in str(type(ref_hists[0])) ) or
-         ("TProfile2D" in str(type(data_hist)) and "TProfile2" in str(type(ref_hists[0])) ) ):
+    if ( (       "TH2" in str(type(data_hist_orig)) and       "TH2" in str(type(ref_hists_orig[0])) ) or
+         ("TProfile2D" in str(type(data_hist_orig)) and "TProfile2" in str(type(ref_hists_orig[0])) ) ):
         
         colors = ['rgb(26, 42, 198)', 'rgb(118, 167, 231)', 'rgb(215, 226, 194)', 'rgb(212, 190, 109)', 'rgb(188, 76, 38)']
         #Getting Plot labels for x-axis and y-axis as well as type (linear or categorical)
@@ -136,17 +200,17 @@ def beta_binomial(histpair, pull_cap=15, chi2_cut=10, pull_cut=10, min_entries=1
         c = None
         x_axis_type = 'linear'
         y_axis_type = 'linear';
-        if data_hist.axes[0].labels():
-           xLabels = [str(x) for x in data_hist.axes[0].labels()]
+        if data_hist_orig.axes[0].labels():
+           xLabels = [str(x) for x in data_hist_orig.axes[0].labels()]
            x_axis_type = 'category'
         else:
-           xLabels = [str(data_hist.axes[0]._members["fXmin"] + x * (data_hist.axes[0]._members["fXmax"]-data_hist.axes[0]._members["fXmin"])/data_hist.axes[0]._members["fNbins"]) for x in range(0,data_hist.axes[0]._members["fNbins"]+1)]
+           xLabels = [str(data_hist_orig.axes[0]._members["fXmin"] + x * (data_hist_orig.axes[0]._members["fXmax"]-data_hist_orig.axes[0]._members["fXmin"])/data_hist_orig.axes[0]._members["fNbins"]) for x in range(0,data_hist_orig.axes[0]._members["fNbins"]+1)]
     
-        if data_hist.axes[1].labels():
-           yLabels = [str(x) for x in data_hist.axes[1].labels()]
+        if data_hist_orig.axes[1].labels():
+           yLabels = [str(x) for x in data_hist_orig.axes[1].labels()]
            y_axis_type = 'category'
         else:
-           yLabels = [str(data_hist.axes[1]._members["fXmin"] + x * (data_hist.axes[1]._members["fXmax"]-data_hist.axes[1]._members["fXmin"])/data_hist.axes[1]._members["fNbins"]) for x in range(0,data_hist.axes[1]._members["fNbins"]+1)]
+           yLabels = [str(data_hist_orig.axes[1]._members["fXmin"] + x * (data_hist_orig.axes[1]._members["fXmax"]-data_hist_orig.axes[1]._members["fXmin"])/data_hist_orig.axes[1]._members["fNbins"]) for x in range(0,data_hist_orig.axes[1]._members["fNbins"]+1)]
     
         if("xlabels" in histpair.config.keys()):
             xLabels=histpair.config["xlabels"]
@@ -158,8 +222,8 @@ def beta_binomial(histpair, pull_cap=15, chi2_cut=10, pull_cut=10, min_entries=1
         pull_hist = np.transpose(pull_hist)
     
         #Getting Plot Titles for histogram, x-axis and y-axis
-        xAxisTitle = data_hist.axes[0]._bases[0]._members["fTitle"]
-        yAxisTitle = data_hist.axes[1]._bases[0]._members["fTitle"]
+        xAxisTitle = data_hist_orig.axes[0]._bases[0]._members["fTitle"]
+        yAxisTitle = data_hist_orig.axes[1]._bases[0]._members["fTitle"]
         plotTitle = histpair.data_name + " beta-binomial  |  data:" + str(histpair.data_run) + " & ref:" + ref_runs_str
     
         #Plotly doesn't support #circ, #theta, #phi but does support unicode
@@ -338,8 +402,8 @@ def ProbRel(Data, Ref, func, tol=0.01):
     exp_down = np.clip(np.floor(Mean(Data, Ref, 'Gaus1')), a_min=0, a_max=None) # make sure nothing goes below zero
 
     ## Find the maximum likelihood
-    maxProb_up  = Prob(exp_up, nData, Ref, nRef,func, tol)
-    maxProb_down = Prob(exp_down, nData, Ref, nRef,func, tol)
+    maxProb_up  = Prob(exp_up, nData, Ref, nRef, func, tol)
+    maxProb_down = Prob(exp_down, nData, Ref, nRef, func, tol)
     maxProb = np.maximum(maxProb_up, maxProb_down)
     thisProb = Prob(Data, nData, Ref, nRef, func, tol)
 
