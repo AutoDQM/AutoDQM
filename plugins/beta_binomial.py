@@ -34,9 +34,9 @@ def beta_binomial(histpair, pull_cap=15, chi2_cut=10, pull_cut=10, min_entries=1
     if data_hist_raw.ndim == 1 and len(x_bins) > 4:
         binLo, binHi = 0, len(x_bins) - 1
         if 'xmin' in histpair.config.keys() and histpair.config['xmin'] < x_bins[-2]:
-            binLo = max( np.nonzero(x_bins >= histpair.config['xmin'])[0][0] - 1, 0 )
+            binLo = max( np.nonzero(x_bins >= histpair.config['xmin'])[0][0], 0 )
         if 'xmax' in histpair.config.keys() and histpair.config['xmax'] > x_bins[1]:
-            binHi = min( np.nonzero(x_bins <= histpair.config['xmax'])[0][-1] + 1, len(x_bins) - 1 )
+            binHi = min( np.nonzero(x_bins <= histpair.config['xmax'])[0][-1], len(x_bins) - 1 )
 
         x_bins = x_bins[binLo:binHi+1]
         data_hist_raw = data_hist_raw[binLo:binHi+1]
