@@ -82,9 +82,9 @@ class DQMSession(FuturesSession):
                 DQM_dir = OnlineMap[subsystem]
                 run_info = next(r for r in runs if r.name == run and DQM_dir+'_R000' in r.full_name)
             else:                   ## Use cmsweb.cern.ch/dqm/offline/data/browse/ROOT/OfflineData/
-                ## FIXME: If files from multiple processings of the same dataset are available,
-                ## just picks whichever one happens to be first in the list! - AWB 2022.06.28
-                run_info = next(r for r in runs if r.name == run)
+                ## Prefer PromptReco over other processings
+                try:    run_info = next(r for r in runs if r.name == run and 'PromptReco' in r.full_name)
+                except: run_info = next(r for r in runs if r.name == run)
 
             for prog in self._stream_file(
                     run_info.url, run_path, chunk_size=chunk_size):
