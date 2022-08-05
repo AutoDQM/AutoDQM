@@ -31,23 +31,16 @@ def beta_binomial(histpair, pull_cap=15, chi2_cut=10, pull_cut=10, min_entries=1
     ## Get bin centers from edges() stored by uproot
     x_bins = data_hist_orig.axes[0].edges()
     ## Adjust x-axis range if option set in config file
-    if data_hist_raw.ndim == 1:
+    if data_hist_raw.ndim == 1 and len(x_bins) > 4:
+        binLo, binHi = 0, len(x_bins) - 1
         if 'xmin' in histpair.config.keys() and histpair.config['xmin'] < x_bins[-2]:
-            while x_bins[0] < histpair.config['xmin']:
-                x_bins = np.delete(x_bins, 0)
-                data_hist_raw = np.delete(data_hist_raw, 0)
-                ref_hists_tmp = []
-                for ii in range(len(ref_hists_raw)):
-                    ref_hists_tmp.append(np.delete(ref_hists_raw[ii], 0))
-                ref_hists_raw = np.array(ref_hists_tmp)
+            binLo = max( np.nonzero(x_bins >= histpair.config['xmin'])[0][0] - 1, 0 )
         if 'xmax' in histpair.config.keys() and histpair.config['xmax'] > x_bins[1]:
-            while x_bins[-1] > histpair.config['xmax']:
-                x_bins = np.delete(x_bins, -1)
-                data_hist_raw = np.delete(data_hist_raw, -1)
-                ref_hists_tmp = []
-                for ii in range(len(ref_hists_raw)):
-                    ref_hists_tmp.append(np.delete(ref_hists_raw[ii], -1))
-                ref_hists_raw = np.array(ref_hists_tmp)
+            binHi = min( np.nonzero(x_bins <= histpair.config['xmax'])[0][-1] + 1, len(x_bins) - 1 )
+
+        x_bins = x_bins[binLo:binHi+1]
+        data_hist_raw = data_hist_raw[binLo:binHi+1]
+        ref_hists_raw = np.array([r[binLo:binHi+1] for r in ref_hists_raw])
 
     ## does not run beta_binomial if data or ref is 0
     if np.sum(data_hist_raw) <= 0 or nRef == 0:
@@ -56,22 +49,15 @@ def beta_binomial(histpair, pull_cap=15, chi2_cut=10, pull_cut=10, min_entries=1
     ## summed ref_hist
     ref_hist_sum = ref_hists_raw.sum(axis=0)
 
-    ## Delete trailing and bins of 1D plots which are all zeros
-    if data_hist_raw.ndim == 1:
-        while len(ref_hist_sum) > 30 and ref_hist_sum[-1] + ref_hist_sum[-2] + data_hist_raw[-1] + data_hist_raw[-2] == 0:
-            data_hist_raw = np.delete(data_hist_raw, -1)
-            ref_hist_sum = np.delete(ref_hist_sum, -1)
-            ref_hists_tmp = []
-            for ii in range(len(ref_hists_raw)):
-                ref_hists_tmp.append(np.delete(ref_hists_raw[ii], -1))
-            ref_hists_raw = np.array(ref_hists_tmp)
-        while len(ref_hist_sum) > 30 and ref_hist_sum[0] + ref_hist_sum[1] + data_hist_raw[0] + data_hist_raw[1] == 0:
-            data_hist_raw = np.delete(data_hist_raw, 0)
-            ref_hist_sum = np.delete(ref_hist_sum, 0)
-            ref_hists_tmp = []
-            for ii in range(len(ref_hists_raw)):
-                ref_hists_tmp.append(np.delete(ref_hists_raw[ii], 0))
-            ref_hists_raw = np.array(ref_hists_tmp)
+    ## Delete leading and trailing bins of 1D plots which are all zeros
+    if data_hist_raw.ndim == 1 and len(x_bins) > 20:
+        binHi = max( min( np.nonzero(data_hist_raw + ref_hist_sum > 0)[0][-1] + 1, len(x_bins) - 1 ), 20 )
+        binLo = min( max( np.nonzero(data_hist_raw + ref_hist_sum > 0)[0][0] - 1, 0 ), binHi - 20 )
+
+        x_bins = x_bins[binLo:binHi+1]
+        data_hist_raw = data_hist_raw[binLo:binHi+1]
+        ref_hists_raw = np.array([r[binLo:binHi+1] for r in ref_hists_raw])
+        ref_hist_sum  = ref_hist_sum[binLo:binHi+1]
 
     ## num entries
     data_hist_Entries = np.sum(data_hist_raw)
@@ -122,12 +108,6 @@ def beta_binomial(histpair, pull_cap=15, chi2_cut=10, pull_cut=10, min_entries=1
         if x_bins[0] < -999:
             x_bins[0]=2*x_bins[1]-x_bins[2]
 
-        #Truncate empty space on high end of histograms with large axes
-        if data_hist_Entries > 0 and ref_hist_Entries_avg > 0 and len(x_bins) > 15:
-            last_bin = max( [15, max(np.nonzero(data_hist_raw)[0]), max(np.nonzero(ref_hist_sum)[0])] )
-            if last_bin+2 < len(x_bins):
-                x_bins = x_bins[:(last_bin+2)]
-
         #Get Titles for histogram, X-axis, Y-axis (Note data_hist_orig.axes will have length > 1 if y-axis title is declared even with 1d plot)
         xAxisTitle = data_hist_orig.axes[0]._bases[0]._members["fTitle"]
         if(len(data_hist_orig.axes) > 1):
@@ -145,9 +125,10 @@ def beta_binomial(histpair, pull_cap=15, chi2_cut=10, pull_cut=10, min_entries=1
         set_logx = (x_bins[1] > 0 and 'opts' in histpair.config.keys() and 'logx' in histpair.config['opts'] and len(x_bins) > 30)
         set_logy = ('opts' in histpair.config.keys() and 'logy' in histpair.config['opts'])
         if set_logx:
-            if x_bins[0] <= 0:
-                #If 1st bin is not positive, adjust to be 10% lower than 2nd bin (relative to last bin)
-                x_bins[0] = pow(10, 1.1*np.log10(x_bins[1]) - 0.1*np.log10(x_bins[-1]))
+            #If first or last bin is an outlier, adjust to be 10% away from next bin (relative to furthest bin)
+            if len(x_bins) > 4 and x_bins[1] > 0:
+                x_bins[0]  = max(x_bins[0],  pow(10, 1.1*np.log10(x_bins[1]) - 0.1*np.log10(x_bins[-2])))
+                x_bins[-1] = min(x_bins[-1], pow(10, 1.1*np.log10(x_bins[-2]) - 0.1*np.log10(x_bins[1])))                
             xAxisTitle = 'log10' + xAxisTitle
         if set_logy:
             yAxisTitle = 'log10' + yAxisTitle
