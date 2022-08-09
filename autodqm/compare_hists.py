@@ -9,6 +9,7 @@ import uproot
 from autodqm import cfg
 from autodqm.histpair import HistPair
 import plotly
+import numpy as np
 
 
 def process(chunk_index, chunk_size, config_dir,
@@ -136,16 +137,26 @@ def compile_histpairs(chunk_index, chunk_size, config_dir,
 
         # Add existing histograms that match h
         if "*" not in h:
-             if h in [str(keys)[0:-2] for keys in data_keys] and all([ (h in [str(keys)[0:-2] for keys in ref_keys]) for ref_keys in ref_keyss ]):
-                 try:
-                     data_hist = data_dir[h]
-                     ref_hists = [ref_dir[h] for ref_dir in ref_dirs]
-                 except Exception as e:
-                     continue
-                 hPair = HistPair(dqmSource, hconf,
-                                  data_series, data_sample, data_run, str(h), data_hist,
-                                  ref_series, ref_sample, ref_runs, str(h), ref_hists)
-                 histPairs.append(hPair)
+            if h in [str(keys)[0:-2] for keys in data_keys] and all([ (h in [str(keys)[0:-2] for keys in ref_keys]) for ref_keys in ref_keyss ]):
+                try:
+                    data_hist = data_dir[h]
+                    ref_hists = [ref_dir[h] for ref_dir in ref_dirs]
+                except Exception as e:
+                    continue
+
+                data_hist_conc, ref_hists_conc = None, None
+                if 'concatenate' in hconf.keys():
+                    try:
+                        data_hist_conc = [data_dir[dhc] for dhc in hconf['concatenate']]
+                        ref_hists_conc = [[ref_dir[rhc] for rhc in hconf['concatenate']] for ref_dir in ref_dirs]
+                    except Exception as e:
+                        continue
+
+                hPair = HistPair(dqmSource, hconf,
+                                 data_series, data_sample, data_run, str(h), data_hist,
+                                 ref_series, ref_sample, ref_runs, str(h), ref_hists,
+                                 data_hist_conc, ref_hists_conc)
+                histPairs.append(hPair)
         else:
             # Check entire directory for files matching wildcard (Throw out wildcards with / in them as they are not plottable)
             for name in data_keys:

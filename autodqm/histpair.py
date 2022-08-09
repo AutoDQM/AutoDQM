@@ -9,7 +9,8 @@ class HistPair(object):
 
     def __init__(self, dqmSource, config,
                  data_series, data_sample, data_run, data_name, data_hist,
-                 ref_series, ref_sample, ref_runs, ref_name, ref_hists):
+                 ref_series, ref_sample, ref_runs, ref_name, ref_hists,
+                 data_concat = None, ref_concat = None):
 
         self.dqmSource = dqmSource
         self.config = config
@@ -19,12 +20,14 @@ class HistPair(object):
         self.data_run = data_run
         self.data_name = data_name
         self.data_hist = data_hist
+        self.data_concat = data_concat
 
         self.ref_series = ref_series
         self.ref_sample = ref_sample
         self.ref_runs = ref_runs
         self.ref_name = ref_name
         self.ref_hists = ref_hists
+        self.ref_concat = ref_concat
 
         if self.dqmSource == 'Offline':
             self.comparators = ['pull_values', 'ks_test', 'autodqm_ml_pca', 'beta_binomial']
