@@ -28,8 +28,8 @@ def beta_binomial(histpair, pull_cap=15, chi2_cut=10, pull_cut=10, min_entries=1
     x_bins = data_hist_orig.axes[0].edges()
 
     ## Concatenate multiple histograms together
-    concat = histpair.data_concat and histpair.ref_concat
-    if concat:
+    do_concat = histpair.data_concat and histpair.ref_concat
+    if do_concat:
         for dhc in histpair.data_concat:
             data_hist_raw = np.concatenate((data_hist_raw, np.round(np.copy(np.float64(dhc.values())))))
             x_offset = x_bins[-1] - dhc.axes[0].edges()[0]
@@ -52,7 +52,7 @@ def beta_binomial(histpair, pull_cap=15, chi2_cut=10, pull_cut=10, min_entries=1
         return None
 
     ## Adjust x-axis range for 1D plots if option set in config file
-    if data_hist_raw.ndim == 1 and len(x_bins) > 4 and not concat:
+    if data_hist_raw.ndim == 1 and len(x_bins) > 4 and not do_concat:
         binLo, binHi = 0, len(x_bins) - 1
         if 'xmin' in histpair.config.keys() and histpair.config['xmin'] < x_bins[-2]:
             binLo = max( np.nonzero(x_bins >= histpair.config['xmin'])[0][0], 0 )
@@ -67,7 +67,7 @@ def beta_binomial(histpair, pull_cap=15, chi2_cut=10, pull_cut=10, min_entries=1
     ref_hist_sum = ref_hists_raw.sum(axis=0)
 
     ## Delete leading and trailing bins of 1D plots which are all zeros
-    if data_hist_raw.ndim == 1 and len(x_bins) > 20 and not concat:
+    if data_hist_raw.ndim == 1 and len(x_bins) > 20 and not do_concat:
         binHi = max( min( np.nonzero(data_hist_raw + ref_hist_sum > 0)[0][-1] + 1, len(x_bins) - 1 ), 20 )
         binLo = min( max( np.nonzero(data_hist_raw + ref_hist_sum > 0)[0][0] - 1, 0 ), binHi - 20 )
 
@@ -146,7 +146,7 @@ def beta_binomial(histpair, pull_cap=15, chi2_cut=10, pull_cut=10, min_entries=1
         plotTitle = plotTitle.replace("#circ", "\u00B0").replace("#theta","\u03B8").replace("#phi","\u03C6").replace("#eta","\u03B7")
     
         #For some 1D plots, use a log scale x- or y-axis
-        set_logx = (x_bins[1] > 0 and 'opts' in histpair.config.keys() and 'logx' in histpair.config['opts'] and len(x_bins) > 30)
+        set_logx = (x_bins[1] > 0 and 'opts' in histpair.config.keys() and 'logx' in histpair.config['opts'] and len(x_bins) > 30) and not do_concat
         set_logy = ('opts' in histpair.config.keys() and 'logy' in histpair.config['opts'])
         if set_logx:
             #If first or last bin is an outlier, adjust to be 10% away from next bin (relative to furthest bin)
@@ -242,7 +242,7 @@ def beta_binomial(histpair, pull_cap=15, chi2_cut=10, pull_cut=10, min_entries=1
         plotTitle = histpair.data_name + " beta-binomial  |  data:" + str(histpair.data_run) + " & ref:" + ref_runs_str
 
         #Repeat labels for concatenated histograms
-        if concat:
+        if do_concat:
             xLabels = None
             xAxisTitle += ' (bin indices from concatenated histograms)'
             ## For some reason the below doesn't work, even though it produces

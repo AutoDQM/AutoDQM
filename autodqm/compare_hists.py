@@ -100,8 +100,8 @@ def compile_histpairs(chunk_index, chunk_size, config_dir,
 
     histPairs = []
     
-    # missing_data_dirs = []
-    # missing_ref_dirs  = []
+    missing_data_dirs = []
+    missing_ref_dirs  = []
 
     for hconf in conf_list:
         # Set comparators if there are none
@@ -117,18 +117,18 @@ def compile_histpairs(chunk_index, chunk_size, config_dir,
         try:
             data_dir = data_file[data_dirname[:-1]]
         except:
-            # missing_data_dirs.append(data_dirname)
-            # continue
-            raise error("Subsystem dir {0} not found in data root file".format(data_dirname))
+            missing_data_dirs.append(data_dirname)
+            continue
+            # raise error("Subsystem dir {0} not found in data root file".format(data_dirname))
 
         ref_dirs = []
         for iRef in range(len(ref_runs)):
             try:
                 ref_dirs.append( ref_files[iRef][ref_dirnames[iRef][:-1]] )
             except:
-                # missing_ref_dirs.append(ref_dirname)
-                # continue
-                raise error("Subsystem dir {0} not found in ref root file".format(ref_dirnames[iRef]))
+                missing_ref_dirs.append(ref_dirname)
+                continue
+                # raise error("Subsystem dir {0} not found in ref root file".format(ref_dirnames[iRef]))
 
         data_keys = data_dir.keys()
         ref_keyss = [ref_dir.keys() for ref_dir in ref_dirs]
