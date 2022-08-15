@@ -75,10 +75,10 @@
     { "path": "L1TStage2EMTF/cscLCTOccupancy" },
 
     { "path": "L1TObjects/L1TMuon/timing/First_bunch/muons_eta_phi_bx_firstbunch_0",
-      "concatenate": ["muon_eta_phi_bx_firstbunch_minus1", "muon_eta_phi_bx_firstbunch_minus2"],
+      "concatenate": ["muons_eta_phi_bx_firstbunch_minus1", "muons_eta_phi_bx_firstbunch_minus2"],
       "opts": ["pull_cap=5", "chi2_cut=3", "pull_cut=5"] },
     { "path": "L1TObjects/L1TMuon/timing/Last_bunch/muons_eta_phi_bx_lastbunch_0",
-      "concatenate": ["muon_eta_phi_bx_lastbunch_plus1", "muon_eta_phi_bx_lastbunch_plus2"],
+      "concatenate": ["muons_eta_phi_bx_lastbunch_plus1", "muons_eta_phi_bx_lastbunch_plus2"],
       "opts": ["pull_cap=5", "chi2_cut=3", "pull_cut=5"] },
     { "path": "L1TObjects/L1TTau/timing/First_bunch/tau_eta_phi_bx_firstbunch_0",
       "concatenate": ["tau_eta_phi_bx_firstbunch_minus1", "tau_eta_phi_bx_firstbunch_minus2"],
