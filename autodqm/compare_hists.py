@@ -9,12 +9,13 @@ import uproot
 from autodqm import cfg
 from autodqm.histpair import HistPair
 import plotly
+import numpy as np
 
 
 def process(chunk_index, chunk_size, config_dir,
             dqmSource, subsystem,
             data_series, data_sample, data_run, data_path,
-            ref_series, ref_sample, ref_run, ref_path,
+            ref_series, ref_sample, ref_runs, ref_paths,
             output_dir='./out/', plugin_dir='./plugins/'):
 
     # Ensure no graphs are drawn to screen and no root messages are sent to
@@ -22,7 +23,7 @@ def process(chunk_index, chunk_size, config_dir,
     histpairs = compile_histpairs(chunk_index, chunk_size, config_dir,
                                   dqmSource, subsystem,
                                   data_series, data_sample, data_run, data_path,
-                                  ref_series, ref_sample, ref_run, ref_path)
+                                  ref_series, ref_sample, ref_runs, ref_paths)
 
     for d in [output_dir + s for s in ['/pdfs', '/jsons', '/pngs']]:
         if not os.path.exists(d):
@@ -85,7 +86,7 @@ def process(chunk_index, chunk_size, config_dir,
 def compile_histpairs(chunk_index, chunk_size, config_dir,
                       dqmSource, subsystem,
                       data_series, data_sample, data_run, data_path,
-                      ref_series, ref_sample, ref_run, ref_path):
+                      ref_series, ref_sample, ref_runs, ref_paths):
 
     config = cfg.get_subsystem(config_dir, subsystem)
     # Histogram details
@@ -95,7 +96,7 @@ def compile_histpairs(chunk_index, chunk_size, config_dir,
 
     # ROOT files
     data_file = uproot.open(data_path)
-    ref_file = uproot.open(ref_path)
+    ref_files = [uproot.open(ref_path) for ref_path in ref_paths]
 
     histPairs = []
     
@@ -111,54 +112,64 @@ def compile_histpairs(chunk_index, chunk_size, config_dir,
         gdir = str(hconf["path"].split(h)[0])
         
         data_dirname = "{0}{1}".format(main_gdir.format(data_run), gdir)
-        ref_dirname = "{0}{1}".format(main_gdir.format(ref_run), gdir)
+        ref_dirnames = ["{0}{1}".format(main_gdir.format(ref_run), gdir) for ref_run in ref_runs]
         
         try:
             data_dir = data_file[data_dirname[:-1]]
         except:
             missing_data_dirs.append(data_dirname)
             continue
-        try:
-            ref_dir = ref_file[ref_dirname[:-1]]
-        except:
-            missing_ref_dirs.append(ref_dirname)
-            continue
+            # raise error("Subsystem dir {0} not found in data root file".format(data_dirname))
 
-        if not data_dir:
-            raise error("Subsystem dir {0} not found in data root file".format(data_dirname))
-        if not ref_dir:
-            raise error("Subsystem dir {0} not found in ref root file".format(ref_dirname))
+        ref_dirs = []
+        for iRef in range(len(ref_runs)):
+            try:
+                ref_dirs.append( ref_files[iRef][ref_dirnames[iRef][:-1]] )
+            except:
+                missing_ref_dirs.append(ref_dirname)
+                continue
+                # raise error("Subsystem dir {0} not found in ref root file".format(ref_dirnames[iRef]))
 
         data_keys = data_dir.keys()
-        ref_keys = ref_dir.keys()
+        ref_keyss = [ref_dir.keys() for ref_dir in ref_dirs]
 
         valid_names = []
 
         # Add existing histograms that match h
         if "*" not in h:
-             if h in [str(keys)[0:-2] for keys in data_keys] and h in [str(keys)[0:-2] for keys in ref_keys]:
-                 try:
-                     data_hist = data_dir[h]
-                     ref_hist = ref_dir[h]
-                 except Exception as e:
-                     continue
-                 hPair = HistPair(dqmSource, hconf,
-                                  data_series, data_sample, data_run, str(h), data_hist,
-                                  ref_series, ref_sample, ref_run, str(h), ref_hist)
-                 histPairs.append(hPair)
+            if h in [str(keys)[0:-2] for keys in data_keys] and all([ (h in [str(keys)[0:-2] for keys in ref_keys]) for ref_keys in ref_keyss ]):
+                try:
+                    data_hist = data_dir[h]
+                    ref_hists = [ref_dir[h] for ref_dir in ref_dirs]
+                except Exception as e:
+                    continue
+
+                data_hist_conc, ref_hists_conc = None, None
+                if 'concatenate' in hconf.keys():
+                    try:
+                        data_hist_conc = [data_dir[dhc] for dhc in hconf['concatenate']]
+                        ref_hists_conc = [[ref_dir[rhc] for rhc in hconf['concatenate']] for ref_dir in ref_dirs]
+                    except Exception as e:
+                        continue
+
+                hPair = HistPair(dqmSource, hconf,
+                                 data_series, data_sample, data_run, str(h), data_hist,
+                                 ref_series, ref_sample, ref_runs, str(h), ref_hists,
+                                 data_hist_conc, ref_hists_conc)
+                histPairs.append(hPair)
         else:
             # Check entire directory for files matching wildcard (Throw out wildcards with / in them as they are not plottable)
             for name in data_keys:
-                if h.split("*")[0] in str(name) and name in ref_keys and not "<" in str(name):
+                if h.split("*")[0] in str(name) and all([ name in ref_keys for ref_keys in ref_keyss ]) and not "<" in str(name):
                     if("/" not in name[:-2]):
                         try:
                             data_hist = data_dir[name[:-2]]
-                            ref_hist = ref_dir[name[:-2]]
+                            ref_hists = [ref_dir[name[:-2]] for ref_dir in ref_dirs]
                         except Exception as e:
                             continue
                         hPair = HistPair(dqmSource, hconf,
                                          data_series, data_sample, data_run, str(name[:-2]), data_hist,
-                                         ref_series, ref_sample, ref_run, str(name[:-2]), ref_hist)
+                                         ref_series, ref_sample, ref_runs, str(name[:-2]), ref_hists)
                         histPairs.append(hPair)
 
     ## TODO: "raise warning" is not an actual function, but need some way to alert
@@ -204,7 +215,7 @@ def identifier(hp, comparator_name):
     """Return a `hashed` identifier for the histpair"""
     data_id = "DATA-{}-{}-{}".format(hp.data_series,
                                      hp.data_sample, hp.data_run)
-    ref_id = "REF-{}-{}-{}".format(hp.ref_series, hp.ref_sample, hp.ref_run)
+    ref_id = "REF-{}-{}-{}".format(hp.ref_series, hp.ref_sample, '_'.join([ref_run for ref_run in hp.ref_runs]))
     if hp.data_name == hp.ref_name:
         name_id = hp.data_name
     else:

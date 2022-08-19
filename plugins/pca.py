@@ -84,7 +84,7 @@ def pca(histpair,
         yAxisTitle = histpair.data_hist.axes[1]._bases[0]._members["fTitle"]
     else:
         yAxisTitle = ""
-    plotTitle = histpair.data_name + " PCA Test  |  data:" + str(histpair.data_run) + " & ref:" + str(histpair.ref_run)
+    plotTitle = histpair.data_name + " PCA Test  |  data:" + str(histpair.data_run) + " & ref:" + str(histpair.ref_runs[0])
 
     #Plotly doesn't support #circ, #theta, #phi but does support unicode
     xAxisTitle = xAxisTitle.replace("#circ", "\u00B0").replace("#theta","\u03B8").replace("#phi","\u03C6").replace("#eta","\u03B7")

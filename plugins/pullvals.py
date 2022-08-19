@@ -19,7 +19,7 @@ def pullvals(histpair,
 
     """Can handle poisson driven TH2s or generic TProfile2Ds"""
     data_hist = histpair.data_hist
-    ref_hist = histpair.ref_hist
+    ref_hist = histpair.ref_hists[0]
 
     # Check that the hists are histograms
     # Check that the hists are 2 dimensional
@@ -122,7 +122,7 @@ def pullvals(histpair,
     #Getting Plot Titles for histogram, x-axis and y-axis
     xAxisTitle = data_hist.axes[0]._bases[0]._members["fTitle"]
     yAxisTitle = data_hist.axes[1]._bases[0]._members["fTitle"]
-    plotTitle = histpair.data_name + " Pull Values  |  data:" + str(histpair.data_run) + " & ref:" + str(histpair.ref_run)
+    plotTitle = histpair.data_name + " Pull Values  |  data:" + str(histpair.data_run) + " & ref:" + str(histpair.ref_runs[0])
 
     #Plotly doesn't support #circ, #theta, #phi but does support unicode
     xAxisTitle = xAxisTitle.replace("#circ", "\u00B0").replace("#theta","\u03B8").replace("#phi","\u03C6").replace("#eta","\u03B7")
