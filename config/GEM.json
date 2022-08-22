@@ -1,0 +1,30 @@
+{
+    "hists": [
+        {
+            "jar_dir": "GEM",
+            "path": "RecHits/occ_rphi_GE11*"
+        },
+        {
+            "jar_dir": "GEM",
+            "path": "RecHits/rechit_average_GE11*"
+        },
+        {
+	    "jar_dir": "GEM",
+            "path": "Digis/occupancy_GE11-M-L1/occ_GE11-M*"
+        },
+        {
+            "jar_dir": "GEM",
+            "path": "Digis/occupancy_GE11-M-L2/occ_GE11-M*"
+        },
+	{
+            "jar_dir": "GEM",
+            "path": "Digis/occupancy_GE11-P-L1/occ_GE11-P*"
+        },
+	{
+            "jar_dir": "GEM",
+            "path": "Digis/occupancy_GE11-P-L2/occ_GE11-P*"
+        }
+
+    ],
+    "main_gdir": "DQMData/Run {0}/GEM/Run summary/"
+}
