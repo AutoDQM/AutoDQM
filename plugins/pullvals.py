@@ -21,6 +21,8 @@ def pullvals(histpair,
     data_hist = histpair.data_hist
     ref_hist = histpair.ref_hists[0]
 
+
+    print('in pull vals')
     # Check that the hists are histograms
     # Check that the hists are 2 dimensional
     if not ( (       "TH2" in str(type(data_hist)) and       "TH2" in str(type(ref_hist)) ) or
