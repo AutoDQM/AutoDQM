@@ -1,8 +1,8 @@
 {
     "hists": [
-        {
+	{
             "jar_dir": "GEM",
-            "path": "RecHits/occ_rphi_GE11*"
+            "path": "RecHits/occ_xy_GE11*"
         },
         {
             "jar_dir": "GEM",
