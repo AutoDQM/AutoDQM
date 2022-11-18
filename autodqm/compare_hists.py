@@ -126,7 +126,7 @@ def compile_histpairs(chunk_index, chunk_size, config_dir,
             try:
                 ref_dirs.append( ref_files[iRef][ref_dirnames[iRef][:-1]] )
             except:
-                missing_ref_dirs.append(ref_dirname)
+                missing_ref_dirs.append(ref_dirnames)
                 continue
                 # raise error("Subsystem dir {0} not found in ref root file".format(ref_dirnames[iRef]))
 
