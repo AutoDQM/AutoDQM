@@ -188,9 +188,9 @@ Example command:
 
 .. code:: sh
     
-    ./run-offline.py Offline EMTF Run2018 SingleMuon 320920 320917
+    ./run-offline.py Offline RPC Run2022 SingleMuon 355443 355135
 
-This analyzes EMTF plots, using Run2018 series, SingleMuon sample (both data and reference), comparing run 320920 (data) and run 320917 (reference). 
+This analyzes RPC plots, using Run2022 series, SingleMuon sample (both data and reference), comparing run 355443 (data) and run 355135 (reference). 
 
 
 
