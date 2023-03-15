@@ -107,7 +107,7 @@ docker-compose, and deploy the image as a docker stack
 
 To view AutoDQM, first your browser proxy will need to be set to listen to a port. Insturctions to do this can be found `here <https://github.com/chosila/AutoDQM-1/wiki/Set-up-manual-proxy-on-firefox>`_. 
 
-After setting the proxy on your browser, forward your lxplus connection: 
+After setting the proxy on your browser, using your local terminal (not ssh-ed into anything), forward your lxplus connection: 
 
 .. code:: sh
     
