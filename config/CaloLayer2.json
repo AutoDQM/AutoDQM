@@ -2,7 +2,9 @@
     "hists": [
         {
             "norm_type": "col",
-            "path": "Central-Jets/*"
+            "path": "Central-Jets/*",
+            "always_show": true,
+            "jar_dir": "CaloLayer2"
         },
         {
             "norm_type": "col",

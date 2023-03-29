@@ -1,0 +1,629 @@
+{
+    "algorithm": "pca",
+    "config_file": "CL2_pca/pca.json",
+    "data_is_loaded": true,
+    "debug": true,
+    "histogram_name_map": {
+        "L1TRunsummaryL1TStage2CaloLayer2Central-JetsCenJetsBxOcc": "L1T//Run summary/L1TStage2CaloLayer2/Central-Jets/CenJetsBxOcc",
+        "L1TRunsummaryL1TStage2CaloLayer2Central-JetsCenJetsEtEtaPhi": "L1T//Run summary/L1TStage2CaloLayer2/Central-Jets/CenJetsEtEtaPhi",
+        "L1TRunsummaryL1TStage2CaloLayer2Central-JetsCenJetsEta": "L1T//Run summary/L1TStage2CaloLayer2/Central-Jets/CenJetsEta",
+        "L1TRunsummaryL1TStage2CaloLayer2Central-JetsCenJetsOcc": "L1T//Run summary/L1TStage2CaloLayer2/Central-Jets/CenJetsOcc",
+        "L1TRunsummaryL1TStage2CaloLayer2Central-JetsCenJetsPhi": "L1T//Run summary/L1TStage2CaloLayer2/Central-Jets/CenJetsPhi",
+        "L1TRunsummaryL1TStage2CaloLayer2Central-JetsCenJetsQual": "L1T//Run summary/L1TStage2CaloLayer2/Central-Jets/CenJetsQual",
+        "L1TRunsummaryL1TStage2CaloLayer2Central-JetsCenJetsRank": "L1T//Run summary/L1TStage2CaloLayer2/Central-Jets/CenJetsRank",
+        "L1TRunsummaryL1TStage2CaloLayer2Energy-SumsETTEMRank": "L1T//Run summary/L1TStage2CaloLayer2/Energy-Sums/ETTEMRank",
+        "L1TRunsummaryL1TStage2CaloLayer2Energy-SumsETTRank": "L1T//Run summary/L1TStage2CaloLayer2/Energy-Sums/ETTRank",
+        "L1TRunsummaryL1TStage2CaloLayer2Energy-SumsEtSumBxOcc": "L1T//Run summary/L1TStage2CaloLayer2/Energy-Sums/EtSumBxOcc",
+        "L1TRunsummaryL1TStage2CaloLayer2Energy-SumsHTTRank": "L1T//Run summary/L1TStage2CaloLayer2/Energy-Sums/HTTRank",
+        "L1TRunsummaryL1TStage2CaloLayer2Energy-SumsMETHFPhi": "L1T//Run summary/L1TStage2CaloLayer2/Energy-Sums/METHFPhi",
+        "L1TRunsummaryL1TStage2CaloLayer2Energy-SumsMETHFRank": "L1T//Run summary/L1TStage2CaloLayer2/Energy-Sums/METHFRank",
+        "L1TRunsummaryL1TStage2CaloLayer2Energy-SumsMETPhi": "L1T//Run summary/L1TStage2CaloLayer2/Energy-Sums/METPhi",
+        "L1TRunsummaryL1TStage2CaloLayer2Energy-SumsMETRank": "L1T//Run summary/L1TStage2CaloLayer2/Energy-Sums/METRank",
+        "L1TRunsummaryL1TStage2CaloLayer2Energy-SumsMHTHFPhi": "L1T//Run summary/L1TStage2CaloLayer2/Energy-Sums/MHTHFPhi",
+        "L1TRunsummaryL1TStage2CaloLayer2Energy-SumsMHTHFRank": "L1T//Run summary/L1TStage2CaloLayer2/Energy-Sums/MHTHFRank",
+        "L1TRunsummaryL1TStage2CaloLayer2Energy-SumsMHTPhi": "L1T//Run summary/L1TStage2CaloLayer2/Energy-Sums/MHTPhi",
+        "L1TRunsummaryL1TStage2CaloLayer2Energy-SumsMHTRank": "L1T//Run summary/L1TStage2CaloLayer2/Energy-Sums/MHTRank",
+        "L1TRunsummaryL1TStage2CaloLayer2Energy-SumsMinBiasHFM0": "L1T//Run summary/L1TStage2CaloLayer2/Energy-Sums/MinBiasHFM0",
+        "L1TRunsummaryL1TStage2CaloLayer2Energy-SumsMinBiasHFM1": "L1T//Run summary/L1TStage2CaloLayer2/Energy-Sums/MinBiasHFM1",
+        "L1TRunsummaryL1TStage2CaloLayer2Energy-SumsMinBiasHFP0": "L1T//Run summary/L1TStage2CaloLayer2/Energy-Sums/MinBiasHFP0",
+        "L1TRunsummaryL1TStage2CaloLayer2Energy-SumsMinBiasHFP1": "L1T//Run summary/L1TStage2CaloLayer2/Energy-Sums/MinBiasHFP1",
+        "L1TRunsummaryL1TStage2CaloLayer2Energy-SumsTowCount": "L1T//Run summary/L1TStage2CaloLayer2/Energy-Sums/TowCount",
+        "L1TRunsummaryL1TStage2CaloLayer2Forward-JetsForJetsBxOcc": "L1T//Run summary/L1TStage2CaloLayer2/Forward-Jets/ForJetsBxOcc",
+        "L1TRunsummaryL1TStage2CaloLayer2Forward-JetsForJetsEtEtaPhi": "L1T//Run summary/L1TStage2CaloLayer2/Forward-Jets/ForJetsEtEtaPhi",
+        "L1TRunsummaryL1TStage2CaloLayer2Forward-JetsForJetsEta": "L1T//Run summary/L1TStage2CaloLayer2/Forward-Jets/ForJetsEta",
+        "L1TRunsummaryL1TStage2CaloLayer2Forward-JetsForJetsOcc": "L1T//Run summary/L1TStage2CaloLayer2/Forward-Jets/ForJetsOcc",
+        "L1TRunsummaryL1TStage2CaloLayer2Forward-JetsForJetsPhi": "L1T//Run summary/L1TStage2CaloLayer2/Forward-Jets/ForJetsPhi",
+        "L1TRunsummaryL1TStage2CaloLayer2Forward-JetsForJetsQual": "L1T//Run summary/L1TStage2CaloLayer2/Forward-Jets/ForJetsQual",
+        "L1TRunsummaryL1TStage2CaloLayer2Forward-JetsForJetsRank": "L1T//Run summary/L1TStage2CaloLayer2/Forward-Jets/ForJetsRank",
+        "L1TRunsummaryL1TStage2CaloLayer2Isolated-EGIsoEGsBxOcc": "L1T//Run summary/L1TStage2CaloLayer2/Isolated-EG/IsoEGsBxOcc",
+        "L1TRunsummaryL1TStage2CaloLayer2Isolated-EGIsoEGsEtEtaPhi": "L1T//Run summary/L1TStage2CaloLayer2/Isolated-EG/IsoEGsEtEtaPhi",
+        "L1TRunsummaryL1TStage2CaloLayer2Isolated-EGIsoEGsEta": "L1T//Run summary/L1TStage2CaloLayer2/Isolated-EG/IsoEGsEta",
+        "L1TRunsummaryL1TStage2CaloLayer2Isolated-EGIsoEGsOcc": "L1T//Run summary/L1TStage2CaloLayer2/Isolated-EG/IsoEGsOcc",
+        "L1TRunsummaryL1TStage2CaloLayer2Isolated-EGIsoEGsPhi": "L1T//Run summary/L1TStage2CaloLayer2/Isolated-EG/IsoEGsPhi",
+        "L1TRunsummaryL1TStage2CaloLayer2Isolated-EGIsoEGsQual": "L1T//Run summary/L1TStage2CaloLayer2/Isolated-EG/IsoEGsQual",
+        "L1TRunsummaryL1TStage2CaloLayer2Isolated-EGIsoEGsRank": "L1T//Run summary/L1TStage2CaloLayer2/Isolated-EG/IsoEGsRank",
+        "L1TRunsummaryL1TStage2CaloLayer2Isolated-TauIsoTausBxOcc": "L1T//Run summary/L1TStage2CaloLayer2/Isolated-Tau/IsoTausBxOcc",
+        "L1TRunsummaryL1TStage2CaloLayer2Isolated-TauIsoTausEtEtaPhi": "L1T//Run summary/L1TStage2CaloLayer2/Isolated-Tau/IsoTausEtEtaPhi",
+        "L1TRunsummaryL1TStage2CaloLayer2Isolated-TauIsoTausEta": "L1T//Run summary/L1TStage2CaloLayer2/Isolated-Tau/IsoTausEta",
+        "L1TRunsummaryL1TStage2CaloLayer2Isolated-TauIsoTausOcc": "L1T//Run summary/L1TStage2CaloLayer2/Isolated-Tau/IsoTausOcc",
+        "L1TRunsummaryL1TStage2CaloLayer2Isolated-TauIsoTausPhi": "L1T//Run summary/L1TStage2CaloLayer2/Isolated-Tau/IsoTausPhi",
+        "L1TRunsummaryL1TStage2CaloLayer2Isolated-TauIsoTausQual": "L1T//Run summary/L1TStage2CaloLayer2/Isolated-Tau/IsoTausQual",
+        "L1TRunsummaryL1TStage2CaloLayer2Isolated-TauIsoTausRank": "L1T//Run summary/L1TStage2CaloLayer2/Isolated-Tau/IsoTausRank",
+        "L1TRunsummaryL1TStage2CaloLayer2NonIsolated-EGNonIsoEGsBxOcc": "L1T//Run summary/L1TStage2CaloLayer2/NonIsolated-EG/NonIsoEGsBxOcc",
+        "L1TRunsummaryL1TStage2CaloLayer2NonIsolated-EGNonIsoEGsEtEtaPhi": "L1T//Run summary/L1TStage2CaloLayer2/NonIsolated-EG/NonIsoEGsEtEtaPhi",
+        "L1TRunsummaryL1TStage2CaloLayer2NonIsolated-EGNonIsoEGsEta": "L1T//Run summary/L1TStage2CaloLayer2/NonIsolated-EG/NonIsoEGsEta",
+        "L1TRunsummaryL1TStage2CaloLayer2NonIsolated-EGNonIsoEGsOcc": "L1T//Run summary/L1TStage2CaloLayer2/NonIsolated-EG/NonIsoEGsOcc",
+        "L1TRunsummaryL1TStage2CaloLayer2NonIsolated-EGNonIsoEGsPhi": "L1T//Run summary/L1TStage2CaloLayer2/NonIsolated-EG/NonIsoEGsPhi",
+        "L1TRunsummaryL1TStage2CaloLayer2NonIsolated-EGNonIsoEGsQual": "L1T//Run summary/L1TStage2CaloLayer2/NonIsolated-EG/NonIsoEGsQual",
+        "L1TRunsummaryL1TStage2CaloLayer2NonIsolated-EGNonIsoEGsRank": "L1T//Run summary/L1TStage2CaloLayer2/NonIsolated-EG/NonIsoEGsRank",
+        "L1TRunsummaryL1TStage2CaloLayer2NonIsolated-TauTausBxOcc": "L1T//Run summary/L1TStage2CaloLayer2/NonIsolated-Tau/TausBxOcc",
+        "L1TRunsummaryL1TStage2CaloLayer2NonIsolated-TauTausEtEtaPhi": "L1T//Run summary/L1TStage2CaloLayer2/NonIsolated-Tau/TausEtEtaPhi",
+        "L1TRunsummaryL1TStage2CaloLayer2NonIsolated-TauTausEta": "L1T//Run summary/L1TStage2CaloLayer2/NonIsolated-Tau/TausEta",
+        "L1TRunsummaryL1TStage2CaloLayer2NonIsolated-TauTausOcc": "L1T//Run summary/L1TStage2CaloLayer2/NonIsolated-Tau/TausOcc",
+        "L1TRunsummaryL1TStage2CaloLayer2NonIsolated-TauTausPhi": "L1T//Run summary/L1TStage2CaloLayer2/NonIsolated-Tau/TausPhi",
+        "L1TRunsummaryL1TStage2CaloLayer2NonIsolated-TauTausQual": "L1T//Run summary/L1TStage2CaloLayer2/NonIsolated-Tau/TausQual",
+        "L1TRunsummaryL1TStage2CaloLayer2NonIsolated-TauTausRank": "L1T//Run summary/L1TStage2CaloLayer2/NonIsolated-Tau/TausRank"
+    },
+    "histograms": {
+        "L1T//Run summary/L1TStage2CaloLayer2/Central-Jets/CenJetsBxOcc": {
+            "n_bins": 2560,
+            "n_dim": 2,
+            "name": "L1TRunsummaryL1TStage2CaloLayer2Central-JetsCenJetsBxOcc",
+            "normalize": true,
+            "shape": [
+                5,
+                512
+            ]
+        },
+        "L1T//Run summary/L1TStage2CaloLayer2/Central-Jets/CenJetsEtEtaPhi": {
+            "n_bins": 32976,
+            "n_dim": 2,
+            "name": "L1TRunsummaryL1TStage2CaloLayer2Central-JetsCenJetsEtEtaPhi",
+            "normalize": true,
+            "shape": [
+                229,
+                144
+            ]
+        },
+        "L1T//Run summary/L1TStage2CaloLayer2/Central-Jets/CenJetsEta": {
+            "n_bins": 229,
+            "n_dim": 1,
+            "name": "L1TRunsummaryL1TStage2CaloLayer2Central-JetsCenJetsEta",
+            "normalize": true,
+            "shape": [
+                229
+            ]
+        },
+        "L1T//Run summary/L1TStage2CaloLayer2/Central-Jets/CenJetsOcc": {
+            "n_bins": 32976,
+            "n_dim": 2,
+            "name": "L1TRunsummaryL1TStage2CaloLayer2Central-JetsCenJetsOcc",
+            "normalize": true,
+            "shape": [
+                229,
+                144
+            ]
+        },
+        "L1T//Run summary/L1TStage2CaloLayer2/Central-Jets/CenJetsPhi": {
+            "n_bins": 144,
+            "n_dim": 1,
+            "name": "L1TRunsummaryL1TStage2CaloLayer2Central-JetsCenJetsPhi",
+            "normalize": true,
+            "shape": [
+                144
+            ]
+        },
+        "L1T//Run summary/L1TStage2CaloLayer2/Central-Jets/CenJetsQual": {
+            "n_bins": 32,
+            "n_dim": 1,
+            "name": "L1TRunsummaryL1TStage2CaloLayer2Central-JetsCenJetsQual",
+            "normalize": true,
+            "shape": [
+                32
+            ]
+        },
+        "L1T//Run summary/L1TStage2CaloLayer2/Central-Jets/CenJetsRank": {
+            "n_bins": 2048,
+            "n_dim": 1,
+            "name": "L1TRunsummaryL1TStage2CaloLayer2Central-JetsCenJetsRank",
+            "normalize": true,
+            "shape": [
+                2048
+            ]
+        },
+        "L1T//Run summary/L1TStage2CaloLayer2/Energy-Sums/ETTEMRank": {
+            "n_bins": 4096,
+            "n_dim": 1,
+            "name": "L1TRunsummaryL1TStage2CaloLayer2Energy-SumsETTEMRank",
+            "normalize": true,
+            "shape": [
+                4096
+            ]
+        },
+        "L1T//Run summary/L1TStage2CaloLayer2/Energy-Sums/ETTRank": {
+            "n_bins": 4096,
+            "n_dim": 1,
+            "name": "L1TRunsummaryL1TStage2CaloLayer2Energy-SumsETTRank",
+            "normalize": true,
+            "shape": [
+                4096
+            ]
+        },
+        "L1T//Run summary/L1TStage2CaloLayer2/Energy-Sums/EtSumBxOcc": {
+            "n_bins": 5120,
+            "n_dim": 2,
+            "name": "L1TRunsummaryL1TStage2CaloLayer2Energy-SumsEtSumBxOcc",
+            "normalize": true,
+            "shape": [
+                5,
+                1024
+            ]
+        },
+        "L1T//Run summary/L1TStage2CaloLayer2/Energy-Sums/HTTRank": {
+            "n_bins": 4096,
+            "n_dim": 1,
+            "name": "L1TRunsummaryL1TStage2CaloLayer2Energy-SumsHTTRank",
+            "normalize": true,
+            "shape": [
+                4096
+            ]
+        },
+        "L1T//Run summary/L1TStage2CaloLayer2/Energy-Sums/METHFPhi": {
+            "n_bins": 144,
+            "n_dim": 1,
+            "name": "L1TRunsummaryL1TStage2CaloLayer2Energy-SumsMETHFPhi",
+            "normalize": true,
+            "shape": [
+                144
+            ]
+        },
+        "L1T//Run summary/L1TStage2CaloLayer2/Energy-Sums/METHFRank": {
+            "n_bins": 4096,
+            "n_dim": 1,
+            "name": "L1TRunsummaryL1TStage2CaloLayer2Energy-SumsMETHFRank",
+            "normalize": true,
+            "shape": [
+                4096
+            ]
+        },
+        "L1T//Run summary/L1TStage2CaloLayer2/Energy-Sums/METPhi": {
+            "n_bins": 144,
+            "n_dim": 1,
+            "name": "L1TRunsummaryL1TStage2CaloLayer2Energy-SumsMETPhi",
+            "normalize": true,
+            "shape": [
+                144
+            ]
+        },
+        "L1T//Run summary/L1TStage2CaloLayer2/Energy-Sums/METRank": {
+            "n_bins": 4096,
+            "n_dim": 1,
+            "name": "L1TRunsummaryL1TStage2CaloLayer2Energy-SumsMETRank",
+            "normalize": true,
+            "shape": [
+                4096
+            ]
+        },
+        "L1T//Run summary/L1TStage2CaloLayer2/Energy-Sums/MHTHFPhi": {
+            "n_bins": 144,
+            "n_dim": 1,
+            "name": "L1TRunsummaryL1TStage2CaloLayer2Energy-SumsMHTHFPhi",
+            "normalize": true,
+            "shape": [
+                144
+            ]
+        },
+        "L1T//Run summary/L1TStage2CaloLayer2/Energy-Sums/MHTHFRank": {
+            "n_bins": 4096,
+            "n_dim": 1,
+            "name": "L1TRunsummaryL1TStage2CaloLayer2Energy-SumsMHTHFRank",
+            "normalize": true,
+            "shape": [
+                4096
+            ]
+        },
+        "L1T//Run summary/L1TStage2CaloLayer2/Energy-Sums/MHTPhi": {
+            "n_bins": 144,
+            "n_dim": 1,
+            "name": "L1TRunsummaryL1TStage2CaloLayer2Energy-SumsMHTPhi",
+            "normalize": true,
+            "shape": [
+                144
+            ]
+        },
+        "L1T//Run summary/L1TStage2CaloLayer2/Energy-Sums/MHTRank": {
+            "n_bins": 4096,
+            "n_dim": 1,
+            "name": "L1TRunsummaryL1TStage2CaloLayer2Energy-SumsMHTRank",
+            "normalize": true,
+            "shape": [
+                4096
+            ]
+        },
+        "L1T//Run summary/L1TStage2CaloLayer2/Energy-Sums/MinBiasHFM0": {
+            "n_bins": 16,
+            "n_dim": 1,
+            "name": "L1TRunsummaryL1TStage2CaloLayer2Energy-SumsMinBiasHFM0",
+            "normalize": true,
+            "shape": [
+                16
+            ]
+        },
+        "L1T//Run summary/L1TStage2CaloLayer2/Energy-Sums/MinBiasHFM1": {
+            "n_bins": 16,
+            "n_dim": 1,
+            "name": "L1TRunsummaryL1TStage2CaloLayer2Energy-SumsMinBiasHFM1",
+            "normalize": true,
+            "shape": [
+                16
+            ]
+        },
+        "L1T//Run summary/L1TStage2CaloLayer2/Energy-Sums/MinBiasHFP0": {
+            "n_bins": 16,
+            "n_dim": 1,
+            "name": "L1TRunsummaryL1TStage2CaloLayer2Energy-SumsMinBiasHFP0",
+            "normalize": true,
+            "shape": [
+                16
+            ]
+        },
+        "L1T//Run summary/L1TStage2CaloLayer2/Energy-Sums/MinBiasHFP1": {
+            "n_bins": 16,
+            "n_dim": 1,
+            "name": "L1TRunsummaryL1TStage2CaloLayer2Energy-SumsMinBiasHFP1",
+            "normalize": true,
+            "shape": [
+                16
+            ]
+        },
+        "L1T//Run summary/L1TStage2CaloLayer2/Energy-Sums/TowCount": {
+            "n_bins": 5904,
+            "n_dim": 1,
+            "name": "L1TRunsummaryL1TStage2CaloLayer2Energy-SumsTowCount",
+            "normalize": true,
+            "shape": [
+                5904
+            ]
+        },
+        "L1T//Run summary/L1TStage2CaloLayer2/Forward-Jets/ForJetsBxOcc": {
+            "n_bins": 2560,
+            "n_dim": 2,
+            "name": "L1TRunsummaryL1TStage2CaloLayer2Forward-JetsForJetsBxOcc",
+            "normalize": true,
+            "shape": [
+                5,
+                512
+            ]
+        },
+        "L1T//Run summary/L1TStage2CaloLayer2/Forward-Jets/ForJetsEtEtaPhi": {
+            "n_bins": 32976,
+            "n_dim": 2,
+            "name": "L1TRunsummaryL1TStage2CaloLayer2Forward-JetsForJetsEtEtaPhi",
+            "normalize": true,
+            "shape": [
+                229,
+                144
+            ]
+        },
+        "L1T//Run summary/L1TStage2CaloLayer2/Forward-Jets/ForJetsEta": {
+            "n_bins": 229,
+            "n_dim": 1,
+            "name": "L1TRunsummaryL1TStage2CaloLayer2Forward-JetsForJetsEta",
+            "normalize": true,
+            "shape": [
+                229
+            ]
+        },
+        "L1T//Run summary/L1TStage2CaloLayer2/Forward-Jets/ForJetsOcc": {
+            "n_bins": 32976,
+            "n_dim": 2,
+            "name": "L1TRunsummaryL1TStage2CaloLayer2Forward-JetsForJetsOcc",
+            "normalize": true,
+            "shape": [
+                229,
+                144
+            ]
+        },
+        "L1T//Run summary/L1TStage2CaloLayer2/Forward-Jets/ForJetsPhi": {
+            "n_bins": 144,
+            "n_dim": 1,
+            "name": "L1TRunsummaryL1TStage2CaloLayer2Forward-JetsForJetsPhi",
+            "normalize": true,
+            "shape": [
+                144
+            ]
+        },
+        "L1T//Run summary/L1TStage2CaloLayer2/Forward-Jets/ForJetsQual": {
+            "n_bins": 32,
+            "n_dim": 1,
+            "name": "L1TRunsummaryL1TStage2CaloLayer2Forward-JetsForJetsQual",
+            "normalize": true,
+            "shape": [
+                32
+            ]
+        },
+        "L1T//Run summary/L1TStage2CaloLayer2/Forward-Jets/ForJetsRank": {
+            "n_bins": 2048,
+            "n_dim": 1,
+            "name": "L1TRunsummaryL1TStage2CaloLayer2Forward-JetsForJetsRank",
+            "normalize": true,
+            "shape": [
+                2048
+            ]
+        },
+        "L1T//Run summary/L1TStage2CaloLayer2/Isolated-EG/IsoEGsBxOcc": {
+            "n_bins": 640,
+            "n_dim": 2,
+            "name": "L1TRunsummaryL1TStage2CaloLayer2Isolated-EGIsoEGsBxOcc",
+            "normalize": true,
+            "shape": [
+                5,
+                128
+            ]
+        },
+        "L1T//Run summary/L1TStage2CaloLayer2/Isolated-EG/IsoEGsEtEtaPhi": {
+            "n_bins": 32976,
+            "n_dim": 2,
+            "name": "L1TRunsummaryL1TStage2CaloLayer2Isolated-EGIsoEGsEtEtaPhi",
+            "normalize": true,
+            "shape": [
+                229,
+                144
+            ]
+        },
+        "L1T//Run summary/L1TStage2CaloLayer2/Isolated-EG/IsoEGsEta": {
+            "n_bins": 229,
+            "n_dim": 1,
+            "name": "L1TRunsummaryL1TStage2CaloLayer2Isolated-EGIsoEGsEta",
+            "normalize": true,
+            "shape": [
+                229
+            ]
+        },
+        "L1T//Run summary/L1TStage2CaloLayer2/Isolated-EG/IsoEGsOcc": {
+            "n_bins": 32976,
+            "n_dim": 2,
+            "name": "L1TRunsummaryL1TStage2CaloLayer2Isolated-EGIsoEGsOcc",
+            "normalize": true,
+            "shape": [
+                229,
+                144
+            ]
+        },
+        "L1T//Run summary/L1TStage2CaloLayer2/Isolated-EG/IsoEGsPhi": {
+            "n_bins": 144,
+            "n_dim": 1,
+            "name": "L1TRunsummaryL1TStage2CaloLayer2Isolated-EGIsoEGsPhi",
+            "normalize": true,
+            "shape": [
+                144
+            ]
+        },
+        "L1T//Run summary/L1TStage2CaloLayer2/Isolated-EG/IsoEGsQual": {
+            "n_bins": 32,
+            "n_dim": 1,
+            "name": "L1TRunsummaryL1TStage2CaloLayer2Isolated-EGIsoEGsQual",
+            "normalize": true,
+            "shape": [
+                32
+            ]
+        },
+        "L1T//Run summary/L1TStage2CaloLayer2/Isolated-EG/IsoEGsRank": {
+            "n_bins": 512,
+            "n_dim": 1,
+            "name": "L1TRunsummaryL1TStage2CaloLayer2Isolated-EGIsoEGsRank",
+            "normalize": true,
+            "shape": [
+                512
+            ]
+        },
+        "L1T//Run summary/L1TStage2CaloLayer2/Isolated-Tau/IsoTausBxOcc": {
+            "n_bins": 640,
+            "n_dim": 2,
+            "name": "L1TRunsummaryL1TStage2CaloLayer2Isolated-TauIsoTausBxOcc",
+            "normalize": true,
+            "shape": [
+                5,
+                128
+            ]
+        },
+        "L1T//Run summary/L1TStage2CaloLayer2/Isolated-Tau/IsoTausEtEtaPhi": {
+            "n_bins": 32976,
+            "n_dim": 2,
+            "name": "L1TRunsummaryL1TStage2CaloLayer2Isolated-TauIsoTausEtEtaPhi",
+            "normalize": true,
+            "shape": [
+                229,
+                144
+            ]
+        },
+        "L1T//Run summary/L1TStage2CaloLayer2/Isolated-Tau/IsoTausEta": {
+            "n_bins": 229,
+            "n_dim": 1,
+            "name": "L1TRunsummaryL1TStage2CaloLayer2Isolated-TauIsoTausEta",
+            "normalize": true,
+            "shape": [
+                229
+            ]
+        },
+        "L1T//Run summary/L1TStage2CaloLayer2/Isolated-Tau/IsoTausOcc": {
+            "n_bins": 32976,
+            "n_dim": 2,
+            "name": "L1TRunsummaryL1TStage2CaloLayer2Isolated-TauIsoTausOcc",
+            "normalize": true,
+            "shape": [
+                229,
+                144
+            ]
+        },
+        "L1T//Run summary/L1TStage2CaloLayer2/Isolated-Tau/IsoTausPhi": {
+            "n_bins": 144,
+            "n_dim": 1,
+            "name": "L1TRunsummaryL1TStage2CaloLayer2Isolated-TauIsoTausPhi",
+            "normalize": true,
+            "shape": [
+                144
+            ]
+        },
+        "L1T//Run summary/L1TStage2CaloLayer2/Isolated-Tau/IsoTausQual": {
+            "n_bins": 32,
+            "n_dim": 1,
+            "name": "L1TRunsummaryL1TStage2CaloLayer2Isolated-TauIsoTausQual",
+            "normalize": true,
+            "shape": [
+                32
+            ]
+        },
+        "L1T//Run summary/L1TStage2CaloLayer2/Isolated-Tau/IsoTausRank": {
+            "n_bins": 512,
+            "n_dim": 1,
+            "name": "L1TRunsummaryL1TStage2CaloLayer2Isolated-TauIsoTausRank",
+            "normalize": true,
+            "shape": [
+                512
+            ]
+        },
+        "L1T//Run summary/L1TStage2CaloLayer2/NonIsolated-EG/NonIsoEGsBxOcc": {
+            "n_bins": 640,
+            "n_dim": 2,
+            "name": "L1TRunsummaryL1TStage2CaloLayer2NonIsolated-EGNonIsoEGsBxOcc",
+            "normalize": true,
+            "shape": [
+                5,
+                128
+            ]
+        },
+        "L1T//Run summary/L1TStage2CaloLayer2/NonIsolated-EG/NonIsoEGsEtEtaPhi": {
+            "n_bins": 32976,
+            "n_dim": 2,
+            "name": "L1TRunsummaryL1TStage2CaloLayer2NonIsolated-EGNonIsoEGsEtEtaPhi",
+            "normalize": true,
+            "shape": [
+                229,
+                144
+            ]
+        },
+        "L1T//Run summary/L1TStage2CaloLayer2/NonIsolated-EG/NonIsoEGsEta": {
+            "n_bins": 229,
+            "n_dim": 1,
+            "name": "L1TRunsummaryL1TStage2CaloLayer2NonIsolated-EGNonIsoEGsEta",
+            "normalize": true,
+            "shape": [
+                229
+            ]
+        },
+        "L1T//Run summary/L1TStage2CaloLayer2/NonIsolated-EG/NonIsoEGsOcc": {
+            "n_bins": 32976,
+            "n_dim": 2,
+            "name": "L1TRunsummaryL1TStage2CaloLayer2NonIsolated-EGNonIsoEGsOcc",
+            "normalize": true,
+            "shape": [
+                229,
+                144
+            ]
+        },
+        "L1T//Run summary/L1TStage2CaloLayer2/NonIsolated-EG/NonIsoEGsPhi": {
+            "n_bins": 144,
+            "n_dim": 1,
+            "name": "L1TRunsummaryL1TStage2CaloLayer2NonIsolated-EGNonIsoEGsPhi",
+            "normalize": true,
+            "shape": [
+                144
+            ]
+        },
+        "L1T//Run summary/L1TStage2CaloLayer2/NonIsolated-EG/NonIsoEGsQual": {
+            "n_bins": 32,
+            "n_dim": 1,
+            "name": "L1TRunsummaryL1TStage2CaloLayer2NonIsolated-EGNonIsoEGsQual",
+            "normalize": true,
+            "shape": [
+                32
+            ]
+        },
+        "L1T//Run summary/L1TStage2CaloLayer2/NonIsolated-EG/NonIsoEGsRank": {
+            "n_bins": 512,
+            "n_dim": 1,
+            "name": "L1TRunsummaryL1TStage2CaloLayer2NonIsolated-EGNonIsoEGsRank",
+            "normalize": true,
+            "shape": [
+                512
+            ]
+        },
+        "L1T//Run summary/L1TStage2CaloLayer2/NonIsolated-Tau/TausBxOcc": {
+            "n_bins": 640,
+            "n_dim": 2,
+            "name": "L1TRunsummaryL1TStage2CaloLayer2NonIsolated-TauTausBxOcc",
+            "normalize": true,
+            "shape": [
+                5,
+                128
+            ]
+        },
+        "L1T//Run summary/L1TStage2CaloLayer2/NonIsolated-Tau/TausEtEtaPhi": {
+            "n_bins": 32976,
+            "n_dim": 2,
+            "name": "L1TRunsummaryL1TStage2CaloLayer2NonIsolated-TauTausEtEtaPhi",
+            "normalize": true,
+            "shape": [
+                229,
+                144
+            ]
+        },
+        "L1T//Run summary/L1TStage2CaloLayer2/NonIsolated-Tau/TausEta": {
+            "n_bins": 229,
+            "n_dim": 1,
+            "name": "L1TRunsummaryL1TStage2CaloLayer2NonIsolated-TauTausEta",
+            "normalize": true,
+            "shape": [
+                229
+            ]
+        },
+        "L1T//Run summary/L1TStage2CaloLayer2/NonIsolated-Tau/TausOcc": {
+            "n_bins": 32976,
+            "n_dim": 2,
+            "name": "L1TRunsummaryL1TStage2CaloLayer2NonIsolated-TauTausOcc",
+            "normalize": true,
+            "shape": [
+                229,
+                144
+            ]
+        },
+        "L1T//Run summary/L1TStage2CaloLayer2/NonIsolated-Tau/TausPhi": {
+            "n_bins": 144,
+            "n_dim": 1,
+            "name": "L1TRunsummaryL1TStage2CaloLayer2NonIsolated-TauTausPhi",
+            "normalize": true,
+            "shape": [
+                144
+            ]
+        },
+        "L1T//Run summary/L1TStage2CaloLayer2/NonIsolated-Tau/TausQual": {
+            "n_bins": 32,
+            "n_dim": 1,
+            "name": "L1TRunsummaryL1TStage2CaloLayer2NonIsolated-TauTausQual",
+            "normalize": true,
+            "shape": [
+                32
+            ]
+        },
+        "L1T//Run summary/L1TStage2CaloLayer2/NonIsolated-Tau/TausRank": {
+            "n_bins": 512,
+            "n_dim": 1,
+            "name": "L1TRunsummaryL1TStage2CaloLayer2NonIsolated-TauTausRank",
+            "normalize": true,
+            "shape": [
+                512
+            ]
+        }
+    },
+    "input_file": "CL2/JetMET.parquet",
+    "low_stat_threshold": 10000,
+    "n_components": 2,
+    "n_histograms": 59,
+    "name": "pca",
+    "output_dir": "CL2_pca",
+    "output_file": "CL2_pca/JetMET.parquet",
+    "remove_low_stat": true,
+    "tag": "default_pca",
+    "train_highest_only": false
+}

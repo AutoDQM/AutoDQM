@@ -33,8 +33,8 @@ RUN chmod 777 /home/access_log
 
 ENV HOME /root
 ENV REQUESTS_CA_BUNDLE /etc/ssl/certs/ca-bundle.crt
-ENV ADQM_SSLCERT /etc/robots/robotcert.pem
-ENV ADQM_SSLKEY /etc/robots/robotkey.pem
+ENV ADQM_SSLCERT /run/secrets/cmsvo-cert.pem
+ENV ADQM_SSLKEY /run/secrets/cmsvo-cert.key
 RUN mkdir -p /var/adqm
 ENV ADQM_TMP /var/adqm
 ENV ADQM_DB /db/
