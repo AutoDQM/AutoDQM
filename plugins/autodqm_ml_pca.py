@@ -103,9 +103,8 @@ def plot(histpair, hist, hist_reconstructed):
         c['layout'].update(barmode='overlay')
 
     else: 
-        c.add_trace(go.Heatmap(z=hist_reconstructed.T))
-        c.update_coloraxes(colorbar_tickformat='.e')        
-
+        c.add_trace(go.Heatmap(z=hist_reconstructed.T, type='heatmap', colorscale='mint', colorbar_tickformat='.2r')) # .2r is round to 2 sigfigs 
+        
     c['layout'].update(plot_bgcolor='white')
     c.update_xaxes(showline=True, linewidth=2, linecolor='black', mirror=True, showgrid=False)
     c.update_yaxes(showline=True, linewidth=2, linecolor='black', mirror=True, showgrid=False)
@@ -118,8 +117,9 @@ def plot(histpair, hist, hist_reconstructed):
             size=9,
             color="black"
         ),
+    
     )
-
+    
 
     return c
 
