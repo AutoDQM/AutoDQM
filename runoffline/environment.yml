@@ -3,6 +3,7 @@ channels:
   - conda-forge
   - defaults
 dependencies:
+  - python=3.6
   - certifi
   - chardet
   - idna
@@ -17,6 +18,4 @@ dependencies:
   - tqdm
   - uproot
   - urllib3
-  - python
-
 
