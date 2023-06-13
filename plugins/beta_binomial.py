@@ -59,11 +59,20 @@ def beta_binomial(histpair, pull_cap=15, chi2_cut=10, pull_cut=10, min_entries=1
         if 'xmax' in histpair.config.keys() and histpair.config['xmax'] > x_bins[1]:
             binHi = min( np.nonzero(x_bins <= histpair.config['xmax'])[0][-1], len(x_bins) - 1 )
 
+        ## Check if new binning makes data or sum of references have all empty bins
+        if np.sum(data_hist_raw[binLo:binHi+1]) <= 0 or sum(np.sum(r[binLo:binHi+1]) > 0 for r in ref_hists_raw) == 0:
+            binLo, binHi = 0, len(x_bins) - 1
+
         x_bins = x_bins[binLo:binHi+1]
         data_hist_raw = data_hist_raw[binLo:binHi+1]
-        ref_hists_raw = np.array([r[binLo:binHi+1] for r in ref_hists_raw])
+        ref_hists_raw = np.array([r[binLo:binHi+1] for r in ref_hists_raw if np.sum(r[binLo:binHi+1]) > 0])
 
-    ## summed ref_hist
+    ## Update nRef and again don't run on empty histograms
+    nRef = len(ref_hists_raw)
+    if nRef == 0:
+        return None
+
+    ## Summed ref_hist
     ref_hist_sum = ref_hists_raw.sum(axis=0)
 
     ## Delete leading and trailing bins of 1D plots which are all zeros
