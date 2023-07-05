@@ -17,7 +17,7 @@ from autodqm.compare_hists import process
 
 def autodqm_offline(dqmSource, subsystem,
                     data_run, data_sample, data_series,
-                    ref_run, ref_sample, ref_series,
+                    ref_runs, ref_sample, ref_series,
                     cfg_dir, output_dir, plugin_dir,
                     sslcert, sslkey, db):
 
@@ -33,23 +33,24 @@ def autodqm_offline(dqmSource, subsystem,
 
     # Get root files
     with DQMSession(cert, db) as dqm:
-        print('')
-        print("Getting data root file...")
+        print("\nGetting data root file...")
         data_path = get_run(dqm, dqmSource, subsystem, data_series, data_sample, data_run)
 
-        print('')
-        print("Getting reference root file...")
-        ref_path = get_run(dqm, dqmSource, subsystem, ref_series, ref_sample, ref_run)
+        print("\nGetting reference root file(s)...")
+        ref_paths = []
+        for ref_run in ref_runs.split('_'):
+            if dqmSource == 'Online':
+                ref_series = '000'+ref_run[:2]+'xxxx'
+                ref_sample = '000'+ref_run[:4]+'xx'
+            ref_paths.append( get_run(dqm, dqmSource, subsystem, ref_series, ref_sample, ref_run) )
 
-    print('')
-    print("Processing results...")
+    print("\nProcessing results...")
     results = process(0, 9999, cfg_dir, dqmSource, subsystem,
                       data_series, data_sample, data_run, data_path,
-                      ref_series, ref_sample, ref_run, ref_path,
+                      ref_series, ref_sample, ref_runs.split('_'), ref_paths,
                       output_dir=output_dir, plugin_dir=plugin_dir)
 
-    print('')
-    print("Results available in {}".format(output_dir))
+    print("\nResults available in {}".format(output_dir))
     return results
 
 
@@ -94,7 +95,7 @@ if __name__ == '__main__':
     parser.add_argument('data_sample', type=str,
                         help="data sample to look for runs in. Examples: ZeroBias, SingleMuon, Cosmics")
     parser.add_argument('data_run', type=str, help="data run number")
-    parser.add_argument('ref_run', type=str, help="data run number")
+    parser.add_argument('ref_run', type=str, help="reference run number, or multiple runs separated by '_'")
 
     parser.add_argument('--ref_series', type=str, default=None,
                         help="ref series to look for samples in. Defaults to data_series")

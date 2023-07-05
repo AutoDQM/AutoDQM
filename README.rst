@@ -73,7 +73,8 @@ user to the docker group.
         https://download.docker.com/linux/centos/docker-ce.repo
     sudo yum install docker-ce -y
     sudo yum install python-pip -y
-    sudo pip install docker-compose
+    sudo pip3 install --upgrade pip 
+    sudo pip3 install docker-compose
 
 .. code:: sh
 
@@ -107,7 +108,7 @@ docker-compose, and deploy the image as a docker stack
 
 To view AutoDQM, first your browser proxy will need to be set to listen to a port. Insturctions to do this can be found `here <https://github.com/chosila/AutoDQM-1/wiki/Set-up-manual-proxy-on-firefox>`_. 
 
-After setting the proxy on your browser, forward your lxplus connection: 
+After setting the proxy on your browser, using your local terminal (not ssh-ed into anything), forward your lxplus connection: 
 
 .. code:: sh
     
@@ -188,9 +189,9 @@ Example command:
 
 .. code:: sh
     
-    ./run-offline.py Offline EMTF Run2018 SingleMuon 320920 320917
+    ./run-offline.py Offline RPC Run2022 SingleMuon 355443 355135
 
-This analyzes EMTF plots, using Run2018 series, SingleMuon sample (both data and reference), comparing run 320920 (data) and run 320917 (reference). 
+This analyzes RPC plots, using Run2022 series, SingleMuon sample (both data and reference), comparing run 355443 (data) and run 355135 (reference). 
 
 
 
