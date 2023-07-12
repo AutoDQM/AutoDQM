@@ -17,7 +17,7 @@ export default class Plots extends Component {
         //   display={shouldDisplay(p, this.props.showAll, this.props.search)}
         //   onHover={() => this.props.onHover(p)}
         //>
-	  <iframe src={p.png_path}></iframe>
+	  <iframe src={p.png_path} height='300' width='450' ></iframe>
 	  //<div dangerouslySetInnerHTML={__html: {p.png_path}} />
       );
     });
@@ -25,24 +25,24 @@ export default class Plots extends Component {
   }
 }
 
-const Plot = ({name, pngUri, pdfUri, search, display, onHover}) => {
-    //var h = require(pngUri);
-    //var template = { __html: pngUri };
-    return (
+// const Plot = ({name, pngUri, pdfUri, search, display, onHover}) => {
+//     //var h = require(pngUri);
+//     //var template = { __html: pngUri };
+//     return (
 
-	//<iframe src={template}></iframe>
+// 	//<iframe src={template}></iframe>
 
-	<div dangerouslySetInnerHTML={pngUri} />
-    // <Card className={cx(plotSty, display ? null : hidden)} onMouseEnter={onHover}>
-  //     <a href={pdfUri} target="_blank">
-  //       <CardHeader>{hlSearch(name, search)}</CardHeader>
-  //       <CardImg src={pngUri} />
-  //     </a>
-  //   </Card>
-  // 
-  );
+// 	<div dangerouslySetInnerHTML={pngUri} />
+//     // <Card className={cx(plotSty, display ? null : hidden)} onMouseEnter={onHover}>
+//   //     <a href={pdfUri} target="_blank">
+//   //       <CardHeader>{hlSearch(name, search)}</CardHeader>
+//   //       <CardImg src={pngUri} />
+//   //     </a>
+//   //   </Card>
+//   // 
+//   );
 
-};
+//};
 
 const containerSty = css`
   margin-top: 0.5em;
