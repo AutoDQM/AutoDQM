@@ -46,6 +46,7 @@ def process(chunk_index, chunk_size, config_dir,
             pdf_path = '{}/pdfs/{}.pdf'.format(output_dir, result_id)
             json_path = '{}/jsons/{}.json'.format(output_dir, result_id)
             png_path = '{}/pngs/{}.html'.format(output_dir, result_id)
+            pdf_path = png_path
 
             if not os.path.isfile(json_path):
                 results = comparator(hp, **hp.config)
@@ -55,10 +56,11 @@ def process(chunk_index, chunk_size, config_dir,
                     continue
 
                 # Make pdf
-                results.canvas.write_image(pdf_path)
+                #results.canvas.write_image(pdf_path)
 
                 # Make png
-                results.canvas.write_html(png_path)
+                results.canvas.write_html(png_path, include_plotlyjs='cdn', full_html=False)
+                
                 #subprocess.Popen(
                 #    ['convert', '-density', '50', '-trim', '-fuzz', '1%', pdf_path, png_path])
 
