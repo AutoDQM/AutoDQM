@@ -8,15 +8,17 @@ export default class Plots extends Component {
 
     const plots = plotObjs.map(p => {
       return (
-        <Plot
-          key={p.id}
-          name={p.name}
-          pngUri={p.png_path}
-          pdfUri={p.pdf_path}
-          search={this.props.search}
-          display={shouldDisplay(p, this.props.showAll, this.props.search)}
-          onHover={() => this.props.onHover(p)}
-        />
+        // <Plot
+        //   key={p.id}
+        //   name={p.name}
+        //   pngUri={p.png_path}
+        //   pdfUri={p.pdf_path}
+        //   search={this.props.search}
+        //   display={shouldDisplay(p, this.props.showAll, this.props.search)}
+        //   onHover={() => this.props.onHover(p)}
+        //>
+	  <iframe src={p.png_path}></iframe>
+	  //<div dangerouslySetInnerHTML={__html: {p.png_path}} />
       );
     });
     return <div className={containerSty}>{plots}</div>;
@@ -24,14 +26,22 @@ export default class Plots extends Component {
 }
 
 const Plot = ({name, pngUri, pdfUri, search, display, onHover}) => {
-  return (
-    <Card className={cx(plotSty, display ? null : hidden)} onMouseEnter={onHover}>
-      <a href={pdfUri} target="_blank">
-        <CardHeader>{hlSearch(name, search)}</CardHeader>
-        <CardImg src={pngUri} />
-      </a>
-    </Card>
+    //var h = require(pngUri);
+    //var template = { __html: pngUri };
+    return (
+
+	//<iframe src={template}></iframe>
+
+	<div dangerouslySetInnerHTML={pngUri} />
+    // <Card className={cx(plotSty, display ? null : hidden)} onMouseEnter={onHover}>
+  //     <a href={pdfUri} target="_blank">
+  //       <CardHeader>{hlSearch(name, search)}</CardHeader>
+  //       <CardImg src={pngUri} />
+  //     </a>
+  //   </Card>
+  // 
   );
+
 };
 
 const containerSty = css`

@@ -45,7 +45,7 @@ def process(chunk_index, chunk_size, config_dir,
             result_id = identifier(hp, comp_name)
             pdf_path = '{}/pdfs/{}.pdf'.format(output_dir, result_id)
             json_path = '{}/jsons/{}.json'.format(output_dir, result_id)
-            png_path = '{}/pngs/{}.png'.format(output_dir, result_id)
+            png_path = '{}/pngs/{}.html'.format(output_dir, result_id)
 
             if not os.path.isfile(json_path):
                 results = comparator(hp, **hp.config)
@@ -58,8 +58,9 @@ def process(chunk_index, chunk_size, config_dir,
                 results.canvas.write_image(pdf_path)
 
                 # Make png
-                subprocess.Popen(
-                    ['convert', '-density', '50', '-trim', '-fuzz', '1%', pdf_path, png_path])
+                results.canvas.write_html(png_path)
+                #subprocess.Popen(
+                #    ['convert', '-density', '50', '-trim', '-fuzz', '1%', pdf_path, png_path])
 
                 # Make json
                 info = {
