@@ -34,8 +34,8 @@ const Plot = ({key, name, pngUri, pdfUri, search, display, onHover}) => {
     // </Card>
 	    <div className={cx(plotSty, display ? null : hidden)} onMouseEnter={onHover} style={{position:"relative"}}>
 	    <a href={pngUri} target="_blank">
-	    <div style={{position:"absolute",  height:"350px", width:"400px"}}></div>
-	    <iframe id={key} type="text/html" frameborder="0" height="350px" width="400px" src={pngUri}></iframe>
+	    <div style={{position:"absolute",  height:"325px", width:"420px"}}></div>
+	    <iframe id={key} type="text/html" height="325px" width="420px" src={pngUri}></iframe>
 	    </a>
 	    </div>
 	     	      
@@ -52,7 +52,9 @@ const hidden = css`
   display: none;
 `
 
+// edit the width to see how many plots per row? 
 const mh = '0.5em';
+
 const plotSty = css`
   width: calc(100% / 1 - 2 * ${mh});
   display: inline-block;
@@ -62,15 +64,15 @@ const plotSty = css`
   }
 
   @media (min-width: 768px) {
-    width: calc(100% / 2 - 2 * ${mh});
+    width: calc(100% / 1 - 2 * ${mh});
   }
 
   @media (min-width: 992px) {
-    width: calc(100% / 3 - 2 * ${mh});
+    width: calc(100% / 2 - 2 * ${mh});
   }
 
   @media (min-width: 1200px) {
-    width: calc(100% / 4 - 2 * ${mh});
+    width: calc(100% / 3 - 2 * ${mh});
   }
 
   :hover {

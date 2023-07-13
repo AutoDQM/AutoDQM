@@ -197,7 +197,7 @@ export default class PlotsPage extends Component {
             height: 100%;
           `}>
           <Col
-            md={4}
+            md={3}
             xl={3}
             className={`${fullHeight} d-none d-md-block bg-light p-3`}>
             <Controls
