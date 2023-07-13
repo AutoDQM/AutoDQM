@@ -8,59 +8,38 @@ export default class Plots extends Component {
 
     const plots = plotObjs.map(p => {
       return (
-        // <Plot
-        //   key={p.id}
-        //   name={p.name}
-        //   pngUri={p.png_path}
-        //   pdfUri={p.pdf_path}
-        //   search={this.props.search}
-        //   display={shouldDisplay(p, this.props.showAll, this.props.search)}
-        //   onHover={() => this.props.onHover(p)}
-        // />
-
-	      // <div style="position:relative;">
-	      // <a href={p.png_path} target="_blank">
-	      // <div style="position:absolute;  z-index:500;height:245px;width:100%;"></div>
-	      // <iframe id="forecast_embed" type="text/html" frameborder="0" height="245" width="100%" src={p.png_path}></iframe>
-	      // </a>
-	      // </div>
+        <Plot
+          key={p.id}
+          name={p.name}
+          pngUri={p.png_path}
+          pdfUri={p.pdf_path}
+          search={this.props.search}
+          display={shouldDisplay(p, this.props.showAll, this.props.search)}
+          onHover={() => this.props.onHover(p)}
+        />
 	  
-	  //you are  going to have to go back to create a columized div in the plots page 
-	      <div style={{position:"relative"}}>
-	      <a href={p.png_path} target="_blank">
-	      <div style={{position:"absolute",  height:"350px", width:"400px"}}></div>
-	      <iframe id={p.id} type="text/html" frameborder="0" height="350px" width="400px" src={p.png_path}></iframe>
-	      </a>
-	      </div>
-
-
-
-	      //<div style={{position:'absolute', height:'350px', width:'400px'}}></div>
-	      //<a href={p.png_path} target="_blank">
-	      //<iframe id="forecast_embed" type="text/html" frameborder="0" height="350px" width="400px" src={p.png_path}></iframe>
-	      //</a>
-	      
-	      
-	  
-	      // <div style="position:relative;">
-	      // <iframe src={p.png_path} height='300' width='450' />
-	      // <a href={p.png_path} style="position:absolute; top:0; left:0; display:inline-block; width:500px; height:500px; z-index:5;" target="_blank"></a>
-	      //</div> 
-	//<div dangerouslySetInnerHTML={__html: {p.png_path}} />
       );
     });
     return <div className={containerSty}>{plots}</div>;
   }
 }
 
-const Plot = ({name, pngUri, pdfUri, search, display, onHover}) => {
+const Plot = ({key, name, pngUri, pdfUri, search, display, onHover}) => {
     return (
-    <Card className={cx(plotSty, display ? null : hidden)} onMouseEnter={onHover}>
-      <a href={pdfUri} target="_blank">
-        <CardHeader>{hlSearch(name, search)}</CardHeader>
-        <CardImg src={pngUri} />
-      </a>
-    </Card>
+    // <Card className={cx(plotSty, display ? null : hidden)} onMouseEnter={onHover}>
+    //   <a href={pdfUri} target="_blank">
+    //     <CardHeader>{hlSearch(name, search)}</CardHeader>
+    //     <CardImg src={pngUri} />
+    //   </a>
+    // </Card>
+	    <div className={cx(plotSty, display ? null : hidden)} onMouseEnter={onHover} style={{position:"relative"}}>
+	    <a href={pngUri} target="_blank">
+	    <div style={{position:"absolute",  height:"350px", width:"400px"}}></div>
+	    <iframe id={key} type="text/html" frameborder="0" height="350px" width="400px" src={pngUri}></iframe>
+	    </a>
+	    </div>
+	     	      
+	  
   
   );
 };
