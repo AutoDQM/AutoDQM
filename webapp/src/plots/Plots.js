@@ -16,33 +16,54 @@ export default class Plots extends Component {
         //   search={this.props.search}
         //   display={shouldDisplay(p, this.props.showAll, this.props.search)}
         //   onHover={() => this.props.onHover(p)}
-        //>
-	  <iframe src={p.png_path} height='300' width='450' ></iframe>
-	  //<div dangerouslySetInnerHTML={__html: {p.png_path}} />
+        // />
+
+	      // <div style="position:relative;">
+	      // <a href={p.png_path} target="_blank">
+	      // <div style="position:absolute;  z-index:500;height:245px;width:100%;"></div>
+	      // <iframe id="forecast_embed" type="text/html" frameborder="0" height="245" width="100%" src={p.png_path}></iframe>
+	      // </a>
+	      // </div>
+	  
+	  //you are  going to have to go back to create a columized div in the plots page 
+	      <div style={{position:"relative"}}>
+	      <a href={p.png_path} target="_blank">
+	      <div style={{position:"absolute",  height:"350px", width:"400px"}}></div>
+	      <iframe id={p.id} type="text/html" frameborder="0" height="350px" width="400px" src={p.png_path}></iframe>
+	      </a>
+	      </div>
+
+
+
+	      //<div style={{position:'absolute', height:'350px', width:'400px'}}></div>
+	      //<a href={p.png_path} target="_blank">
+	      //<iframe id="forecast_embed" type="text/html" frameborder="0" height="350px" width="400px" src={p.png_path}></iframe>
+	      //</a>
+	      
+	      
+	  
+	      // <div style="position:relative;">
+	      // <iframe src={p.png_path} height='300' width='450' />
+	      // <a href={p.png_path} style="position:absolute; top:0; left:0; display:inline-block; width:500px; height:500px; z-index:5;" target="_blank"></a>
+	      //</div> 
+	//<div dangerouslySetInnerHTML={__html: {p.png_path}} />
       );
     });
     return <div className={containerSty}>{plots}</div>;
   }
 }
 
-// const Plot = ({name, pngUri, pdfUri, search, display, onHover}) => {
-//     //var h = require(pngUri);
-//     //var template = { __html: pngUri };
-//     return (
-
-// 	//<iframe src={template}></iframe>
-
-// 	<div dangerouslySetInnerHTML={pngUri} />
-//     // <Card className={cx(plotSty, display ? null : hidden)} onMouseEnter={onHover}>
-//   //     <a href={pdfUri} target="_blank">
-//   //       <CardHeader>{hlSearch(name, search)}</CardHeader>
-//   //       <CardImg src={pngUri} />
-//   //     </a>
-//   //   </Card>
-//   // 
-//   );
-
-//};
+const Plot = ({name, pngUri, pdfUri, search, display, onHover}) => {
+    return (
+    <Card className={cx(plotSty, display ? null : hidden)} onMouseEnter={onHover}>
+      <a href={pdfUri} target="_blank">
+        <CardHeader>{hlSearch(name, search)}</CardHeader>
+        <CardImg src={pngUri} />
+      </a>
+    </Card>
+  
+  );
+};
 
 const containerSty = css`
   margin-top: 0.5em;
