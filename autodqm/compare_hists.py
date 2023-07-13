@@ -58,7 +58,9 @@ def process(chunk_index, chunk_size, config_dir,
                 # Make pdf
                 #results.canvas.write_image(pdf_path)
 
-                # Make png
+                # Make html
+                results.canvas.update_layout(margin=dict(l=10, r=10, t=20, b=10),)
+                results.canvas.update_layout(autosize=True)
                 results.canvas.write_html(png_path, include_plotlyjs='cdn', full_html=False)
                 
                 #subprocess.Popen(
