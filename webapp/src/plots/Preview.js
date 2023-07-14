@@ -15,11 +15,6 @@ export default function Preview(props) {
   if (plot) {
     inner = (
       <React.Fragment>
-        <img
-          src={plot.png_path}
-          alt="Plot Preview"
-          className="card-img-top img-fluid"
-        />
         <ListGroup flush>{resultItems(plot)}</ListGroup>
       </React.Fragment>
     );
