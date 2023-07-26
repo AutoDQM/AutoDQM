@@ -72,7 +72,7 @@ user to the docker group.
         --add-repo \
         https://download.docker.com/linux/centos/docker-ce.repo
     sudo yum install docker-ce -y
-    sudo yum install python-pip -y
+    sudo yum install python3-pip -y
     sudo pip3 install --upgrade pip 
     sudo pip3 install docker-compose
 
