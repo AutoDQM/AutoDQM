@@ -1,4 +1,5 @@
 {
+    "comparators": ["beta_binomial"],
     "hists": [
         {
             "norm_type": "row",

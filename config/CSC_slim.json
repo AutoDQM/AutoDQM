@@ -1,0 +1,29 @@
+{
+
+    "comparators": ["beta_binomial"],
+
+    "hists": [
+        {
+            "norm_type": "row",
+            "path": "Occupancy/hORecHits"
+        },
+        {
+            "norm_type": "row",
+            "path": "Occupancy/hOSegments"
+        },
+        {
+            "norm_type": "row",
+            "path": "Occupancy/hOStrips"
+        },
+        {
+            "norm_type": "row",
+            "path": "Occupancy/hOWires"
+        },
+        {
+            "jar_dir": "CSC",
+            "path": "Digis/hWireTBin_*"
+        }
+    ],
+    "main_gdir": "DQMData/Run {0}/CSC/Run summary/CSCOfflineMonitor/",
+    "run_reg": "csc"
+}
