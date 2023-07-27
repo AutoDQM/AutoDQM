@@ -15,10 +15,6 @@ def comparators():
     }
 
 def beta_binomial(histpair, pull_cap=15, chi2_cut=10, pull_cut=10, min_entries=1, tol=0.01, norm_type='all', **kwargs):
-
-    if not 'emtfTrackEta' in histpair.data_name:
-        return 0
-
     """beta_binomial works on both 1D and 2D"""
     data_hist_orig = histpair.data_hist
     ref_hists_orig = [rh for rh in histpair.ref_hists if rh.values().size == data_hist_orig.values().size]
@@ -112,9 +108,6 @@ def beta_binomial(histpair, pull_cap=15, chi2_cut=10, pull_cut=10, min_entries=1
     min_pull = maxPullNorm(np.amin(pull_hist), nBinsUsed)
     if abs(min_pull) > max_pull:
         max_pull = min_pull
-
-    print('\n'+histpair.data_name)
-    print('chi2 = %f, max_pull = %f' % (chi2, max_pull))
 
     ## access per-histogram settings for max_pull and chi2
     if 'opts' in histpair.config.keys():

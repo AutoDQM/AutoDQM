@@ -83,11 +83,8 @@ class DQMSession(FuturesSession):
                 run_info = next(r for r in runs if r.name == run and DQM_dir+'_R000' in r.full_name)
             else:                   ## Use cmsweb.cern.ch/dqm/offline/data/browse/ROOT/OfflineData/
                 ## Prefer PromptReco over other processings
-                # try:    run_info = next(r for r in runs if r.name == run and 'PromptReco' in r.full_name)
-                try:    run_info = next(r for r in runs if r.name == run and '30May2023-v1' in r.full_name)
+                try:    run_info = next(r for r in runs if r.name == run and 'PromptReco' in r.full_name)
                 except: run_info = next(r for r in runs if r.name == run)
-                print('\n************** RUN INFO *******************')
-                print(run_info)
 
             for prog in self._stream_file(
                     run_info.url, run_path, chunk_size=chunk_size):
