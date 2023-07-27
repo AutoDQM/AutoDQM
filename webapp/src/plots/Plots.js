@@ -17,20 +17,21 @@ export default class Plots extends Component {
           display={shouldDisplay(p, this.props.showAll, this.props.search)}
           onHover={() => this.props.onHover(p)}
         />
+	  
       );
     });
     return <div className={containerSty}>{plots}</div>;
   }
 }
 
-const Plot = ({name, pngUri, pdfUri, search, display, onHover}) => {
-  return (
-    <Card className={cx(plotSty, display ? null : hidden)} onMouseEnter={onHover}>
-      <a href={pdfUri} target="_blank">
-        <CardHeader>{hlSearch(name, search)}</CardHeader>
-        <CardImg src={pngUri} />
-      </a>
-    </Card>
+const Plot = ({key, name, pngUri, pdfUri, search, display, onHover}) => {
+    return (
+	    <div className={cx(plotSty, display ? null : hidden)} onMouseEnter={onHover} style={{position:"relative"}}>
+		 <a href={pngUri} target="_blank">
+		 <div style={{position:"absolute",  height:"325px", width:"420px"}}></div>
+		 <iframe id={key} type="text/html" height="325px" width="420px" src={pngUri}></iframe>
+		 </a>
+		 </div>
   );
 };
 
@@ -42,26 +43,37 @@ const hidden = css`
   display: none;
 `
 
+  
 const mh = '0.5em';
+// this determines how many columns of plots are shown depending on your browser width
+// the number in the denominator determins number of cols 
+// the min-width is how big the border 
+// still not sure how the min-width translates exactly. I was just increasing my screen
+// size until it gains more columsn and see which number works
 const plotSty = css`
   width: calc(100% / 1 - 2 * ${mh});
   display: inline-block;
   margin: ${mh};
-  @media (min-width: 576px) {
+  @media (min-width: 840px) {
     width: calc(100% / 1 - 2 * ${mh});
   }
 
-  @media (min-width: 768px) {
+  @media (min-width: 1200px) {
     width: calc(100% / 2 - 2 * ${mh});
   }
 
-  @media (min-width: 992px) {
+  @media (min-width: 1720px) {
     width: calc(100% / 3 - 2 * ${mh});
   }
-
-  @media (min-width: 1200px) {
+ 
+  @media (min-width: 2300px) {
     width: calc(100% / 4 - 2 * ${mh});
   }
+
+  @media (min-width: 2810px) {
+    width: calc(100% / 5 - 2 * ${mh});
+  }
+
 
   :hover {
     border-color: #6c757d;
