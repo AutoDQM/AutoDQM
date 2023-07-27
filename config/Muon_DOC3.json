@@ -43,11 +43,6 @@
 	{"path" : "DT/Run summary/05-ChamberEff/Task/hCountSectVsChamb_Qual_W0"},
 	{"path" : "DT/Run summary/05-ChamberEff/Task/hCountSectVsChamb_Qual_W1"},
 	{"path" : "DT/Run summary/05-ChamberEff/Task/hCountSectVsChamb_Qual_W2"},
-	{"path" : "GEM/Run summary/Digis/occ_GE11-M-L1"},
-	{"path" : "GEM/Run summary/Digis/occ_GE11-M-L2"},
-	{"path" : "GEM/Run summary/Digis/occ_GE11-P-L1"},
-	{"path" : "GEM/Run summary/Digis/occ_GE11-P-L2"},
-	{"path" : "GEM/Run summary/Digis/occ_GE21-P-L2"},
 	{"path" : "GEM/Run summary/Segment_TnP/Task/GEM_nFailingProbe_Ch_region_GE1"}
     ]
     
