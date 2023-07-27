@@ -1,5 +1,5 @@
 {
-    "comparators": ["beta_binomial"],
+    "comparators": ["autodqm_ml_pca", "beta_binomial"],
     "hists": [
         {
             "norm_type": "row",
