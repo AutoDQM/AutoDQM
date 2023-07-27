@@ -172,8 +172,8 @@ def beta_binomial(histpair, pull_cap=15, chi2_cut=10, pull_cut=10, min_entries=1
             xAxisTitle = 'log10' + xAxisTitle
         if set_logy:
             yAxisTitle = 'log10' + yAxisTitle
-            data_hist_raw = np.where(data_hist_raw < 0.001, 0.001, data_hist_raw)
-            ref_hist_prob_wgt = np.where(ref_hist_prob_wgt < 0.001, 0.001, ref_hist_prob_wgt)
+            data_hist_raw = np.where(data_hist_raw < 0.1, 0.1, data_hist_raw)
+            ref_hist_prob_wgt = np.where(ref_hist_prob_wgt < 0.1, 0.1, ref_hist_prob_wgt)
     
         #Plot histogram with previously declared axes and settings to look similar to PyRoot
         c = make_subplots(specs=[[{"secondary_y": True}]])
