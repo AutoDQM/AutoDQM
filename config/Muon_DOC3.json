@@ -43,7 +43,9 @@
 	{"path" : "DT/Run summary/05-ChamberEff/Task/hCountSectVsChamb_Qual_W0"},
 	{"path" : "DT/Run summary/05-ChamberEff/Task/hCountSectVsChamb_Qual_W1"},
 	{"path" : "DT/Run summary/05-ChamberEff/Task/hCountSectVsChamb_Qual_W2"},
-	{"path" : "GEM/Run summary/Segment_TnP/Task/GEM_nFailingProbe_Ch_region_GE1"}
+	{"path" : "GEM/Run summary/Segment_TnP/Task/GEM_nFailingProbe_Ch_region_GE1"},
+	{"path" : "GEM/Run summary/RecHits/rechit_average_GE11*"},
+	{"path" : "GEM/Run summary/Efficiency/muonSTA/eff_chamber_GE11*"}
     ]
     
 }
