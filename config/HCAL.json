@@ -1,4 +1,5 @@
 {
+    "comparators": ["beta_binomial"],
     "main_gdir": "DQMData/Run {0}/Hcal/Run summary/RecHitTask/",
     "hists": [{
 	"always_show": true,
@@ -27,42 +28,42 @@
 		  },
 	      {
 		  "jar_dir": "HCAL",
-		  "comparators": ["pca", "ks_test"],
+		  "comparators": ["autodqm_ml_pca", "beta_binomial"],
 		  "path": "TimingCut/SubdetPM/HBM"
 		  },
 	      {
 		  "jar_dir": "HCAL",
-		  "comparators": ["pca", "ks_test"],
+		  "comparators": ["autodqm_ml_pca", "beta_binomial"],
 		  "path": "TimingCut/SubdetPM/HBP"
 		  },
 	      {
 		  "jar_dir": "HCAL",
-		  "comparators": ["pca", "ks_test"],
+		  "comparators": ["autodqm_ml_pca", "beta_binomial"],
 		  "path": "TimingCut/SubdetPM/HEM"
 		  },
 	      {
 		  "jar_dir": "HCAL",
-		  "comparators": ["pca", "ks_test"],
+		  "comparators": ["autodqm_ml_pca", "beta_binomial"],
 		  "path": "TimingCut/SubdetPM/HEP"
 		  },
 	      {
 		  "jar_dir": "HCAL",
-		  "comparators": ["pca", "ks_test"],
+		  "comparators": ["autodqm_ml_pca", "beta_binomial"],
 		  "path": "TimingCut/SubdetPM/HFM"
 		  },
 	      {
 		  "jar_dir": "HCAL",
-		  "comparators": ["pca", "ks_test"],
+		  "comparators": ["autodqm_ml_pca", "beta_binomial"],
 		  "path": "TimingCut/SubdetPM/HFP"
 		  },
 	      {
 		  "jar_dir": "HCAL",
-		  "comparators": ["pca", "ks_test"],
+		  "comparators": ["autodqm_ml_pca", "beta_binomial"],
 		  "path": "TimingCut/SubdetPM/HOM"
 		  },
 	      {
 		  "jar_dir": "HCAL",
-		  "comparators": ["pca", "ks_test"],
+		  "comparators": ["autodqm_ml_pca", "beta_binomial"],
 		  "path": "TimingCut/SubdetPM/HOP"
 		  }
 
