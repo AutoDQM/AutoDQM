@@ -23,14 +23,6 @@
         },
 	{
             "jar_dir": "GEM",
-            "path": "Efficiency/muonGLB/eff_chamber_GE11*"
-        },
-        {
-            "jar_dir": "GEM",
-            "path": "Efficiency/muonGLB/eff_ieta_GE11*"
-        },
-	{
-            "jar_dir": "GEM",
             "path": "Digis/occupancy_GE11-P-L2/occ_GE11-P*"
         }
 
