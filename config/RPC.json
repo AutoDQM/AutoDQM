@@ -1,5 +1,5 @@
 {
-    "comparators": ["autodqm_ml_pca","beta_binomial"],
+    "comparators": ["pca","beta_binomial"],
     "hists": [
         {
             "jar_dir": "RPC",
