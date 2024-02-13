@@ -1,0 +1,71 @@
+{
+    "comparators": ["beta_binomial"],
+    "main_gdir": "DQMData/Run {0}/Hcal/Run summary/RecHitTask/",
+    "hists": [{
+	"always_show": true,
+	"jar_dir": "HCAL",
+	"path": "Energy/Subdet/*"
+	},
+	      {
+		  "always_show": true,
+		  "jar_dir": "HCAL",
+		  "path": "Occupancy/depth/depth1"
+		  },
+	      {
+		  "always_show": true,
+		  "jar_dir": "HCAL",
+		  "path": "Occupancy/depth/depth2"
+		  },
+	      {
+		  "always_show": true,
+		  "jar_dir": "HCAL",
+		  "path": "OccupancyCut/depth/depth1"
+		  },
+	      {
+		  "always_show": true,
+		  "jar_dir": "HCAL",
+		  "path": "OccupancyCut/depth/depth2"
+		  },
+	      {
+		  "jar_dir": "HCAL",
+		  "comparators": ["pca", "beta_binomial"],
+		  "path": "TimingCut/SubdetPM/HBM"
+		  },
+	      {
+		  "jar_dir": "HCAL",
+		  "comparators": ["pca", "beta_binomial"],
+		  "path": "TimingCut/SubdetPM/HBP"
+		  },
+	      {
+		  "jar_dir": "HCAL",
+		  "comparators": ["pca", "beta_binomial"],
+		  "path": "TimingCut/SubdetPM/HEM"
+		  },
+	      {
+		  "jar_dir": "HCAL",
+		  "comparators": ["pca", "beta_binomial"],
+		  "path": "TimingCut/SubdetPM/HEP"
+		  },
+	      {
+		  "jar_dir": "HCAL",
+		  "comparators": ["pca", "beta_binomial"],
+		  "path": "TimingCut/SubdetPM/HFM"
+		  },
+	      {
+		  "jar_dir": "HCAL",
+		  "comparators": ["pca", "beta_binomial"],
+		  "path": "TimingCut/SubdetPM/HFP"
+		  },
+	      {
+		  "jar_dir": "HCAL",
+		  "comparators": ["pca", "beta_binomial"],
+		  "path": "TimingCut/SubdetPM/HOM"
+		  },
+	      {
+		  "jar_dir": "HCAL",
+		  "comparators": ["pca", "beta_binomial"],
+		  "path": "TimingCut/SubdetPM/HOP"
+		  }
+
+	      ]
+}

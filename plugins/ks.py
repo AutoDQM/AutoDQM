@@ -18,7 +18,7 @@ def ks(histpair, ks_cut=0.35, min_entries=10000, **kwargs):
     ref_name = histpair.ref_name
 
     data_hist = histpair.data_hist
-    ref_hist = histpair.ref_hist
+    ref_hist = histpair.ref_hists[0]
 
     # Check that the hists are 1 dimensional
     if "1" not in str(type(data_hist)) or "1" not in str(type(ref_hist)):
@@ -51,7 +51,7 @@ def ks(histpair, ks_cut=0.35, min_entries=10000, **kwargs):
         yAxisTitle = data_hist.axes[1]._bases[0]._members["fTitle"]
     else:
         yAxisTitle = ""
-    plotTitle = histpair.data_name + " KS Test  |  data:" + str(histpair.data_run) + " & ref:" + str(histpair.ref_run)
+    plotTitle = histpair.data_name + " KS Test  |  data:" + str(histpair.data_run) + " & ref:" + str(histpair.ref_runs[0])
 
     #Plotly doesn't support #circ, #theta, #phi but it does support unicode
     xAxisTitle = xAxisTitle.replace("#circ", "\u00B0").replace("#theta","\u03B8").replace("#phi","\u03C6").replace("#eta","\u03B7")
@@ -62,7 +62,7 @@ def ks(histpair, ks_cut=0.35, min_entries=10000, **kwargs):
     #Plot histogram with previously declared axes and settings to look similar to PyRoot
     c = go.Figure()
     c.add_trace(go.Bar(name="data:"+str(histpair.data_run), x=bins, y=data_hist_norm, marker_color='white', marker=dict(line=dict(width=1,color='red'))))
-    c.add_trace(go.Bar(name="ref:"+str(histpair.ref_run), x=bins, y=ref_hist_norm, marker_color='rgb(204, 188, 172)', opacity=.9))
+    c.add_trace(go.Bar(name="ref:"+str(histpair.ref_runs[0]), x=bins, y=ref_hist_norm, marker_color='rgb(204, 188, 172)', opacity=.9))
     c['layout'].update(bargap=0)
     c['layout'].update(barmode='overlay')
     c['layout'].update(plot_bgcolor='white')
@@ -78,7 +78,7 @@ def ks(histpair, ks_cut=0.35, min_entries=10000, **kwargs):
             color="black"
         )
     )
-    ref_text = "ref:"+str(histpair.ref_run)
+    ref_text = "ref:"+str(histpair.ref_runs[0])
     data_text = "data:"+str(histpair.data_run)
     artifacts = [data_hist_norm, ref_hist_norm, data_text, ref_text]
 

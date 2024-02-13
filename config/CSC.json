@@ -1,4 +1,5 @@
 {
+    "comparators": ["pca", "beta_binomial"],
     "hists": [
         {
             "norm_type": "row",

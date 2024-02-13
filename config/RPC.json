@@ -1,4 +1,5 @@
 {
+    "comparators": ["pca","beta_binomial"],
     "hists": [
         {
             "jar_dir": "RPC",

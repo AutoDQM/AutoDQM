@@ -9,7 +9,8 @@ class HistPair(object):
 
     def __init__(self, dqmSource, config,
                  data_series, data_sample, data_run, data_name, data_hist,
-                 ref_series, ref_sample, ref_run, ref_name, ref_hist):
+                 ref_series, ref_sample, ref_runs, ref_name, ref_hists,
+                 data_concat = None, ref_concat = None):
 
         self.dqmSource = dqmSource
         self.config = config
@@ -19,19 +20,21 @@ class HistPair(object):
         self.data_run = data_run
         self.data_name = data_name
         self.data_hist = data_hist
+        self.data_concat = data_concat
 
         self.ref_series = ref_series
         self.ref_sample = ref_sample
-        self.ref_run = ref_run
+        self.ref_runs = ref_runs
         self.ref_name = ref_name
-        self.ref_hist = ref_hist
+        self.ref_hists = ref_hists
+        self.ref_concat = ref_concat
 
         if self.dqmSource == 'Offline':
-            self.comparators = ['pull_values', 'ks_test', 'autodqm_ml_pca', 'beta_binomial']
+            self.comparators = ['pull_values', 'ks_test', 'pca', 'beta_binomial']
         else:
             ## Currently ML PCA only trained with Offline data - AWB 2022.06.20
             ## If trained on Online in the future, need to update
-            ## plugins/autodqm_ml_pca.py and models/autodqm_ml_pca/
+            ## plugins/pca.py and models/pca/
             self.comparators = ['pull_values', 'ks_test', 'beta_binomial']
 
         if not config['comparators'] is None:
@@ -54,4 +57,4 @@ class HistPair(object):
         return hash(
             self.dqmSource + json.dumps(self.config, sort_keys=True) +
             self.data_series + self.data_sample + self.data_run + self.data_name +
-            self.ref_series + self.ref_sample + self.ref_run + self.ref_name)
+            self.ref_series + self.ref_sample + '_'.join(self.ref_runs) + self.ref_name)
