@@ -290,8 +290,8 @@ def beta_binomial(histpair, pull_cap=15, chi2_cut=10, pull_cut=10, min_entries=1
         Ref_Entries_str = " - ".join([str(int(min(ref_hist_Entries))), str(int(max(ref_hist_Entries)))])
 
     info = {
-        'Chi_Squared': float(round(chi2, 2)),
-        'Max_Pull_Val': float(round(max_pull,2)),
+        'Chi_Squared': np.nan_to_num(float(round(chi2, 2))),
+        'Max_Pull_Val': np.nan_to_num(float(round(max_pull,2))),
         'Data_Entries': str(int(data_hist_Entries)),
         'Ref_Entries': Ref_Entries_str
     }

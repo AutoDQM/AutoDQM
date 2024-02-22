@@ -141,6 +141,12 @@ def compile_histpairs(chunk_index, chunk_size, config_dir,
                 try:
                     data_hist = data_dir[h]
                     ref_hists = [ref_dir[h] for ref_dir in ref_dirs]
+
+                    # Setting any entries lower than zero to zero to avoid problems with the statistical tests
+                    data_hist.values()[data_hist.values() < 0] = 0
+                    for hist in ref_hists:
+                    	hist.values()[hist.values() < 0] = 0
+
                 except Exception as e:
                     continue
 
@@ -165,6 +171,12 @@ def compile_histpairs(chunk_index, chunk_size, config_dir,
                         try:
                             data_hist = data_dir[name[:-2]]
                             ref_hists = [ref_dir[name[:-2]] for ref_dir in ref_dirs]
+
+                            # Setting any entries lower than zero to zero to avoid problems with the statistical tests
+                            data_hist.values()[data_hist.values() < 0] = 0
+                            for hist in ref_hists:
+                                hist.values()[hist.values() < 0] = 0
+
                         except Exception as e:
                             continue
                         hPair = HistPair(dqmSource, hconf,

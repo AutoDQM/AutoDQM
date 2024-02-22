@@ -30,11 +30,11 @@ class HistPair(object):
         self.ref_concat = ref_concat
 
         if self.dqmSource == 'Offline':
-            self.comparators = ['pull_values', 'ks_test', 'autodqm_ml_pca', 'beta_binomial']
+            self.comparators = ['pull_values', 'ks_test', 'pca', 'beta_binomial']
         else:
             ## Currently ML PCA only trained with Offline data - AWB 2022.06.20
             ## If trained on Online in the future, need to update
-            ## plugins/autodqm_ml_pca.py and models/autodqm_ml_pca/
+            ## plugins/pca.py and models/pca/
             self.comparators = ['pull_values', 'ks_test', 'beta_binomial']
 
         if not config['comparators'] is None:
