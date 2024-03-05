@@ -119,6 +119,18 @@ def beta_binomial(histpair, pull_cap=15, chi2_cut=10, pull_cut=10, min_entries=1
     ## define if plot anomalous
     is_outlier = data_hist_Entries >= min_entries and (chi2 > chi2_cut or abs(max_pull) > pull_cut)
 
+    ## For subsystems with many many plots (e.g. DT_DOC1), only generate somewhat anomalous plots
+    sel_display_chi2    = -1.0
+    sel_display_maxPull = -1.0
+    if 'sel_display' in histpair.config.keys() and not histpair.config['sel_display'] is None:
+        for sel in histpair.config['sel_display']:
+            sels = sel.split('_')  ## Comparator, test, threshold
+            if not sels[0] == 'BB': continue
+            if sels[1] == 'Chi2':    sel_display_chi2    = float(sels[2])
+            if sels[1] == 'MaxPull': sel_display_maxPull = float(sels[2])
+    if chi2 < sel_display_chi2 and max_pull < sel_display_maxPull and not is_outlier:
+        return None
+
     ## plotting
     # For 1D histograms, set pulls larger than pull_cap to pull_cap
     if data_hist_raw.ndim == 1:
