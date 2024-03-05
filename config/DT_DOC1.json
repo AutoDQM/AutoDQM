@@ -1,5 +1,6 @@
 {
     "comparators": ["beta_binomial"],
+    "sel_display": ["BB_Chi2_3.0","BB_MaxPull_5.0"],
     "hists": [
         {
             "jar_dir": "DT",
