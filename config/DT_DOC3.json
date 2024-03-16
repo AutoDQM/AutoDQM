@@ -1,6 +1,18 @@
 {
     "comparators": ["beta_binomial"],
-    "sel_display": ["BB_Chi2_3.0","BB_MaxPull_5.0"],
+    "thresholds": [
+        {
+            "name": "Task",
+            "threshold_MaxPull": 0.1,
+            "threshold_Chi2": 0.4
+
+        },
+        {
+            "name": "hResDist",
+            "threshold_MaxPull": 0.1,
+            "threshold_Chi2": 0.4  
+        }
+    ],
     "hists": [
         {
             "jar_dir": "DT",
