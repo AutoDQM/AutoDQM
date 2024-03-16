@@ -1,5 +1,24 @@
 {
     "comparators": ["beta_binomial"],
+    "sel_display": ["BB_Chi2_2.0","BB_MaxPull_2.0"],
+    "thresholds": [
+        {
+            "name": "TimeBox",
+            "threshold_MaxPull": 2.0,
+            "threshold_Chi2": 2.0
+
+        },
+        {
+            "name": "Occupancy",
+            "threshold_MaxPull": 12.0,
+            "threshold_Chi2": 12.0
+        },
+        {
+            "name": "LocalTrigger",
+            "threshold_MaxPull": 4.0,
+            "threshold_Chi2": 4.0  
+        }
+    ],
     "hists": [
         {
             "jar_dir": "DT",

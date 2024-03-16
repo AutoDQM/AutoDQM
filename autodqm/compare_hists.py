@@ -33,6 +33,14 @@ def process(chunk_index, chunk_size, config_dir,
 
     comparator_funcs = load_comparators(plugin_dir)
 
+    # Reading the thresholds field in the .json
+    threshold_dict = False
+    try:
+        config = cfg.get_subsystem(config_dir, subsystem)
+        threshold_dict = config["thresholds"]
+    except:
+        pass
+
     for hp in histpairs:
         comparators = []
         for c in hp.comparators:
@@ -48,8 +56,20 @@ def process(chunk_index, chunk_size, config_dir,
             png_path = '{}/pngs/{}.png'.format(output_dir, result_id)
 
             if not os.path.isfile(json_path):
-                results = comparator(hp, **hp.config)
-
+                # These chi2 and MaxPull thresholds only apply to the beta-binomial test
+                if( comp_name == 'beta_binomial'): 
+                    # Reading different beta-binomial thresholds based on histogram type
+                    chi2_threshold, MaxPull_threshold = 10, 10
+                    if(threshold_dict):
+                        for entry in threshold_dict:
+                            if( entry["name"] in hp.data_name ):
+                                chi2_threshold = entry["threshold_Chi2"]
+                                MaxPull_threshold = entry["threshold_MaxPull"]
+                    results = comparator(hp, **hp.config, chi2_cut=chi2_threshold, pull_cut= MaxPull_threshold, threshold_list = threshold_dict)
+                
+                else:
+                    results = comparator(hp, **hp.config)
+                    
                 # Continue if no results
                 if not results:
                     continue
@@ -93,6 +113,7 @@ def compile_histpairs(chunk_index, chunk_size, config_dir,
     conf_list = config["hists"]
     main_gdir = config["main_gdir"]
     def_comparators = config['comparators'] if 'comparators' in config.keys() else None
+    def_sel_display = config['sel_display'] if 'sel_display' in config.keys() else None
 
     # ROOT files
     data_file = uproot.open(data_path)
@@ -106,6 +127,8 @@ def compile_histpairs(chunk_index, chunk_size, config_dir,
     for hconf in conf_list:
         # Set comparators if there are none
         if not 'comparators' in hconf.keys(): hconf['comparators'] = def_comparators
+        # Set selective display parameters if there are none
+        if not 'sel_display' in hconf.keys(): hconf['sel_display'] = def_sel_display
         # Get name of hist in root file
         h = str(hconf["path"].split("/")[-1])
         # Get parent directory of hist

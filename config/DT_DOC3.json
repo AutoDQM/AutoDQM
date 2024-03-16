@@ -1,5 +1,18 @@
 {
     "comparators": ["beta_binomial"],
+    "thresholds": [
+        {
+            "name": "Task",
+            "threshold_MaxPull": 0.1,
+            "threshold_Chi2": 0.4
+
+        },
+        {
+            "name": "hResDist",
+            "threshold_MaxPull": 0.1,
+            "threshold_Chi2": 0.4  
+        }
+    ],
     "hists": [
         {
             "jar_dir": "DT",
