@@ -1,6 +1,6 @@
 {
     "comparators": ["beta_binomial"],
-    "sel_display": ["BB_Chi2_2.0","BB_MaxPull_2.0"],
+    "sel_display": ["BB_Chi2_10.0","BB_MaxPull_10.0"],
     "thresholds": [
         {
             "name": "TimeBox",

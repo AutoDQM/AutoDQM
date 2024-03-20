@@ -1,16 +1,22 @@
 {
     "comparators": ["beta_binomial"],
+    "sel_display": ["BB_Chi2_0.50","BB_MaxPull_0.5"],
     "thresholds": [
         {
-            "name": "Task",
-            "threshold_MaxPull": 0.1,
-            "threshold_Chi2": 0.4
+            "name": "DT_n",
+            "threshold_MaxPull": 1.0,
+            "threshold_Chi2": 0.55
 
         },
         {
             "name": "hResDist",
-            "threshold_MaxPull": 0.1,
-            "threshold_Chi2": 0.4  
+            "threshold_MaxPull": 2.5,
+            "threshold_Chi2": 0.75  
+        },
+        {
+            "name": "TM_TrigEff",
+            "threshold_MaxPull": 1.0,
+            "threshold_Chi2": 0.55            
         }
     ],
     "hists": [
