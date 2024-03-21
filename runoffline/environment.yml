@@ -16,6 +16,6 @@ dependencies:
   - scikit-learn
   - scipy
   - tqdm
-  - uproot
+  - uproot=4.3.7
   - urllib3
 
