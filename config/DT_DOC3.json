@@ -19,6 +19,24 @@
             "threshold_Chi2": 0.55            
         }
     ],
+    "thresholds_fit": [
+        {
+            "name": "DT_n",
+            "param_MaxPull": [8.01,-0.10,-0.21],
+            "param_Chi2": [0.35,-0.86,0.49]
+
+        },
+        {
+            "name": "hResDist",
+            "param_MaxPull": [5.10,-0.31,1.78],
+            "param_Chi2": [2.22,-0.46,0.45]  
+        },
+        {
+            "name": "TM_TrigEff",
+            "param_MaxPull": [8.01,-0.10,-0.21],
+            "param_Chi2": [0.35,-0.86,0.49]         
+        }
+    ],
     "hists": [
         {
             "jar_dir": "DT",

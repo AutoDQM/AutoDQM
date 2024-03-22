@@ -11,6 +11,9 @@ from autodqm.histpair import HistPair
 import plotly
 import numpy as np
 
+# Define the function to calculate thresholds!
+def func(x, a, b, c):
+    return a / (x + b) + c
 
 def process(chunk_index, chunk_size, config_dir,
             dqmSource, subsystem,
@@ -38,6 +41,7 @@ def process(chunk_index, chunk_size, config_dir,
     try:
         config = cfg.get_subsystem(config_dir, subsystem)
         threshold_dict = config["thresholds"]
+        threshold_dict_fit = config["thresholds_fit"]
     except:
         pass
 
@@ -65,6 +69,12 @@ def process(chunk_index, chunk_size, config_dir,
                             if( entry["name"] in hp.data_name ):
                                 chi2_threshold = entry["threshold_Chi2"]
                                 MaxPull_threshold = entry["threshold_MaxPull"]
+                        for entry in threshold_dict_fit: 
+                            if( entry["name"] in hp.data_name ):       
+                                MaxPull_params = entry["param_MaxPull"]
+                                Chi2_params = entry["param_Chi2"]
+                                MaxPull_threshold = func(len(ref_runs), MaxPull_params[0],MaxPull_params[1],MaxPull_params[2])
+                                chi2_threshold = func(len(ref_runs), Chi2_params[0],Chi2_params[1],Chi2_params[2])
                     results = comparator(hp, **hp.config, chi2_cut=chi2_threshold, pull_cut= MaxPull_threshold, threshold_list = threshold_dict)
                 
                 else:
