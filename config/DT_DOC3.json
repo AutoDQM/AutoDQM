@@ -28,8 +28,8 @@
         },
         {
             "name": "hResDist",
-            "param_MaxPull": [5.10,-0.31,1.78],
-            "param_Chi2": [2.22,-0.46,0.45]  
+            "param_MaxPull": [4.01,-0.05,1.97],
+            "param_Chi2": [1.32,-0.26,0.58]  
         },
         {
             "name": "TM_TrigEff",
