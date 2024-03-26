@@ -19,6 +19,24 @@
             "threshold_Chi2": 4.5  
         }
     ],
+    "thresholds_fit": [
+        {
+            "name": "TimeBox",
+            "param_MaxPull": [42.10,3.83,-2.01],
+            "param_Chi2": [25.65,2.25,-0.76]
+
+        },
+        {
+            "name": "TM",
+            "param_MaxPull": [15.33,0.45,2.62],
+            "param_Chi2": [26.20,1.43,1.54]  
+        },
+        {
+            "name": "Occupancy",
+            "param_MaxPull": [115.42,4.28,8.60],
+            "param_Chi2": [43.68,1.61,-0.52]         
+        }
+    ],
     "hists": [
         {
             "jar_dir": "DT",
