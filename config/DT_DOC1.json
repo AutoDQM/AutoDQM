@@ -22,8 +22,8 @@
     "thresholds_fit": [
         {
             "name": "TimeBox",
-            "param_MaxPull": [42.10,3.83,-2.01],
-            "param_Chi2": [25.65,2.25,-0.76]
+            "param_MaxPull": [41.55,4.67,-1.73],
+            "param_Chi2": [19.90,2.20,-0.20]
 
         },
         {
