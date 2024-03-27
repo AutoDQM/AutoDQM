@@ -22,19 +22,19 @@
     "thresholds_fit": [
         {
             "name": "TimeBox",
-            "param_MaxPull": [29.68,3.56,-1.02],
-            "param_Chi2": [17.00,1.82,0.02]
+            "param_MaxPull": [5,1],
+            "param_Chi2": [5,1]
 
         },
         {
             "name": "TM",
-            "param_MaxPull": [10.23,0.17,3.21],
-            "param_Chi2": [19.75,1.26,2.21]  
+            "param_MaxPull": [8,3],
+            "param_Chi2": [8,3]  
         },
         {
             "name": "Occupancy",
-            "param_MaxPull": [115.42,4.28,8.60],
-            "param_Chi2": [43.68,1.61,-0.52]         
+            "param_MaxPull": [14,16],
+            "param_Chi2": [17,2]         
         }
     ],
     "hists": [
