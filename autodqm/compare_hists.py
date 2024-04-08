@@ -12,7 +12,7 @@ import plotly
 import numpy as np
 
 # Define the function to calculate thresholds!
-def func(x, a, b):
+def calc_threshold(x, a, b):
     return a / (x) + b
 
 def process(chunk_index, chunk_size, config_dir,
@@ -37,10 +37,9 @@ def process(chunk_index, chunk_size, config_dir,
     comparator_funcs = load_comparators(plugin_dir)
 
     # Reading the thresholds field in the .json
-    threshold_dict = False
+    threshold_dict_fit = False
     try:
         config = cfg.get_subsystem(config_dir, subsystem)
-        threshold_dict = config["thresholds"]
         threshold_dict_fit = config["thresholds_fit"]
     except:
         pass
@@ -64,22 +63,14 @@ def process(chunk_index, chunk_size, config_dir,
                 if( comp_name == 'beta_binomial'): 
                     # Reading different beta-binomial thresholds based on histogram type
                     chi2_threshold, MaxPull_threshold = 10, 10
-                    if(threshold_dict):
-                        for entry in threshold_dict:
-                            if( entry["name"] in hp.data_name ):
-                                chi2_threshold = entry["threshold_Chi2"]
-                                MaxPull_threshold = entry["threshold_MaxPull"]
-                        try:
-                            for entry in threshold_dict_fit: 
-                                if( entry["name"] in hp.data_name ):       
-                                    MaxPull_params = entry["param_MaxPull"]
-                                    Chi2_params = entry["param_Chi2"]
-                                    MaxPull_threshold = func(len(ref_runs), MaxPull_params[0],MaxPull_params[1])
-                                    chi2_threshold = func(len(ref_runs), Chi2_params[0],Chi2_params[1])
-                        except:
-                            pass
-                    results = comparator(hp, **hp.config, chi2_cut=chi2_threshold, pull_cut= MaxPull_threshold, threshold_list = threshold_dict)
-                
+                    if(threshold_dict_fit):
+                        for entry in threshold_dict_fit: 
+                            if( entry["name"] in hp.data_name ):       
+                                MaxPull_params = entry["param_MaxPull"]
+                                Chi2_params = entry["param_Chi2"]
+                                MaxPull_threshold = calc_threshold(len(ref_runs), MaxPull_params[0],MaxPull_params[1])
+                                chi2_threshold = calc_threshold(len(ref_runs), Chi2_params[0],Chi2_params[1])
+                    results = comparator(hp, **hp.config, chi2_cut=chi2_threshold, pull_cut= MaxPull_threshold, threshold_list = threshold_dict)   
                 else:
                     results = comparator(hp, **hp.config)
                     
