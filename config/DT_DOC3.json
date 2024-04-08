@@ -23,7 +23,7 @@
         {
             "name": "DT_n",
             "param_MaxPull": [7,7,0.2],
-            "param_Chi2": [2.0,0.75]
+            "param_Chi2": [1.2,0.93]
 
         },
         {
@@ -34,7 +34,7 @@
         {
             "name": "TM_TrigEff",
             "param_MaxPull": [7,7,0.2],
-            "param_Chi2":  [2.0,0.75]         
+            "param_Chi2":  [1.2,0.93]         
         }
     ],
     "hists": [

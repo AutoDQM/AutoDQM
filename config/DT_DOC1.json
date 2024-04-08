@@ -28,8 +28,8 @@
         },
         {
             "name": "TM",
-            "param_MaxPull": [8,2],
-            "param_Chi2": [8,2]  
+            "param_MaxPull": [10,2],
+            "param_Chi2": [10,2]  
         },
         {
             "name": "Occupancy",
