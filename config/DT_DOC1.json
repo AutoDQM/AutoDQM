@@ -1,24 +1,6 @@
 {
     "comparators": ["beta_binomial"],
-    "sel_display": ["BB_Chi2_4.0","BB_MaxPull_4.0"],
-    "thresholds": [
-        {
-            "name": "TimeBox",
-            "threshold_MaxPull": 2.0,
-            "threshold_Chi2": 2.0
-
-        },
-        {
-            "name": "Occupancy",
-            "threshold_MaxPull": 14.0,
-            "threshold_Chi2": 5.0
-        },
-        {
-            "name": "TM",
-            "threshold_MaxPull": 4.5,
-            "threshold_Chi2": 4.5  
-        }
-    ],
+    "sel_display": ["BB_Chi2_1.0","BB_MaxPull_1.0"],
     "thresholds_fit": [
         {
             "name": "TimeBox",
