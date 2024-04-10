@@ -129,9 +129,9 @@ def beta_binomial(histpair, pull_cap=15, chi2_cut=10, pull_cut=10, min_entries=1
             if sels[1] == 'Chi2':    sel_display_chi2    = float(sels[2])
             if sels[1] == 'MaxPull': sel_display_maxPull = float(sels[2])
     
-    # Defining the Selective display thresholds based on the Chi2 and MaxPull choosen thresholds 
-    if chi2 < chi2_cut*0.5 and max_pull < pull_cut*0.5 and not is_outlier:
-        return None
+        # Defining the Selective display thresholds based on the Chi2 and MaxPull choosen thresholds 
+        if chi2 < chi2_cut*0.5 and max_pull < pull_cut*0.5 and not is_outlier:
+            return None
 
     ## plotting
     # For 1D histograms, set pulls larger than pull_cap to pull_cap
