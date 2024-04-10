@@ -22,12 +22,16 @@
     "hists": [
         {
             "jar_dir": "DT",
-            "path": "Segment_TnP/Task/*"
+            "path": "Segment_TnP/Task/DT_nPassingProbe*"
         },
         {
             "jar_dir": "DT",
+            "path": "Segment_TnP/Task/DT_nFailingProbe*"
+        }, 
+        {
+            "jar_dir": "DT",
             "path": "03-LocalTrigger-TM/Task/*"
-        },        
+        },       
         {
             "jar_dir": "DT",
             "path": "02-Segments/Wheel-2/Sector1/Station1/hResDist*"
