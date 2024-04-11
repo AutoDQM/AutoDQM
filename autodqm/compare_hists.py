@@ -11,6 +11,9 @@ from autodqm.histpair import HistPair
 import plotly
 import numpy as np
 
+# Define the function to calculate thresholds!
+def calc_threshold(x, a, b):
+    return a / (x) + b
 
 def process(chunk_index, chunk_size, config_dir,
             dqmSource, subsystem,
@@ -33,6 +36,14 @@ def process(chunk_index, chunk_size, config_dir,
 
     comparator_funcs = load_comparators(plugin_dir)
 
+    # Reading the thresholds field in the .json
+    threshold_dict_fit = False
+    try:
+        config = cfg.get_subsystem(config_dir, subsystem)
+        threshold_dict_fit = config["thresholds_fit"]
+    except:
+        pass
+
     for hp in histpairs:
         comparators = []
         for c in hp.comparators:
@@ -48,8 +59,21 @@ def process(chunk_index, chunk_size, config_dir,
             png_path = '{}/pngs/{}.png'.format(output_dir, result_id)
 
             if not os.path.isfile(json_path):
-                results = comparator(hp, **hp.config)
-
+                # These chi2 and MaxPull thresholds only apply to the beta-binomial test
+                if( comp_name == 'beta_binomial'): 
+                    # Reading different beta-binomial thresholds based on histogram type
+                    chi2_threshold, MaxPull_threshold = 10, 10
+                    if(threshold_dict_fit):
+                        for entry in threshold_dict_fit: 
+                            if( entry["name"] in hp.data_name ):       
+                                MaxPull_params = entry["param_MaxPull"]
+                                Chi2_params = entry["param_Chi2"]
+                                MaxPull_threshold = calc_threshold(len(ref_runs), MaxPull_params[0],MaxPull_params[1])
+                                chi2_threshold    = calc_threshold(len(ref_runs), Chi2_params[0],Chi2_params[1])
+                    results = comparator(hp, **hp.config, chi2_cut=chi2_threshold, pull_cut= MaxPull_threshold)   
+                else:
+                    results = comparator(hp, **hp.config)
+                    
                 # Continue if no results
                 if not results:
                     continue
@@ -93,6 +117,7 @@ def compile_histpairs(chunk_index, chunk_size, config_dir,
     conf_list = config["hists"]
     main_gdir = config["main_gdir"]
     def_comparators = config['comparators'] if 'comparators' in config.keys() else None
+    def_sel_display = config['sel_display'] if 'sel_display' in config.keys() else None
 
     # ROOT files
     data_file = uproot.open(data_path)
@@ -106,6 +131,8 @@ def compile_histpairs(chunk_index, chunk_size, config_dir,
     for hconf in conf_list:
         # Set comparators if there are none
         if not 'comparators' in hconf.keys(): hconf['comparators'] = def_comparators
+        # Set selective display parameters if there are none
+        if not 'sel_display' in hconf.keys(): hconf['sel_display'] = def_sel_display
         # Get name of hist in root file
         h = str(hconf["path"].split("/")[-1])
         # Get parent directory of hist
@@ -141,6 +168,12 @@ def compile_histpairs(chunk_index, chunk_size, config_dir,
                 try:
                     data_hist = data_dir[h]
                     ref_hists = [ref_dir[h] for ref_dir in ref_dirs]
+
+                    # Setting any entries lower than zero to zero to avoid problems with the statistical tests
+                    data_hist.values()[data_hist.values() < 0] = 0
+                    for hist in ref_hists:
+                    	hist.values()[hist.values() < 0] = 0
+
                 except Exception as e:
                     continue
 
@@ -165,6 +198,12 @@ def compile_histpairs(chunk_index, chunk_size, config_dir,
                         try:
                             data_hist = data_dir[name[:-2]]
                             ref_hists = [ref_dir[name[:-2]] for ref_dir in ref_dirs]
+
+                            # Setting any entries lower than zero to zero to avoid problems with the statistical tests
+                            data_hist.values()[data_hist.values() < 0] = 0
+                            for hist in ref_hists:
+                                hist.values()[hist.values() < 0] = 0
+
                         except Exception as e:
                             continue
                         hPair = HistPair(dqmSource, hconf,
