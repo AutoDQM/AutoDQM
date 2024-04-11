@@ -14,7 +14,7 @@ def comparators():
         'beta_binomial' : beta_binomial
     }
 
-def beta_binomial(histpair, pull_cap=15, chi2_cut=10, pull_cut=10, min_entries=1, tol=0.01, norm_type='all', **kwargs):
+def beta_binomial(histpair, pull_cap=10, chi2_cut=10, pull_cut=10, min_entries=1, tol=0.01, norm_type='all', **kwargs):
     """beta_binomial works on both 1D and 2D"""
     data_hist_orig = histpair.data_hist
     ref_hists_orig = [rh for rh in histpair.ref_hists if rh.values().size == data_hist_orig.values().size]
@@ -109,17 +109,37 @@ def beta_binomial(histpair, pull_cap=15, chi2_cut=10, pull_cut=10, min_entries=1
     if abs(min_pull) > max_pull:
         max_pull = min_pull
 
-    ## access per-histogram settings for max_pull and chi2
+    ## access per-histogram settings for max_pull, chi2, axis titles
+    plot_title  = None
+    xaxis_title = None
+    yaxis_title = None
     if 'opts' in histpair.config.keys():
         for opt in histpair.config['opts']:
             if 'pull_cap' in opt: pull_cap = float(opt.split('=')[1])
             if 'chi2_cut' in opt: chi2_cut = float(opt.split('=')[1])
             if 'pull_cut' in opt: pull_cut = float(opt.split('=')[1])
+            if 'plot_title' in opt: plot_title = str(opt.split('=')[1])
+            if 'xaxis_title' in opt: xaxis_title = str(opt.split('=')[1])
+            if 'yaxis_title' in opt: yaxis_title = str(opt.split('=')[1])
 
     ## define if plot anomalous
     is_outlier = data_hist_Entries >= min_entries and (chi2 > chi2_cut or abs(max_pull) > pull_cut)
 
-    ## plotting
+    ## For subsystems with many many plots (e.g. DT_DOC1), only generate somewhat anomalous plots
+    sel_display_chi2    = -1.0
+    sel_display_maxPull = -1.0
+    if 'sel_display' in histpair.config.keys() and not histpair.config['sel_display'] is None:
+        for sel in histpair.config['sel_display']:
+            sels = sel.split('_')  ## Comparator, test, threshold
+            if not sels[0] == 'BB': continue
+            if sels[1] == 'Chi2':    sel_display_chi2    = float(sels[2])
+            if sels[1] == 'MaxPull': sel_display_maxPull = float(sels[2])
+    
+        # Defining the Selective display thresholds based on the Chi2 and MaxPull choosen thresholds 
+        if chi2 < chi2_cut*0.5 and max_pull < pull_cut*0.5 and not is_outlier:
+            return None
+
+    ##--------- Plotting --------------
     # For 1D histograms, set pulls larger than pull_cap to pull_cap
     if data_hist_raw.ndim == 1:
         pull_hist = np.where(pull_hist >  pull_cap,  pull_cap, pull_hist)
@@ -129,30 +149,37 @@ def beta_binomial(histpair, pull_cap=15, chi2_cut=10, pull_cut=10, min_entries=1
         pull_hist = np.where(np.add(ref_hist_sum, data_hist_raw) == 0, None, pull_hist)
 
     if nRef == 1:
-        ref_runs_str = histpair.ref_runs[0]
+        ref_runs_str = "Reference:<br>"+histpair.ref_runs[0]
     else:
-        ref_runs_str = str(min([int(x) for x in histpair.ref_runs])) + ' - '
-        ref_runs_str += str(max([int(x) for x in histpair.ref_runs]))
-        ref_runs_str += ' (' + str(nRef) + ')'
+        ref_runs_str = "References:"
+        for rr in histpair.ref_runs:
+            ref_runs_str += "<br>"+str(rr)
+
+    # Set titles. Note data_hist_orig.axes will have length > 1 if y-axis title is declared, even with 1D plot.
+    plotTitle = (plot_title if plot_title else histpair.data_name)
+    if (nRef == 1):
+        plotTitle += ('<br><span style="font-size: 14px;">Run '+
+                      str(histpair.data_run)+' vs. '+histpair.ref_runs[0]+'</span>')
+    else:
+        plotTitle += ('<br><span style="font-size: 14px;">Run '+
+                      str(histpair.data_run)+' vs. '+str(nRef)+' references</span>')
+    xAxisTitle = (xaxis_title if xaxis_title else \
+                  data_hist_orig.axes[0]._bases[0]._members["fTitle"])
+    yAxisTitle = (yaxis_title if yaxis_title else \
+                  ("" if (len(data_hist_orig.axes) <= 1) else \
+                   data_hist_orig.axes[1]._bases[0]._members["fTitle"]))
+
+    # Plotly doesn't support #circ, #theta, #phi but it does support unicode
+    plotTitle = plotTitle.replace("#circ", "\u00B0").replace("#theta","\u03B8").replace("#phi","\u03C6").replace("#eta","\u03B7")
+    xAxisTitle = xAxisTitle.replace("#circ", "\u00B0").replace("#theta","\u03B8").replace("#phi","\u03C6").replace("#eta","\u03B7").replace("#mu","\u03BC")
+    yAxisTitle = yAxisTitle.replace("#circ", "\u00B0").replace("#theta","\u03B8").replace("#phi","\u03C6").replace("#eta","\u03B7").replace("#mu","\u03BC")
+
 
     ##--------- 1D Plotting --------------
     #Check that the hists are 1 dimensional
     if ("TH1" in str(type(data_hist_orig))) and ("TH1" in str(type(ref_hists_orig[0]))):
         if x_bins[0] < -999:
             x_bins[0]=2*x_bins[1]-x_bins[2]
-
-        #Get Titles for histogram, X-axis, Y-axis (Note data_hist_orig.axes will have length > 1 if y-axis title is declared even with 1d plot)
-        xAxisTitle = data_hist_orig.axes[0]._bases[0]._members["fTitle"]
-        if(len(data_hist_orig.axes) > 1):
-            yAxisTitle = data_hist_orig.axes[1]._bases[0]._members["fTitle"]
-        else:
-            yAxisTitle = ""
-        plotTitle = histpair.data_name + " beta-binomial  |  data:" + str(histpair.data_run) + " & ref:" + ref_runs_str
-    
-        #Plotly doesn't support #circ, #theta, #phi but it does support unicode
-        xAxisTitle = xAxisTitle.replace("#circ", "\u00B0").replace("#theta","\u03B8").replace("#phi","\u03C6").replace("#eta","\u03B7")
-        yAxisTitle = yAxisTitle.replace("#circ", "\u00B0").replace("#theta","\u03B8").replace("#phi","\u03C6").replace("#eta","\u03B7")
-        plotTitle = plotTitle.replace("#circ", "\u00B0").replace("#theta","\u03B8").replace("#phi","\u03C6").replace("#eta","\u03B7")
     
         #For some 1D plots, use a log scale x- or y-axis
         set_logx = (x_bins[1] > 0 and 'opts' in histpair.config.keys() and 'logx' in histpair.config['opts'] and len(x_bins) > 30) and not do_concat
@@ -169,37 +196,39 @@ def beta_binomial(histpair, pull_cap=15, chi2_cut=10, pull_cut=10, min_entries=1
             ref_hist_prob_wgt = np.where(ref_hist_prob_wgt < 0.1, 0.1, ref_hist_prob_wgt)
     
         #Plot histogram with previously declared axes and settings to look similar to PyRoot
-        c = make_subplots(specs=[[{"secondary_y": True}]])
+        #See https://plotly.com/python/subplots/#custom-sized-subplot
+        can = make_subplots(rows=2, cols=1, shared_xaxes=True, row_heights=[0.7, 0.3], vertical_spacing = 0.05)
 
-        c.add_trace( go.Bar(name="data:"+str(histpair.data_run), x=x_bins, y=data_hist_raw, marker_color='red',
-                            marker_line_color='red', marker_line_width=1) )
-        c.add_trace( go.Scatter(name="ref:"+ref_runs_str, x=x_bins, y=ref_hist_prob_wgt, marker_color='blue',
-                                mode='markers', marker_size=(10 / np.log10(len(x_bins)))), secondary_y=False)
-        c.add_trace( go.Scatter(name="Pull", x=x_bins, y=pull_hist, marker_color='green',
-                                mode='markers', marker_size=[abs(p) for p in pull_hist],
-                                marker_symbol='x', marker_line_width=0), secondary_y=True)
+        #Colors from Google colour picker: https://g.co/kgs/a8Uc8Yw
+        can.add_trace( go.Bar(name="Beta-binomial<br>pull value", x=x_bins, y=pull_hist, marker_color='green',
+                              marker_line_color='green', marker_line_width=1), row=2, col=1 )
+        can.add_trace( go.Bar(name=ref_runs_str, x=x_bins, y=ref_hist_prob_wgt, marker_color='#f58282',
+                              marker_line_color='#f58282', marker_line_width=1), row=1, col=1)
+        can.add_trace( go.Scatter(name="Data run:<br>"+str(histpair.data_run), x=x_bins, y=data_hist_raw,
+                                  marker_color='blue', marker_line_color='blue', mode='markers',
+                                  marker_size=[np.power(1+abs(p),0.2)*(7 / np.log10(len(x_bins))) for p in pull_hist]),
+                       row=1, col=1 )
 
-        c.update_layout(bargap=0, bargroupgap=0, barmode='overlay', plot_bgcolor='white', legend_itemsizing='constant')
-        c.update_xaxes(showline=True, linewidth=2, linecolor='black', mirror=True, showgrid=False, title_text=xAxisTitle)
-        c.update_yaxes(showline=True, linewidth=2, linecolor='black', mirror=True, showgrid=False, title_text=yAxisTitle, secondary_y=False)
-        c.update_yaxes(showline=False, showgrid=False, title_text="Pull", range=[-pull_cap*1.05, pull_cap*1.05], secondary_y=True)
+        can.update_layout(bargap=0, bargroupgap=0, barmode='overlay', plot_bgcolor='white',
+                          legend_itemsizing='constant', legend_traceorder='reversed')
+        can.update_xaxes(showline=True, linewidth=1, linecolor='black', mirror=True, showgrid=False, title_text=xAxisTitle, row=2, col=1)
+        can.update_yaxes(showline=True, linewidth=1, linecolor='black', mirror=True, showgrid=False, title_text=yAxisTitle)
+        can.update_yaxes(showline=True, linewidth=1, linecolor='black', mirror=True, showgrid=True,  title_text="Pull", range=[-pull_cap*1.05, pull_cap*1.05], row=2, col=1)
         if set_logx:
-            c.update_xaxes(type="log")
+            can.update_xaxes(type="log")
         if set_logy:
-            c.update_yaxes(type="log", secondary_y=False)
+            can.update_yaxes(type="log", row=1, col=1)
 
-        c.update_layout(
+        can.update_layout(
             title=plotTitle , title_x=0.5,
-            # xaxis_title= xAxisTitle,
-            # yaxis_title= yAxisTitle,
             font=dict(
                 family="Times New Roman",
-                size=9,
+                size=12,
                 color="black"
             )
         )
-        ref_text = "ref:"+ref_runs_str
-        data_text = "data:"+str(histpair.data_run)
+        ref_text = ref_runs_str
+        data_text = "Data run:<br>"+str(histpair.data_run)
 
     ## --------- end 1D plotting ---------
 
@@ -213,7 +242,7 @@ def beta_binomial(histpair, pull_cap=15, chi2_cut=10, pull_cut=10, min_entries=1
         #Getting Plot labels for x-axis and y-axis as well as type (linear or categorical)
         xLabels = None
         yLabels = None
-        c = None
+        can = None
         x_axis_type = 'linear'
         y_axis_type = 'linear'
         if data_hist_orig.axes[0].labels():
@@ -245,11 +274,6 @@ def beta_binomial(histpair, pull_cap=15, chi2_cut=10, pull_cut=10, min_entries=1
 
         pull_hist = np.transpose(pull_hist)
     
-        #Getting Plot Titles for histogram, x-axis and y-axis
-        xAxisTitle = data_hist_orig.axes[0]._bases[0]._members["fTitle"]
-        yAxisTitle = data_hist_orig.axes[1]._bases[0]._members["fTitle"]
-        plotTitle = histpair.data_name + " beta-binomial  |  data:" + str(histpair.data_run) + " & ref:" + ref_runs_str
-
         #Repeat labels for concatenated histograms
         if do_concat:
             xLabels = None
@@ -262,23 +286,19 @@ def beta_binomial(histpair, pull_cap=15, chi2_cut=10, pull_cut=10, min_entries=1
             #     xLabels = xLabels + ['%s (C%d)' % (xx, iCat) for xx in xLabels_orig[1:]]
             #     iCat += 1
     
-        #Plotly doesn't support #circ, #theta, #phi but does support unicode
-        xAxisTitle = xAxisTitle.replace("#circ", "\u00B0").replace("#theta","\u03B8").replace("#phi","\u03C6").replace("#eta","\u03B7")
-        yAxisTitle = yAxisTitle.replace("#circ", "\u00B0").replace("#theta","\u03B8").replace("#phi","\u03C6").replace("#eta","\u03B7")
-        plotTitle = plotTitle.replace("#circ", "\u00B0").replace("#theta","\u03B8").replace("#phi","\u03C6").replace("#eta","\u03B7")
-    
         #Plot pull-values using 2d heatmap will settings to look similar to old Pyroot version
-        c = go.Figure(data=go.Heatmap(z=pull_hist, zmin=-pull_cap, zmax=pull_cap, colorscale=colors, x=xLabels, y=yLabels))
-        c['layout'].update(plot_bgcolor='white')
-        c.update_xaxes(showline=True, linewidth=2, linecolor='black', mirror=True, showgrid=False, type=x_axis_type)
-        c.update_yaxes(showline=True, linewidth=2, linecolor='black', mirror=True, showgrid=False, type=y_axis_type)
-        c.update_layout(
+        can = go.Figure(data=go.Heatmap(z=pull_hist, zmin=-pull_cap, zmax=pull_cap, colorscale=colors,
+                                        x=xLabels, y=yLabels, colorbar={"title": "Beta-binomial pull value", "titleside": "right"}))
+        can['layout'].update(plot_bgcolor='white')
+        can.update_xaxes(showline=True, linewidth=2, linecolor='black', mirror=True, showgrid=False, type=x_axis_type)
+        can.update_yaxes(showline=True, linewidth=2, linecolor='black', mirror=True, showgrid=False, type=y_axis_type)
+        can.update_layout(
             title=plotTitle , title_x=0.5,
-            xaxis_title= xAxisTitle,
-            yaxis_title= yAxisTitle,
+            xaxis_title=xAxisTitle,
+            yaxis_title=yAxisTitle,
             font=dict(
                 family="Times New Roman",
-                size=9,
+                size=12,
                 color="black"
             )
         )
@@ -290,8 +310,8 @@ def beta_binomial(histpair, pull_cap=15, chi2_cut=10, pull_cut=10, min_entries=1
         Ref_Entries_str = " - ".join([str(int(min(ref_hist_Entries))), str(int(max(ref_hist_Entries)))])
 
     info = {
-        'Chi_Squared': float(round(chi2, 2)),
-        'Max_Pull_Val': float(round(max_pull,2)),
+        'Chi_Squared': np.nan_to_num(float(round(chi2, 2))),
+        'Max_Pull_Val': np.nan_to_num(float(round(max_pull,2))),
         'Data_Entries': str(int(data_hist_Entries)),
         'Ref_Entries': Ref_Entries_str
     }
@@ -299,7 +319,7 @@ def beta_binomial(histpair, pull_cap=15, chi2_cut=10, pull_cut=10, min_entries=1
     artifacts = [pull_hist, str(int(data_hist_Entries)), Ref_Entries_str]
 
     return PluginResults(
-        c,
+        can,
         show=bool(is_outlier),
         info=info,
         artifacts=artifacts)

@@ -1,0 +1,1160 @@
+{
+    "comparators": ["beta_binomial"],
+    "sel_display": ["BB_Chi2_0.50","BB_MaxPull_0.5"],
+    "thresholds_fit": [
+        {
+            "name": "DT_n",
+            "param_MaxPull": [7,7,0.2],
+            "param_Chi2": [1.2,0.93]
+
+        },
+        {
+            "name": "hResDist",
+            "param_MaxPull": [4.23,1.39],
+            "param_Chi2": [1.74,0.8]  
+        },
+        {
+            "name": "TM_TrigEff",
+            "param_MaxPull": [7,7,0.2],
+            "param_Chi2":  [1.2,0.93]         
+        }
+    ],
+    "hists": [
+        {
+            "jar_dir": "DT",
+            "path": "Segment_TnP/Task/DT_nPassingProbe*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "Segment_TnP/Task/DT_nFailingProbe*"
+        }, 
+        {
+            "jar_dir": "DT",
+            "path": "03-LocalTrigger-TM/Task/*"
+        },       
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel-2/Sector1/Station1/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel-2/Sector1/Station2/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel-2/Sector1/Station3/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel-2/Sector1/Station4/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel-2/Sector2/Station1/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel-2/Sector2/Station2/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel-2/Sector2/Station3/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel-2/Sector2/Station4/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel-2/Sector3/Station1/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel-2/Sector3/Station2/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel-2/Sector3/Station3/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel-2/Sector3/Station4/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel-2/Sector4/Station1/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel-2/Sector4/Station2/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel-2/Sector4/Station3/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel-2/Sector4/Station4/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel-2/Sector5/Station1/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel-2/Sector5/Station2/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel-2/Sector5/Station3/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel-2/Sector5/Station4/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel-2/Sector6/Station1/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel-2/Sector6/Station2/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel-2/Sector6/Station3/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel-2/Sector6/Station4/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel-2/Sector7/Station1/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel-2/Sector7/Station2/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel-2/Sector7/Station3/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel-2/Sector7/Station4/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel-2/Sector8/Station1/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel-2/Sector8/Station2/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel-2/Sector8/Station3/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel-2/Sector8/Station4/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel-2/Sector9/Station1/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel-2/Sector9/Station2/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel-2/Sector9/Station3/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel-2/Sector9/Station4/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel-2/Sector10/Station1/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel-2/Sector10/Station2/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel-2/Sector10/Station3/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel-2/Sector10/Station4/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel-2/Sector11/Station1/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel-2/Sector11/Station2/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel-2/Sector11/Station3/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel-2/Sector11/Station4/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel-2/Sector12/Station1/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel-2/Sector12/Station2/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel-2/Sector12/Station3/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel-2/Sector12/Station4/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel-2/Sector13/Station1/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel-2/Sector13/Station2/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel-2/Sector13/Station3/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel-2/Sector13/Station4/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel-2/Sector14/Station1/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel-2/Sector14/Station2/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel-2/Sector14/Station3/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel-2/Sector14/Station4/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel-1/Sector1/Station1/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel-1/Sector1/Station2/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel-1/Sector1/Station3/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel-1/Sector1/Station4/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel-1/Sector2/Station1/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel-1/Sector2/Station2/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel-1/Sector2/Station3/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel-1/Sector2/Station4/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel-1/Sector3/Station1/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel-1/Sector3/Station2/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel-1/Sector3/Station3/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel-1/Sector3/Station4/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel-1/Sector4/Station1/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel-1/Sector4/Station2/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel-1/Sector4/Station3/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel-1/Sector4/Station4/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel-1/Sector5/Station1/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel-1/Sector5/Station2/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel-1/Sector5/Station3/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel-1/Sector5/Station4/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel-1/Sector6/Station1/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel-1/Sector6/Station2/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel-1/Sector6/Station3/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel-1/Sector6/Station4/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel-1/Sector7/Station1/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel-1/Sector7/Station2/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel-1/Sector7/Station3/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel-1/Sector7/Station4/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel-1/Sector8/Station1/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel-1/Sector8/Station2/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel-1/Sector8/Station3/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel-1/Sector8/Station4/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel-1/Sector9/Station1/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel-1/Sector9/Station2/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel-1/Sector9/Station3/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel-1/Sector9/Station4/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel-1/Sector10/Station1/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel-1/Sector10/Station2/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel-1/Sector10/Station3/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel-1/Sector10/Station4/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel-1/Sector11/Station1/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel-1/Sector11/Station2/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel-1/Sector11/Station3/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel-1/Sector11/Station4/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel-1/Sector12/Station1/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel-1/Sector12/Station2/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel-1/Sector12/Station3/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel-1/Sector12/Station4/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel-1/Sector13/Station1/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel-1/Sector13/Station2/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel-1/Sector13/Station3/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel-1/Sector13/Station4/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel-1/Sector14/Station1/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel-1/Sector14/Station2/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel-1/Sector14/Station3/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel-1/Sector14/Station4/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel0/Sector1/Station1/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel0/Sector1/Station2/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel0/Sector1/Station3/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel0/Sector1/Station4/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel0/Sector2/Station1/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel0/Sector2/Station2/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel0/Sector2/Station3/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel0/Sector2/Station4/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel0/Sector3/Station1/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel0/Sector3/Station2/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel0/Sector3/Station3/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel0/Sector3/Station4/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel0/Sector4/Station1/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel0/Sector4/Station2/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel0/Sector4/Station3/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel0/Sector4/Station4/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel0/Sector5/Station1/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel0/Sector5/Station2/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel0/Sector5/Station3/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel0/Sector5/Station4/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel0/Sector6/Station1/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel0/Sector6/Station2/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel0/Sector6/Station3/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel0/Sector6/Station4/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel0/Sector7/Station1/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel0/Sector7/Station2/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel0/Sector7/Station3/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel0/Sector7/Station4/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel0/Sector8/Station1/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel0/Sector8/Station2/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel0/Sector8/Station3/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel0/Sector8/Station4/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel0/Sector9/Station1/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel0/Sector9/Station2/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel0/Sector9/Station3/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel0/Sector9/Station4/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel0/Sector10/Station1/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel0/Sector10/Station2/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel0/Sector10/Station3/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel0/Sector10/Station4/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel0/Sector11/Station1/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel0/Sector11/Station2/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel0/Sector11/Station3/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel0/Sector11/Station4/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel0/Sector12/Station1/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel0/Sector12/Station2/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel0/Sector12/Station3/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel0/Sector12/Station4/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel0/Sector13/Station1/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel0/Sector13/Station2/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel0/Sector13/Station3/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel0/Sector13/Station4/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel0/Sector14/Station1/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel0/Sector14/Station2/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel0/Sector14/Station3/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel0/Sector14/Station4/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel1/Sector1/Station1/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel1/Sector1/Station2/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel1/Sector1/Station3/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel1/Sector1/Station4/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel1/Sector2/Station1/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel1/Sector2/Station2/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel1/Sector2/Station3/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel1/Sector2/Station4/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel1/Sector3/Station1/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel1/Sector3/Station2/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel1/Sector3/Station3/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel1/Sector3/Station4/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel1/Sector4/Station1/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel1/Sector4/Station2/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel1/Sector4/Station3/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel1/Sector4/Station4/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel1/Sector5/Station1/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel1/Sector5/Station2/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel1/Sector5/Station3/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel1/Sector5/Station4/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel1/Sector6/Station1/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel1/Sector6/Station2/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel1/Sector6/Station3/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel1/Sector6/Station4/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel1/Sector7/Station1/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel1/Sector7/Station2/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel1/Sector7/Station3/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel1/Sector7/Station4/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel1/Sector8/Station1/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel1/Sector8/Station2/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel1/Sector8/Station3/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel1/Sector8/Station4/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel1/Sector9/Station1/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel1/Sector9/Station2/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel1/Sector9/Station3/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel1/Sector9/Station4/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel1/Sector10/Station1/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel1/Sector10/Station2/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel1/Sector10/Station3/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel1/Sector10/Station4/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel1/Sector11/Station1/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel1/Sector11/Station2/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel1/Sector11/Station3/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel1/Sector11/Station4/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel1/Sector12/Station1/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel1/Sector12/Station2/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel1/Sector12/Station3/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel1/Sector12/Station4/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel1/Sector13/Station1/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel1/Sector13/Station2/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel1/Sector13/Station3/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel1/Sector13/Station4/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel1/Sector14/Station1/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel1/Sector14/Station2/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel1/Sector14/Station3/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel1/Sector14/Station4/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel2/Sector1/Station1/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel2/Sector1/Station2/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel2/Sector1/Station3/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel2/Sector1/Station4/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel2/Sector2/Station1/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel2/Sector2/Station2/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel2/Sector2/Station3/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel2/Sector2/Station4/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel2/Sector3/Station1/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel2/Sector3/Station2/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel2/Sector3/Station3/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel2/Sector3/Station4/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel2/Sector4/Station1/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel2/Sector4/Station2/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel2/Sector4/Station3/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel2/Sector4/Station4/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel2/Sector5/Station1/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel2/Sector5/Station2/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel2/Sector5/Station3/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel2/Sector5/Station4/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel2/Sector6/Station1/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel2/Sector6/Station2/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel2/Sector6/Station3/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel2/Sector6/Station4/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel2/Sector7/Station1/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel2/Sector7/Station2/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel2/Sector7/Station3/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel2/Sector7/Station4/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel2/Sector8/Station1/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel2/Sector8/Station2/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel2/Sector8/Station3/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel2/Sector8/Station4/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel2/Sector9/Station1/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel2/Sector9/Station2/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel2/Sector9/Station3/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel2/Sector9/Station4/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel2/Sector10/Station1/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel2/Sector10/Station2/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel2/Sector10/Station3/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel2/Sector10/Station4/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel2/Sector11/Station1/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel2/Sector11/Station2/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel2/Sector11/Station3/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel2/Sector11/Station4/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel2/Sector12/Station1/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel2/Sector12/Station2/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel2/Sector12/Station3/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel2/Sector12/Station4/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel2/Sector13/Station1/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel2/Sector13/Station2/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel2/Sector13/Station3/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel2/Sector13/Station4/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel2/Sector14/Station1/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel2/Sector14/Station2/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel2/Sector14/Station3/hResDist*"
+        },
+        {
+            "jar_dir": "DT",
+            "path": "02-Segments/Wheel2/Sector14/Station4/hResDist*"
+        }
+    ],
+    "main_gdir": "DQMData/Run {0}/DT/Run summary/"
+}
+
+
+
