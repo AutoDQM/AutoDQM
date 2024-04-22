@@ -70,6 +70,7 @@ def process(chunk_index, chunk_size, config_dir,
                                 Chi2_params = entry["param_Chi2"]
                                 MaxPull_threshold = calc_threshold(len(ref_runs), MaxPull_params[0],MaxPull_params[1])
                                 chi2_threshold    = calc_threshold(len(ref_runs), Chi2_params[0],Chi2_params[1])
+                    MaxPull_threshold = 36 if MaxPull_threshold > 36 
                     results = comparator(hp, **hp.config, chi2_cut=chi2_threshold, pull_cut= MaxPull_threshold)   
                 else:
                     results = comparator(hp, **hp.config)
