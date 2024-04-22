@@ -1,0 +1,68 @@
+{
+    "main_gdir" : "DQMData/Run {0}/DT/Run summary/",
+    "description" : "Plots for DT Doc1 (Online), as per spreadsheet below",
+    "descriptionX" : "https://docs.google.com/spreadsheets/d/1Bvqx-pq5qsOyRwjamzMN-_x0quZtbzxFqGzRokp6ysM",
+    "comparators": ["beta_binomial"],
+    "thresholds_fit": [
+        {
+            "name": "Occupancy",
+            "param_MaxPull": [15.54,4.88],
+            "param_Chi2": [432.19,0.0]
+
+        },
+        {
+            "name": "Segments",
+            "param_MaxPull": [6.55,1.33],
+            "param_Chi2": [5.88,0.87]  
+        },
+        {
+            "name": "ROS",
+            "param_MaxPull": [0.02,6.08],
+            "param_Chi2": [590.08,9.61]         
+        },
+        {
+            "name": "InclusivePhiIn",
+            "param_MaxPull": [13.31,0.6],
+            "param_Chi2": [9.50,0.71]        
+        },
+        {
+            "name": "InclusivePhiOut",
+            "param_MaxPull": [11.50,0.84],
+            "param_Chi2": [10.39,0.65]         
+        },
+        {
+            "name": "NoiseSummary",
+            "param_MaxPull": [16.74,3.36],
+            "param_Chi2": [197.0,0.0]         
+        }
+    ],
+    "hists" : [
+	{"path" : "01-Digi/Wheel-2/OccupancyAllHits_W*"},
+	{"path" : "01-Digi/Wheel-1/OccupancyAllHits_W*"},
+	{"path" : "01-Digi/Wheel0/OccupancyAllHits_W*"},
+	{"path" : "01-Digi/Wheel1/OccupancyAllHits_W*"},
+	{"path" : "01-Digi/Wheel2/OccupancyAllHits_W*"},
+	{"path" : "02-Segments/Wheel-2/numberOfSegments_W*"},
+	{"path" : "02-Segments/Wheel-1/numberOfSegments_W*"},
+	{"path" : "02-Segments/Wheel0/numberOfSegments_W*"},
+	{"path" : "02-Segments/Wheel1/numberOfSegments_W*"},
+	{"path" : "02-Segments/Wheel2/numberOfSegments_W*"},
+    {"path" : "00-DataIntegrity/ROSSummary_W-2"},
+    {"path" : "00-DataIntegrity/ROSSummary_W-1"},
+    {"path" : "00-DataIntegrity/ROSSummary_W0"},
+    {"path" : "00-DataIntegrity/ROSSummary_W1"},
+    {"path" : "00-DataIntegrity/ROSSummary_W2"},
+    {"path" : "03-LocalTrigger-TM/Wheel-2/TM_TriggerInclusivePhiIn_W-2"},
+    {"path" : "03-LocalTrigger-TM/Wheel-2/TM_TriggerInclusivePhiOut_W-2"},
+    {"path" : "03-LocalTrigger-TM/Wheel-1/TM_TriggerInclusivePhiIn_W-1"},
+    {"path" : "03-LocalTrigger-TM/Wheel-1/TM_TriggerInclusivePhiOut_W-1"},
+    {"path" : "03-LocalTrigger-TM/Wheel0/TM_TriggerInclusivePhiIn_W0"},
+    {"path" : "03-LocalTrigger-TM/Wheel0/TM_TriggerInclusivePhiOut_W0"},
+    {"path" : "03-LocalTrigger-TM/Wheel1/TM_TriggerInclusivePhiIn_W1"},
+    {"path" : "03-LocalTrigger-TM/Wheel1/TM_TriggerInclusivePhiOut_W1"},
+    {"path" : "03-LocalTrigger-TM/Wheel2/TM_TriggerInclusivePhiIn_W2"},
+    {"path" : "03-LocalTrigger-TM/Wheel2/TM_TriggerInclusivePhiOut_W2"},
+    {"path" : "05-Noise/NoiseSummary"}
+
+    ]
+}
