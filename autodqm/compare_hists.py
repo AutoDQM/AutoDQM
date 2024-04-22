@@ -13,7 +13,7 @@ import numpy as np
 
 # Define the function to calculate thresholds!
 def calc_threshold(x, a, b):
-    return a / (x) + b
+    return a / (x) + b**2
 
 def process(chunk_index, chunk_size, config_dir,
             dqmSource, subsystem,
