@@ -1,0 +1,132 @@
+{
+    "main_gdir": "/eos/cms/store/group/comm_dqm/DQMGUI_data/Run2022/Muon/Run summary/",
+    "description": "Plots for CSC Doc1 (Offline), as per spreadsheet below. Params are for 90% thresholds (a,b) for a/nref+b^{2}. Hist paths are not exact paths, refer to https://docs.google.com/presentation/d/1LF2tRZBe_qtzAZsDkic8nHeTsy01gF2_CU5VtF6pJQ4/edit?pli=1#slide=id.g2d11a1cc315_2_108",
+    "descriptionX": "https://docs.google.com/spreadsheets/d/1Bvqx-pq5qsOyRwjamzMN-_x0quZtbzxFqGzRokp6ysM",
+    "comparators": [
+        "beta_binomial"
+    ],
+    "thresholds_fit": [
+        {
+            "name": "CSCOfflineMonitor/recHits/hRHGlobal*",
+            "param_MaxPull": [
+                16.25714185292767,
+                2.525050056817414
+            ],
+            "param_Chi2": [
+                6.407900367902902,
+                0.990763485161484
+            ]
+        },
+        {
+            "name": "Summary/CSC_*",
+            "param_MaxPull": [
+                31.834177992265445,
+                2.658374240229468
+            ],
+            "param_Chi2": [
+                20.73871867638727,
+                -1.9818459911385457e-06
+            ]
+        },
+        {
+            "name": "_endcap_*Time",
+            "param_MaxPull": [
+                25.098753256037643,
+                1.8304977838920726
+            ],
+            "param_Chi2": [
+                125.05881491349315,
+                -5.262294865189532e-05
+            ]
+        },
+        {
+            "name": "endcap_GEM_VFAT_occupancy*",
+            "param_MaxPull": [
+                0.003347211805754646,
+                6.066184639820253
+            ],
+            "param_Chi2": [
+                80.42841393844745,
+                -7.78153912660371e-06
+            ]
+        },
+        {
+            "name": "1DOccupancy",
+            "param_MaxPull": [
+                20.222850437412866,
+                4.2508319671295265
+            ],
+            "param_Chi2": [
+                11.950768452607964,
+                0.746503539583474
+            ]
+        },
+        {
+            "name": "2DOccupancy",
+            "param_MaxPull": [
+                17.202151821387595,
+                4.591922470800429
+            ],
+            "param_Chi2": [
+                14.343159575571521,
+                0.5762208054824743
+            ]
+        },
+        {
+            "name": "1DBXMonitor",
+            "param_MaxPull": [
+                22.208121225896498,
+                1.9031136676073297
+            ],
+            "param_Chi2": [
+                85.02110262295982,
+                -1.1114001630396775e-06
+            ]
+        },
+        {
+            "name": "2DSerialBXMonitor",
+            "param_MaxPull": [
+                24.02515120828381,
+                3.803984031059248
+            ],
+            "param_Chi2": [
+                6.017311457668889,
+                -4.450002766565205e-05
+            ]
+        },
+        {
+            "name": "2DDenominatorNumeratorBXMonitor",
+            "param_MaxPull": [
+                0.003941636569710634,
+                6.068434090742421
+            ],
+            "param_Chi2": [
+                88.38163704632858,
+                -7.283621989939704e-05
+            ]
+        },
+        {
+            "name": "CSC/Summary/All_DDUs_*",
+            "param_MaxPull": [
+                0.04106476794489014,
+                6.069856893758184
+            ],
+            "param_Chi2": [
+                778.3598225952979,
+                5.887332263366643
+            ]
+        }
+    ],
+    "hists": [
+        { "path": "CSCOfflineMonitor/recHits/hRHGlobal*" },
+        { "path": "Summary/CSC_*" },
+        { "path": "_endcap_*Time" },
+        { "path": "endcap_GEM_VFAT_occupancy*" },
+        { "path": "1DOccupancy" },
+        { "path": "2DOccupancy" },
+        { "path": "1DBXMonitor" },
+        { "path": "2DSerialBXMonitor" },
+        { "path": "2DDenominatorNumeratorBXMonitor" },
+        { "path": "CSC/Summary/All_DDUs_*" }
+    ]
+}
