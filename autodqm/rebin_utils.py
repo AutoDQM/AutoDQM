@@ -75,7 +75,7 @@ def rebin_pull_hist(pull_hist, data_hist_raw,ref_hists_raw, ref_hist_sum, tol, h
                 nBinsUsed_rb = np.count_nonzero(pull_hist_rb)
                 
                 # Calculate the chi2 and MaxPull value for the rebinned histogram
-                chi2     = np.sqrt(np.count_nonzero(pull_hist)/nBinsUsed_rb)*np.square(pull_hist_rb).sum() / nBinsUsed_rb
+                chi2     = np.sqrt(np.count_nonzero(pull_hist)/(nBinsUsed_rb + 1e-3 ))*np.square(pull_hist_rb).sum() / nBinsUsed_rb
                 max_pull = bb.maxPullNorm(np.amax(pull_hist_rb), nBinsUsed_rb)
                 min_pull = bb.maxPullNorm(np.amin(pull_hist_rb), nBinsUsed_rb)
                 if abs(min_pull) > max_pull:
