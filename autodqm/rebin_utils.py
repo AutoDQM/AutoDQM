@@ -70,6 +70,7 @@ def rebin_pull_hist(pull_hist, data_hist_raw,ref_hists_raw, ref_hist_sum, tol, h
             for rbY in range(1, 5):       
         
                 pull_hist_rb = Rebin(pull_hist, rbX, rbY, pull = True)
+                #pull_hist_rb = substitute_max_bin_with_average(pull_hist_rb)
                 
                 # Number of bins in the new histogram
                 nBinsUsed_rb = np.count_nonzero(pull_hist_rb)
@@ -88,3 +89,53 @@ def rebin_pull_hist(pull_hist, data_hist_raw,ref_hists_raw, ref_hist_sum, tol, h
                 maxpull_keep.append(max_pull)
                 
         return np.max(chi2_keep), np.max(maxpull_keep)
+
+def substitute_max_bin_with_average(hist):
+        """
+        Finds the bin with the maximum value in a 2D histogram and substitutes its value 
+        with the average value of the surrounding bins.
+        
+        Parameters:
+        hist (numpy.ndarray): 2D histogram (2D numpy array)
+        
+        Returns:
+        numpy.ndarray: Modified 2D histogram with the maximum bin substituted by the average of surrounding bins
+        """
+        
+        chi_before = np.square(hist).sum()
+        chi_after  = chi_before/2.
+        
+        # if the diference in chi2 is bigger than 10% of the original chi2, we will repeat the algorithm!
+        i = 0
+        while (  (chi_before - chi_after)/chi_before  > 0.1 ):
+            
+            if( i == 0 ):
+                chi_before = chi_before
+            else:
+                chi_before = chi_after
+        
+            rows, cols = hist.shape
+            max_bin_value = np.max(np.abs(hist)) # max of abs since we have positive and negative pulls
+            max_bin_indices = np.unravel_index(np.argmax(np.abs(hist), axis=None), hist.shape)
+            
+            max_row, max_col = max_bin_indices
+            
+            surrounding_values = []
+            
+            # Collect values from the surrounding bins
+            for i in range(max_row-1, max_row+2):
+                for j in range(max_col-1, max_col+2):
+                    if (0 <= i < rows) and (0 <= j < cols) and (i != max_row or j != max_col):
+                        surrounding_values.append(hist[i, j])
+            
+            # Calculate the average of the surrounding bins
+            average_value = np.mean(surrounding_values)
+            
+            # Substitute the maximum bin's value with the average value
+            hist[max_row, max_col] = average_value
+            
+            chi_after = np.square(hist).sum() + 0.001
+        
+            i += 1
+        
+        return hist
