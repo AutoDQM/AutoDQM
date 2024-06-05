@@ -24,6 +24,7 @@ Index
    Development <#setting-up-autodqm-for-development>`__
 3. `Using AutoDQM Offline <#using-autodqm-offline>`__
 4. `Environment Variables <#environment-variables>`__
+5. `Deleting Images and Root Files to Free Up Space <#deleting-images>`__
 
 Features
 --------
@@ -195,8 +196,9 @@ This analyzes RPC plots, using Run2022 series, SingleMuon sample (both data and 
 
 
 
+
 Descriptions of the Environment Variables
----------------------
+-----------------------------------------
 
 -  ``ADQM_CONFIG`` location of the configuration file to use
 -  ``ADQM_DB`` location to store downloaded root files from offline DQM
@@ -210,3 +212,24 @@ Descriptions of the Environment Variables
 -  ``ADQM_CACERT`` location of a CERN Grid CA certificate chain, if
    needed
 
+
+
+Deleting Docker images and root files to free up space
+------------------------------------------------------
+
+Docker images and root files used to test AutoDQM take up space and can accumulate overtime. Since we only have 40Gb max on the large flavor virtual machines, it might be necessary to free up some space in order to keep testing new images and runs. 
+
+To delete a specific docker image, you can do the following: 
+
+.. code:: sh 
+
+    docker image ls #lists docker images 
+    docker image rm <image ID> 
+
+To free up space for more root files, head over to this directory 
+
+.. code:: sh 
+
+    /var/lib/docker/volumes/autodqm_adqm-db/_data 
+
+You will see directories `dqm_offline`, `Offline`, and `Online`. It is safe to delete the root files (files names are <run number>.root) and text files (file names are string of numbers) in these directories. DO NOT delete CERN_Root_CA.crt. That is the certificate used to access the root files from DQM. 
