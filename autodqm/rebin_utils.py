@@ -62,6 +62,9 @@ def rebin_pull_hist(pull_hist, data_hist_raw,ref_hists_raw, ref_hist_sum, tol, h
         [pull_hist, ref_hist_prob_wgt] = bb.pull(data_hist_raw, ref_hists_raw, tol)
         pull_hist = pull_hist*np.sign(data_hist_raw-ref_hist_prob_wgt)
         
+	# Apllying the hot-bin algorithm
+        pull_hist = substitute_max_bin_with_average(pull_hist)
+        
         chi2_keep = []
         maxpull_keep = []
         for rbX in range(1, 5): 
@@ -70,7 +73,6 @@ def rebin_pull_hist(pull_hist, data_hist_raw,ref_hists_raw, ref_hist_sum, tol, h
             for rbY in range(1, 5):       
         
                 pull_hist_rb = Rebin(pull_hist, rbX, rbY, pull = True)
-                #pull_hist_rb = substitute_max_bin_with_average(pull_hist_rb)
                 
                 # Number of bins in the new histogram
                 nBinsUsed_rb = np.count_nonzero(pull_hist_rb)
@@ -88,7 +90,7 @@ def rebin_pull_hist(pull_hist, data_hist_raw,ref_hists_raw, ref_hist_sum, tol, h
                 chi2_keep.append(chi2)
                 maxpull_keep.append(max_pull)
                 
-        return np.max(chi2_keep), np.max(maxpull_keep)
+        return np.max(chi2_keep)
 
 def substitute_max_bin_with_average(hist):
         """
@@ -103,11 +105,11 @@ def substitute_max_bin_with_average(hist):
         """
         
         chi_before = np.square(hist).sum()
-        chi_after  = chi_before/2.
+        chi_after  = chi_before/2.  # initializing as half due to the while condition
         
         # if the diference in chi2 is bigger than 10% of the original chi2, we will repeat the algorithm!
         i = 0
-        while (  (chi_before - chi_after)/chi_before  > 0.1 ):
+        while (  2*(chi_before - chi_after)/(chi_before+chi_after)  > 0.1 and i < int( np.sqrt(np.count_nonzero(hist)/5) ) ):
             
             if( i == 0 ):
                 chi_before = chi_before
@@ -123,8 +125,8 @@ def substitute_max_bin_with_average(hist):
             surrounding_values = []
             
             # Collect values from the surrounding bins
-            for i in range(max_row-1, max_row+2):
-                for j in range(max_col-1, max_col+2):
+            for i in range(max_row-1, max_row+1):
+                for j in range(max_col-1, max_col+1):
                     if (0 <= i < rows) and (0 <= j < cols) and (i != max_row or j != max_col):
                         surrounding_values.append(hist[i, j])
             
@@ -134,7 +136,7 @@ def substitute_max_bin_with_average(hist):
             # Substitute the maximum bin's value with the average value
             hist[max_row, max_col] = average_value
             
-            chi_after = np.square(hist).sum() + 0.001
+            chi_after = np.square(hist).sum()
         
             i += 1
         
