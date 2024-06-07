@@ -93,51 +93,66 @@ def rebin_pull_hist(pull_hist, data_hist_raw,ref_hists_raw, ref_hist_sum, tol, h
         return np.max(chi2_keep)
 
 def substitute_max_bin_with_average(hist):
-        """
-        Finds the bin with the maximum value in a 2D histogram and substitutes its value 
-        with the average value of the surrounding bins.
+    """
+    Finds the bin with the maximum value in a 2D histogram and substitutes its value 
+    with the average value of the surrounding bins.
+    
+    Parameters:
+    hist (numpy.ndarray): 2D histogram (2D numpy array)
+    
+    Returns:
+    numpy.ndarray: Modified 2D histogram with the maximum bin substituted by the average of surrounding bins
+    """
+    
+    chi_before = np.square(hist).sum()
+    chi_after  = chi_before / 2.0  # initializing as half due to the while condition
+    
+    # if the difference in chi2 is bigger than 10% of the original chi2, we will repeat the algorithm!
+    i = 0
+    max_iterations = int(np.sqrt(np.count_nonzero(hist) / 5))
+    
+    while 2 * (chi_before - chi_after) / (chi_before + chi_after) > 0.1 and i < max_iterations:
+        if i != 0:
+            chi_before = chi_after
         
-        Parameters:
-        hist (numpy.ndarray): 2D histogram (2D numpy array)
+        rows, cols = hist.shape
+        max_bin_value = np.max(np.abs(hist))  # max of abs since we have positive and negative pulls
+        max_bin_indices = np.unravel_index(np.argmax(np.abs(hist), axis=None), hist.shape)
         
-        Returns:
-        numpy.ndarray: Modified 2D histogram with the maximum bin substituted by the average of surrounding bins
-        """
+        max_row, max_col = max_bin_indices
         
-        chi_before = np.square(hist).sum()
-        chi_after  = chi_before/2.  # initializing as half due to the while condition
+        surrounding_values = []
         
-        # if the diference in chi2 is bigger than 10% of the original chi2, we will repeat the algorithm!
-        i = 0
-        while (  2*(chi_before - chi_after)/(chi_before+chi_after)  > 0.1 and i < int( np.sqrt(np.count_nonzero(hist)/5) ) ):
-            
-            if( i == 0 ):
-                chi_before = chi_before
-            else:
-                chi_before = chi_after
+        # Collect values from the surrounding bins
+        for m in range(max_row - 1, max_row + 2):  
+            for n in range(max_col - 1, max_col + 2):
+                if (0 <= m < rows) and (0 <= n < cols) and not (m == max_row and n == max_col):
+                    surrounding_values.append(hist[m, n])
         
-            rows, cols = hist.shape
-            max_bin_value = np.max(np.abs(hist)) # max of abs since we have positive and negative pulls
-            max_bin_indices = np.unravel_index(np.argmax(np.abs(hist), axis=None), hist.shape)
-            
-            max_row, max_col = max_bin_indices
-            
-            surrounding_values = []
-            
-            # Collect values from the surrounding bins
-            for i in range(max_row-1, max_row+1):
-                for j in range(max_col-1, max_col+1):
-                    if (0 <= i < rows) and (0 <= j < cols) and (i != max_row or j != max_col):
-                        surrounding_values.append(hist[i, j])
-            
-            # Calculate the average of the surrounding bins
-            average_value = np.mean(surrounding_values)
-            
-            # Substitute the maximum bin's value with the average value
-            hist[max_row, max_col] = average_value
-            
-            chi_after = np.square(hist).sum()
+        # Calculate the average of the surrounding bins
+        if surrounding_values:
+            average_value = (8/9)*np.mean(surrounding_values) + (1/9)*max_bin_value  
+        else:
+            average_value = (1/9)*max_bin_value  
         
-            i += 1
+        # Substitute the maximum bin's value with the average value
+        hist[max_row, max_col] = average_value
         
-        return hist
+        chi_after = np.square(hist).sum() + 0.001  # adding a small value to avoid division by zero
+        
+        i += 1
+    
+    return hist        
+        
+        
+        
+            
+        
+            
+            
+            
+            
+            
+            
+        
+        
