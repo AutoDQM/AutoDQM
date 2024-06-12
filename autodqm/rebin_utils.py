@@ -1,7 +1,16 @@
+"""
+This script stores useful functions to perform the rebinning of histograms and the "hot-bin" algorithm.
+
+In occupancy histograms, noisy channels are common and usually have large values in the pull histogram.
+This raises the chi-squared (chi2) and max-pull thresholds, sometimes "burying" the true regional anomalies.
+
+These algorithms were developed to mitigate this effect and increase the relative chi-squared (Chi2) with respect to "local" anomalies.
+"""
+
 import uproot
 import numpy as np
-
 import os
+
 
 # Instead of rebinning the data and reference histograms, we will rebin the pull histogram
 def rebin_pull_hist(pull_hist, data_hist_raw,ref_hists_raw, ref_hist_sum, tol, histpair):
@@ -9,13 +18,13 @@ def rebin_pull_hist(pull_hist, data_hist_raw,ref_hists_raw, ref_hist_sum, tol, h
         pull_hist = pull_hist.copy()
 
         import plugins.beta_binomial as bb
-  
-	# Apllying the hot-bin algorithm
+
+	    # Apllying the hot-bin algorithm
         pull_hist = substitute_max_bin_with_average(pull_hist)
 
         # Padding the pull histogram
         pull_hist = pad_histogram(pull_hist)
-        
+
         nBinsX, nBinsY = np.shape(pull_hist)[0], np.shape(pull_hist)[1]
 
         chi2_keep = []
@@ -27,7 +36,7 @@ def rebin_pull_hist(pull_hist, data_hist_raw,ref_hists_raw, ref_hist_sum, tol, h
                 if (nBinsY % rbY != 0): continue     
 
                 pull_hist_rb = Rebin(pull_hist, rbX, rbY, pull = True)     
-                
+
                 # Number of bins in the new histogram
                 nBinsUsed_rb = np.count_nonzero(pull_hist_rb)
 
@@ -38,10 +47,10 @@ def rebin_pull_hist(pull_hist, data_hist_raw,ref_hists_raw, ref_hist_sum, tol, h
                 min_pull = bb.maxPullNorm(np.amin(pull_hist_rb), nBinsUsed_rb)
                 if abs(min_pull) > max_pull:
                     max_pull = min_pull  
-                  
+
                 chi2_keep.append(chi2)
                 maxpull_keep.append(max_pull)
-                
+
         return np.max(chi2_keep)
 
 def Rebin(hist, rbX, rbY, pull = False):
@@ -68,22 +77,22 @@ def Rebin(hist, rbX, rbY, pull = False):
         return rebinned_hist     
 
 def pad_histogram(hist):
-    
+
     hist_new = hist  # Ensure a copy of the original histogram is made
-    
+
     try:
         nBinsX, nBinsY = np.shape(hist_new)[0], np.shape(hist_new)[1]
     except:
         # One dimensional histogram
         nBinsX = np.shape(hist_new)[0]
-    
+
     nPadX = 0
     nPadY = 0
 
     ## Pad until axis can be rebinned evenly in 2, 3, and 4 or 2, 3, and 5
     ## Don't pad by more than 10% of original axis size
     ## Pad with existing values working in from the edges, rather than padding with zeros
-    while ((nBinsX + nPadX) % 12) != 0 and ((nBinsX + nPadX) % 30) != 0 and (nPadX + 1.) / nBinsX < 0.1:
+    while ((nBinsX + nPadX) % 12) != 0 and ((nBinsX + nPadX) % 30) != 0 and (nPadX+1) / nBinsX < 0.1:
         if (nPadX % 2) == 0:
             value_edge = hist_new[-1, :].reshape(1, -1)
             hist_new = np.concatenate((hist_new, value_edge), axis=0)
@@ -91,7 +100,12 @@ def pad_histogram(hist):
             value_edge = hist_new[0, :].reshape(1, -1)
             hist_new = np.concatenate((value_edge, hist_new), axis=0)
         nPadX += 1
-        
+
+    # If the number of bins at the end is not divisible by 2, 3, or 5, we add an extra bin
+    if( (nBinsX + nPadX) % 2 != 0 and (nBinsX + nPadX) % 3 != 0 and (nBinsX + nPadX) % 5 != 0):
+        value_edge = hist_new[0, :].reshape(1, -1)
+        hist_new = np.concatenate((value_edge, hist_new), axis=0)
+
     # Now for the y-axis if it is a 2d histogram
     try:
         while ((nBinsY + nPadY) % 12) != 0 and ((nBinsY + nPadY) % 30) != 0 and (nPadY + 1.) / nBinsY < 0.1:
@@ -102,6 +116,10 @@ def pad_histogram(hist):
                 value_edge = hist_new[:, 0].reshape(-1, 1)
                 hist_new = np.concatenate((value_edge, hist_new), axis=1)
             nPadY += 1
+
+        if( (nBinsY + nPadY) % 2 != 0 and (nBinsY + nPadY) % 3 != 0 and (nBinsY + nPadY) % 5 != 0):
+                value_edge = hist_new[:, 0].reshape(-1, 1)
+                hist_new = np.concatenate((value_edge, hist_new), axis=1)   
     except:
         # This is a 1d histogram!
         pass
