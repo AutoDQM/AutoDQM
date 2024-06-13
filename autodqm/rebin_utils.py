@@ -9,8 +9,8 @@ These algorithms were developed to mitigate this effect and increase the relativ
 
 import uproot
 import numpy as np
-import os
 
+import os
 
 # Instead of rebinning the data and reference histograms, we will rebin the pull histogram
 def rebin_pull_hist(pull_hist, data_hist_raw,ref_hists_raw, ref_hist_sum, tol, histpair):
@@ -76,7 +76,68 @@ def Rebin(hist, rbX, rbY, pull = False):
 
         return rebinned_hist     
 
+def num_factors(nBins):
+    nFact = 0
+    for div in [2, 3, 4, 5]:
+        if (nBins % div) == 0:
+            nFact += 1
+    return nFact
+
 def pad_histogram(hist):
+    hist_new = hist.copy()
+    
+    # Determine if the histogram is 1D or 2D
+    if hist.ndim == 1:
+        nBinsX = len(hist_new)
+        nBinsY = 1
+        hist_new = hist_new.reshape(-1, 1)  # Convert to 2D for uniform handling
+    else:
+        nBinsX, nBinsY = hist_new.shape
+
+    nFactX = num_factors(nBinsX)
+    nFactY = num_factors(nBinsY)
+    nPadX = 0
+    nPadY = 0
+
+    # Compute padding for the X axis
+    iX = 1
+    while nFactX < 3 and 10 * iX < nBinsX:
+        if num_factors(nBinsX + iX) > nFactX:
+            nFactX = num_factors(nBinsX + iX)
+            nPadX = iX
+        iX += 1
+        
+    for jX in range(nPadX):
+        if (jX % 2) == 0:
+            value_edge = hist_new[-1, :].reshape(1, -1)
+            hist_new = np.concatenate((hist_new, value_edge), axis=0)        
+        else:
+            value_edge = hist_new[0, :].reshape(1, -1)
+            hist_new = np.concatenate((value_edge, hist_new), axis=0)
+
+    # Compute padding for the Y axis
+    if nBinsY > 1:  # Only pad Y axis if it's a 2D histogram
+        iY = 1
+        while nFactY < 3 and 10 * iY < nBinsY:
+            if num_factors(nBinsY + iY) > nFactY:
+                nFactY = num_factors(nBinsY + iY)
+                nPadY = iY
+            iY += 1
+        
+        for jY in range(nPadY):
+            if (jY % 2) == 0:
+                value_edge = hist_new[:, -1].reshape(-1, 1)
+                hist_new = np.concatenate((hist_new, value_edge), axis=1)        
+            else:
+                value_edge = hist_new[:, 0].reshape(-1, 1)
+                hist_new = np.concatenate((value_edge, hist_new), axis=1)
+
+    if hist.ndim == 1:
+        hist_new = hist_new.flatten()  # Convert back to 1D if the original was 1D
+
+    return hist_new
+
+def pad_histogram_(hist):
 
     hist_new = hist  # Ensure a copy of the original histogram is made
 
