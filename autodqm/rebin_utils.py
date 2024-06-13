@@ -137,58 +137,6 @@ def pad_histogram(hist):
 
     return hist_new
 
-def pad_histogram_(hist):
-
-    hist_new = hist  # Ensure a copy of the original histogram is made
-
-    try:
-        nBinsX, nBinsY = np.shape(hist_new)[0], np.shape(hist_new)[1]
-    except:
-        # One dimensional histogram
-        nBinsX = np.shape(hist_new)[0]
-
-    nPadX = 0
-    nPadY = 0
-
-    ## Pad until axis can be rebinned evenly in 2, 3, and 4 or 2, 3, and 5
-    ## Don't pad by more than 10% of original axis size
-    ## Pad with existing values working in from the edges, rather than padding with zeros
-    while ((nBinsX + nPadX) % 12) != 0 and ((nBinsX + nPadX) % 30) != 0 and (nPadX+1) / nBinsX < 0.1:
-        if (nPadX % 2) == 0:
-            value_edge = hist_new[-1, :].reshape(1, -1)
-            hist_new = np.concatenate((hist_new, value_edge), axis=0)
-        else:
-            value_edge = hist_new[0, :].reshape(1, -1)
-            hist_new = np.concatenate((value_edge, hist_new), axis=0)
-        nPadX += 1
-
-    # If the number of bins at the end is not divisible by 2, 3, or 5, we add an extra bin
-    if( (nBinsX + nPadX) % 2 != 0 and (nBinsX + nPadX) % 3 != 0 and (nBinsX + nPadX) % 5 != 0):
-        value_edge = hist_new[0, :].reshape(1, -1)
-        hist_new = np.concatenate((value_edge, hist_new), axis=0)
-
-    # Now for the y-axis if it is a 2d histogram
-    try:
-        while ((nBinsY + nPadY) % 12) != 0 and ((nBinsY + nPadY) % 30) != 0 and (nPadY + 1.) / nBinsY < 0.1:
-            if (nPadY % 2) == 0:
-                value_edge = hist_new[:, -1].reshape(-1, 1)
-                hist_new = np.concatenate((hist_new, value_edge), axis=1)
-            else:
-                value_edge = hist_new[:, 0].reshape(-1, 1)
-                hist_new = np.concatenate((value_edge, hist_new), axis=1)
-            nPadY += 1
-
-        if( (nBinsY + nPadY) % 2 != 0 and (nBinsY + nPadY) % 3 != 0 and (nBinsY + nPadY) % 5 != 0):
-                value_edge = hist_new[:, 0].reshape(-1, 1)
-                hist_new = np.concatenate((value_edge, hist_new), axis=1)   
-    except:
-        # This is a 1d histogram!
-        pass
-
-    return hist_new
-
-
-
 def substitute_max_bin_with_average(hist):
     """
     Finds the bin with the maximum value in a 2D histogram and substitutes its value 
