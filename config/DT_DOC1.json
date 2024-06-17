@@ -16,7 +16,7 @@
         {
             "name": "Occupancy",
             "param_MaxPull": [14,4],
-            "param_Chi2": [17,2]         
+            "param_Chi2": [4,1]         
         }
     ],
     "hists": [
