@@ -112,8 +112,7 @@ def beta_binomial(histpair, pull_cap=10, chi2_cut=10, pull_cut=10, min_entries=1
 
     # For test propouses! - should we do it only for Occupancy plots??
     if 'Occupancy' in histpair.data_name:
-        chi2 = rebin_pull_hist(pull_hist,data_hist_raw,ref_hists_raw, ref_hist_sum, tol=0.01, histpair=histpair)
-        #rebin_chi2(data_hist_raw, ref_hists_raw, tol=0.01)
+        chi2 = rebin_pull_hist(pull_hist)
 
     ## access per-histogram settings for max_pull, chi2, axis titles
     plot_title  = None
