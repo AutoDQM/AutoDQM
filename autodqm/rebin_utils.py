@@ -8,10 +8,11 @@ These algorithms were developed to mitigate this effect and increase the relativ
 """
 
 import numpy as np
-import plugins.beta_binomial as bb
 
 # Instead of rebinning the data and reference histograms, we will rebin the pull histogram
 def rebin_pull_hist(pull_hist_orig):
+
+        import plugins.beta_binomial as bb
 
         nBinsUsed_orig = np.count_nonzero(pull_hist_orig)	
         pull_hist = pull_hist_orig.copy()
@@ -155,7 +156,7 @@ def substitute_max_bin_with_average(hist):
     ii = 0
     max_iterations = int(np.sqrt(np.count_nonzero(hist))/5)
 
-    while 2 * (chi_before - chi_after) / (chi_before + chi_after) > 0.1 and i < max_iterations:
+    while 2 * (chi_before - chi_after) / (chi_before + chi_after) > 0.1 and ii < max_iterations:
         if ii != 0:
             chi_before = chi_after
 
