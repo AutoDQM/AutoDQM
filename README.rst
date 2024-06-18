@@ -226,6 +226,15 @@ To delete a specific docker image, you can do the following:
     docker image ls #lists docker images 
     docker image rm <image ID> 
 
+
+To prune docker of all unused images, containers, volumes: 
+
+.. code:: sh 
+
+   docker system prune
+
+You can add ``-af`` to prune everything (including images still active) without docker prompting for confirmation. More info on https://docs.docker.com/reference/cli/docker/system/prune/.
+
 To free up space for more root files, head over to this directory 
 
 .. code:: sh 
