@@ -131,7 +131,7 @@ def beta_binomial(histpair, pull_cap=10, chi2_cut=10, pull_cut=10, min_entries=1
     is_outlier = data_hist_Entries >= min_entries and (chi2 > chi2_cut or abs(max_pull) > pull_cut)
 
 
-    if data_hist_Entries < 1 and np.all(np.array(ref_hist_Entries) > 0) and subsystem == 'DT':
+    if data_hist_Entries < 1 and np.all(np.array(ref_hist_Entries) > 0) and subsystem.startswith('DT'):
         is_outlier = True
         pull_hist = -1000*np.ones_like(pull_hist)
         chi2 = np.square(pull_hist).sum()/nBinsUsed
