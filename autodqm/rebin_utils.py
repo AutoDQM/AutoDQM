@@ -10,11 +10,11 @@ These algorithms were developed to mitigate this effect and increase the relativ
 import numpy as np
 
 # Instead of rebinning the data and reference histograms, we will rebin the pull histogram
-def rebin_pull_hist(pull_hist_orig):
+def rebin_pull_hist(pull_hist_orig, nBinsUsed):
 
         import plugins.beta_binomial as bb
 
-        nBinsUsed_orig = np.count_nonzero(pull_hist_orig)	
+        nBinsUsed_orig = nBinsUsed #np.count_nonzero(pull_hist_orig)	
         pull_hist = pull_hist_orig.copy()
 
 	# Applying the hot-bin algorithm

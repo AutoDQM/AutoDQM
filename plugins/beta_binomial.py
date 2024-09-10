@@ -15,7 +15,7 @@ def comparators():
         'beta_binomial' : beta_binomial
     }
 
-def beta_binomial(histpair, pull_cap=10, chi2_cut=10, pull_cut=10, min_entries=1, tol=0.01, norm_type='all', **kwargs):
+def beta_binomial(histpair, pull_cap=10, chi2_cut=10, pull_cut=10, min_entries=1, tol=0.01, norm_type='all',subsystem=None, **kwargs):
     """beta_binomial works on both 1D and 2D"""
     data_hist_orig = histpair.data_hist
     ref_hists_orig = [rh for rh in histpair.ref_hists if rh.values().size == data_hist_orig.values().size]
@@ -49,7 +49,7 @@ def beta_binomial(histpair, pull_cap=10, chi2_cut=10, pull_cut=10, min_entries=1
     nRef = len(ref_hists_raw)
 
     ## Does not run beta_binomial if data or ref is 0
-    if np.sum(data_hist_raw) <= 0 or nRef == 0:
+    if nRef == 0:
         return None
 
     ## Adjust x-axis range for 1D plots if option set in config file
@@ -112,7 +112,7 @@ def beta_binomial(histpair, pull_cap=10, chi2_cut=10, pull_cut=10, min_entries=1
 
     # For test propouses! - should we do it only for Occupancy plots??
     if 'Occupancy' in histpair.data_name:
-        chi2 = rebin_pull_hist(pull_hist)
+        chi2 = rebin_pull_hist(pull_hist, nBinsUsed)
 
     ## access per-histogram settings for max_pull, chi2, axis titles
     plot_title  = None
@@ -129,6 +129,16 @@ def beta_binomial(histpair, pull_cap=10, chi2_cut=10, pull_cut=10, min_entries=1
 
     ## define if plot anomalous
     is_outlier = data_hist_Entries >= min_entries and (chi2 > chi2_cut or abs(max_pull) > pull_cut)
+
+
+    if data_hist_Entries < 1 and np.all(np.array(ref_hist_Entries) > 0) and subsystem.startswith('DT'):
+        is_outlier = True
+        pull_hist = -1000*np.ones_like(pull_hist)
+        chi2 = np.square(pull_hist).sum()/nBinsUsed
+        max_pull = maxPullNorm(np.amax(pull_hist), nBinsUsed)
+        min_pull = maxPullNorm(np.amin(pull_hist), nBinsUsed)
+        if abs(min_pull) > max_pull:
+            max_pull = min_pull
 
     ## For subsystems with many many plots (e.g. DT_DOC1), only generate somewhat anomalous plots
     sel_display_chi2    = -1.0
