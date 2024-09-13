@@ -111,7 +111,7 @@ def beta_binomial(histpair, pull_cap=10, chi2_cut=10, pull_cut=10, min_entries=1
         max_pull = min_pull
 
     # For test propouses! - should we do it only for Occupancy plots??
-    if subsystem.startswith('DT'):
+    if subsystem.startswith('DT') and pull_hist.ndim > 1:
         chi2 = rebin_pull_hist(pull_hist, nBinsUsed)
 
     ## access per-histogram settings for max_pull, chi2, axis titles
