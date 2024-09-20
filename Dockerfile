@@ -1,6 +1,10 @@
 FROM cern/cc7-base
 EXPOSE 8083
 
+# Update the EPEL repository URLs
+RUN sed -i 's#http://linuxsoft.cern.ch/epel/7/#http://linuxsoft.cern.ch/internal/archive/epel/7/#g' /etc/yum.repos.d/epel.repo
+
+# Update packages and install dependencies
 RUN yum update -y && yum install -y \
       ImageMagick \
       httpd \
@@ -8,14 +12,16 @@ RUN yum update -y && yum install -y \
       php \
       python3-pip  
 
+# Set python alias
 RUN echo "alias python=python3" >>~/.bashrc
 
+# Install additional packages
 RUN yum update -y && yum install -y \
       epel-release \
       root \
       python3-root
 
-
+# Install Python requirements
 COPY requirements.txt /code/requirements.txt
 RUN pip3 install -r /code/requirements.txt
 
